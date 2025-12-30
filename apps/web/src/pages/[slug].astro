@@ -1,0 +1,71 @@
+---
+import ListLayout from '../layouts/ListLayout.astro';
+import CardsLayout from '../layouts/CardsLayout.astro';
+import GridLayout from '../layouts/GridLayout.astro';
+
+// Ensure API_URL is configured for production builds
+const API_URL = import.meta.env.API_URL;
+if (!API_URL && import.meta.env.PROD) {
+  throw new Error(
+    'API_URL environment variable is required for production builds. ' +
+      'Please set it in your Vercel project settings.'
+  );
+}
+const apiUrl = API_URL || 'http://localhost:3000';
+
+export async function getStaticPaths() {
+  const apiUrl = import.meta.env.API_URL || 'http://localhost:3000';
+  try {
+    const response = await fetch(`${apiUrl}/public/clients`);
+
+    if (!response.ok) {
+      console.error('Failed to fetch clients:', response.statusText);
+      return [];
+    }
+
+    const clients = await response.json();
+
+    return clients.map((client: any) => ({
+      params: { slug: client.slug },
+    }));
+  } catch (error) {
+    console.error('Error fetching clients:', error);
+    return [];
+  }
+}
+
+const { slug } = Astro.params;
+
+// Fetch client data
+let client = null;
+let links: any[] = [];
+
+try {
+  const response = await fetch(`${apiUrl}/public/clients/${slug}`);
+
+  if (response.ok) {
+    const data = await response.json();
+    client = data.client;
+    links = data.links;
+  }
+} catch (error) {
+  console.error(`Error fetching client ${slug}:`, error);
+}
+
+// 404 if client not found
+if (!client) {
+  return Astro.redirect('/404');
+}
+
+// Choose layout based on client settings
+const layouts = {
+  list: ListLayout,
+  cards: CardsLayout,
+  grid: GridLayout,
+} as const;
+
+type LayoutType = keyof typeof layouts;
+const Layout = layouts[client.layout_type as LayoutType] || ListLayout;
+---
+
+<Layout client={client} links={links} />

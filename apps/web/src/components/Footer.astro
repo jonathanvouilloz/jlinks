@@ -1,0 +1,35 @@
+---
+interface Props {
+  showBranding?: boolean;
+}
+
+const { showBranding = true } = Astro.props;
+---
+
+{
+  showBranding && (
+    <footer class="page-footer">
+      <a href="https://jonlabs.ch" target="_blank" rel="noopener noreferrer">
+        Created with jLinks
+      </a>
+    </footer>
+  )
+}
+
+<style>
+  .page-footer {
+    text-align: center;
+    padding: 2rem 0 1rem;
+    margin-top: auto;
+  }
+
+  .page-footer a {
+    font-size: 0.75rem;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+  }
+
+  .page-footer a:hover {
+    opacity: 0.8;
+  }
+</style>

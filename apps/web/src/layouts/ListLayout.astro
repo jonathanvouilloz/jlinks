@@ -1,0 +1,51 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import ProfileHeader from '../components/ProfileHeader.astro';
+import LinkButton from '../components/LinkButton.astro';
+import VCardButton from '../components/VCardButton.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  client: any;
+  links: any[];
+}
+
+const { client, links } = Astro.props;
+---
+
+<BaseLayout
+  title={client.meta_title || client.name}
+  description={client.meta_description || client.bio}
+  fontTitle={client.font_title}
+  fontText={client.font_text}
+  backgroundColor={client.background_value}
+  textColor={client.secondary_color}
+>
+  <main class="container">
+    <ProfileHeader
+      name={client.name}
+      bio={client.bio}
+      imageUrl={client.profile_image_url}
+      logoUrl={client.logo_url}
+    />
+
+    <div class="links-list">
+      {
+        links.map((link) => (
+          <LinkButton
+            title={link.title}
+            url={link.url}
+            icon={link.icon}
+            socialPreset={link.social_preset}
+            bgColor={link.custom_bg_color || client.primary_color}
+            textColor={link.custom_text_color || '#FFFFFF'}
+          />
+        ))
+      }
+    </div>
+
+    {client.vcard_enabled && <VCardButton slug={client.slug} />}
+
+    <Footer showBranding={client.plan !== 'pro'} />
+  </main>
+</BaseLayout>

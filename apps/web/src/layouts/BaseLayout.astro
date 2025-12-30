@@ -1,0 +1,78 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  fontTitle?: string;
+  fontText?: string;
+  backgroundColor?: string;
+  textColor?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = 'Link page powered by jLinks',
+  fontTitle = 'Inter',
+  fontText = 'Inter',
+  backgroundColor = '#FAFAFA',
+  textColor = '#0F172A',
+  ogImage,
+} = Astro.props;
+
+// Build Google Fonts URL
+const fonts = [...new Set([fontTitle, fontText])];
+const fontsUrl = `https://fonts.googleapis.com/css2?${fonts.map((f) => `family=${encodeURIComponent(f)}:wght@400;500;600;700`).join('&')}&display=swap`;
+
+// SEO URLs
+const siteUrl = import.meta.env.SITE_URL || 'https://links.jonlabs.ch';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="jLinks" />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href={fontsUrl} rel="stylesheet" />
+    <style define:vars={{ fontTitle, fontText, backgroundColor, textColor }}>
+      body {
+        background: var(--backgroundColor);
+        color: var(--textColor);
+        font-family: var(--fontText), sans-serif;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: var(--fontTitle), sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

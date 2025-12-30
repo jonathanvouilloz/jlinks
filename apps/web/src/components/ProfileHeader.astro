@@ -1,0 +1,22 @@
+---
+interface Props {
+  name: string;
+  bio?: string | null;
+  imageUrl?: string | null;
+  logoUrl?: string | null;
+}
+
+const { name, bio, imageUrl, logoUrl } = Astro.props;
+
+const displayImage = imageUrl || logoUrl;
+---
+
+<header class="profile-header">
+  {
+    displayImage && (
+      <img src={displayImage} alt={name} class="profile-image" loading="lazy" />
+    )
+  }
+  <h1 class="profile-name">{name}</h1>
+  {bio && <p class="profile-bio">{bio}</p>}
+</header>

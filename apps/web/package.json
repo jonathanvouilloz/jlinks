@@ -1,0 +1,15 @@
+{
+  "name": "@jlinks/web",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --port 4321",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@jlinks/shared": "workspace:*",
+    "astro": "^5.0.0",
+    "lucide-astro": "^0.468.0"
+  }
+}

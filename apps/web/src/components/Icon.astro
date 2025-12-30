@@ -1,0 +1,40 @@
+---
+import {
+  Instagram,
+  Youtube,
+  Linkedin,
+  Twitter,
+  Music,
+  Facebook,
+  Github,
+  Mail,
+  MessageCircle,
+  Globe,
+  Link as LinkIcon,
+} from 'lucide-astro';
+
+interface Props {
+  name: string;
+  size?: number;
+}
+
+const { name, size = 20 } = Astro.props;
+
+const icons: Record<string, any> = {
+  instagram: Instagram,
+  youtube: Youtube,
+  linkedin: Linkedin,
+  twitter: Twitter,
+  music: Music,
+  facebook: Facebook,
+  github: Github,
+  mail: Mail,
+  'message-circle': MessageCircle,
+  globe: Globe,
+  link: LinkIcon,
+};
+
+const IconComponent = icons[name?.toLowerCase()] || LinkIcon;
+---
+
+<IconComponent size={size} />

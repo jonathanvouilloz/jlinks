@@ -1,0 +1,253 @@
+/* ============================================
+   jLinks Public Pages - Global Styles
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Profile Header */
+.profile-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.profile-image {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.profile-bio {
+  font-size: 0.875rem;
+  opacity: 0.8;
+  max-width: 400px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Links List */
+.links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+/* Link Button */
+.link-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  text-align: center;
+  position: relative;
+}
+
+.link-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.link-button:active {
+  transform: translateY(0);
+}
+
+.link-button-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Link Cards Layout */
+.links-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  flex: 1;
+}
+
+.link-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.link-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.link-card-icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 0.75rem;
+}
+
+.link-card-thumbnail {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.link-card-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.link-card-description {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  margin-top: 0.25rem;
+}
+
+/* Links Grid Layout */
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.link-grid-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: 1rem;
+  text-align: center;
+  padding: 1rem;
+  transition: transform 0.15s ease;
+}
+
+.link-grid-item:hover {
+  transform: scale(1.05);
+}
+
+.link-grid-icon {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 0.5rem;
+}
+
+.link-grid-title {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* vCard Button */
+.vcard-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid currentColor;
+  opacity: 0.8;
+  transition: opacity 0.15s ease;
+  margin: 2rem auto 0;
+}
+
+.vcard-button:hover {
+  opacity: 1;
+}
+
+/* Footer */
+.page-footer {
+  text-align: center;
+  padding: 2rem 0 1rem;
+  margin-top: auto;
+}
+
+.page-footer a {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+}
+
+.page-footer a:hover {
+  opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .links-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .links-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .profile-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-name {
+    font-size: 1.25rem;
+  }
+}

@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="jLinks" description="Create your personalized link page">
+  <main class="container" style="justify-content: center; align-items: center; text-align: center;">
+    <div>
+      <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">jLinks</h1>
+      <p style="color: #64748b; margin-bottom: 2rem;">
+        Create your personalized link page
+      </p>
+      <a
+        href="https://admin.links.jonlabs.ch"
+        style="
+          display: inline-block;
+          background: #00D9A3;
+          color: white;
+          padding: 0.75rem 2rem;
+          border-radius: 0.5rem;
+          font-weight: 500;
+          transition: background 0.15s ease;
+        "
+      >
+        Get Started
+      </a>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  a:hover {
+    background: #00a87d !important;
+  }
+</style>

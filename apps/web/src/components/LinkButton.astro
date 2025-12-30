@@ -1,0 +1,59 @@
+---
+import Icon from './Icon.astro';
+import { SOCIAL_PRESETS } from '@jlinks/shared';
+import type { SocialPresetKey } from '@jlinks/shared';
+
+interface Props {
+  title: string;
+  url: string;
+  icon?: string | null;
+  socialPreset?: SocialPresetKey | null;
+  bgColor?: string;
+  textColor?: string;
+}
+
+const { title, url, icon, socialPreset, bgColor = '#000000', textColor = '#FFFFFF' } = Astro.props;
+
+// Get preset styling if using a social preset
+const preset = socialPreset ? SOCIAL_PRESETS[socialPreset as SocialPresetKey] : null;
+const finalBgColor = preset?.bgColor || bgColor;
+const finalTextColor = preset?.textColor || textColor;
+const iconName = icon || preset?.icon || 'link';
+---
+
+<a
+  href={url}
+  class="link-button"
+  target="_blank"
+  rel="noopener noreferrer"
+  style={`background: ${finalBgColor}; color: ${finalTextColor};`}
+>
+  <Icon name={iconName} size={20} />
+  <span>{title}</span>
+</a>
+
+<style>
+  .link-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+    text-align: center;
+  }
+
+  .link-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .link-button:active {
+    transform: translateY(0);
+  }
+</style>
