@@ -1,14 +1,12 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import type { HTMLButtonAttributes } from 'svelte/elements';
 
-  interface Props {
+  interface Props extends Omit<HTMLButtonAttributes, 'class'> {
     variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
     size?: 'sm' | 'md' | 'lg';
-    disabled?: boolean;
     loading?: boolean;
-    type?: 'button' | 'submit' | 'reset';
     class?: string;
-    onclick?: () => void;
     children: Snippet;
   }
 
@@ -21,6 +19,7 @@
     class: className = '',
     onclick,
     children,
+    ...restProps
   }: Props = $props();
 </script>
 
@@ -30,6 +29,7 @@
   {disabled}
   aria-disabled={disabled || loading}
   {onclick}
+  {...restProps}
 >
   {#if loading}
     <span class="spinner"></span>
