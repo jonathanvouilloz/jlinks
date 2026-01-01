@@ -83,7 +83,7 @@
 </script>
 
 <svelte:head>
-  <title>Dashboard | jLinks Admin</title>
+  <title>Liens | jLinks Admin</title>
 </svelte:head>
 
 <div class="dashboard">

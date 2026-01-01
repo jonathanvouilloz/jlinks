@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
-  import { Home, Settings, Users, LogOut } from 'lucide-svelte';
+  import { Link, Palette, FileText, Users, LogOut } from 'lucide-svelte';
   import { authStore } from '$lib/stores';
 
   // Check if current path matches
@@ -26,14 +26,20 @@
     <ul class="nav-list">
       <li>
         <a href="/" class="nav-link" class:active={isActive('/')} aria-current={isActive('/') ? 'page' : undefined}>
-          <Home size={20} aria-hidden="true" />
-          <span>Dashboard</span>
+          <Link size={20} aria-hidden="true" />
+          <span>Liens</span>
         </a>
       </li>
       <li>
-        <a href="/settings" class="nav-link" class:active={isActive('/settings')} aria-current={isActive('/settings') ? 'page' : undefined}>
-          <Settings size={20} aria-hidden="true" />
-          <span>Paramètres</span>
+        <a href="/apparence" class="nav-link" class:active={isActive('/apparence')} aria-current={isActive('/apparence') ? 'page' : undefined}>
+          <Palette size={20} aria-hidden="true" />
+          <span>Apparence</span>
+        </a>
+      </li>
+      <li>
+        <a href="/contenu" class="nav-link" class:active={isActive('/contenu')} aria-current={isActive('/contenu') ? 'page' : undefined}>
+          <FileText size={20} aria-hidden="true" />
+          <span>Contenu</span>
         </a>
       </li>
     </ul>

@@ -28,8 +28,9 @@
 
   // Page titles based on route
   function getPageTitle(path: string): string {
-    if (path === '/') return 'Dashboard';
-    if (path === '/settings') return 'Paramètres';
+    if (path === '/') return 'Liens';
+    if (path === '/apparence') return 'Apparence';
+    if (path === '/contenu') return 'Contenu';
     if (path === '/admin/clients') return 'Gestion des clients';
     return 'jLinks';
   }
