@@ -80,6 +80,7 @@ const outerBackgroundColor = isImageBg
               bgColor={useTheme ? client.primary_color : (link.custom_bg_color || client.primary_color)}
               textColor={link.custom_text_color || '#FFFFFF'}
               opacity={client.button_opacity ?? 100}
+              buttonStyle={client.button_style}
             />
           );
         })

@@ -256,6 +256,9 @@ export const clientRoutes = new Elysia({ prefix: '/clients' })
             layout_type: t.Optional(
               t.Union([t.Literal('list'), t.Literal('cards'), t.Literal('grid'), t.Literal('premium')])
             ),
+            button_style: t.Optional(
+              t.Union([t.Literal('rounded'), t.Literal('pill'), t.Literal('square'), t.Literal('soft'), t.Literal('outline')])
+            ),
           }),
         }
       )

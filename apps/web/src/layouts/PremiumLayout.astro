@@ -6,7 +6,7 @@ import VCardButton from '../components/VCardButton.astro';
 import Footer from '../components/Footer.astro';
 import { ExternalLink } from 'lucide-astro';
 import { SOCIAL_PRESETS } from '@jlinks/shared';
-import type { SocialPresetKey } from '@jlinks/shared';
+import type { SocialPresetKey, ButtonStyle } from '@jlinks/shared';
 
 interface Props {
   client: any;
@@ -28,6 +28,33 @@ function hexToRgba(hex: string, alpha: number): string {
 }
 
 const buttonOpacity = client.button_opacity ?? 100;
+const buttonStyle = client.button_style || 'rounded';
+
+// Get border-radius based on button style (adjusted for premium layout)
+function getCardRadius(style: string): string {
+  switch (style) {
+    case 'pill': return '24px';
+    case 'square': return '4px';
+    case 'soft': return '18px';
+    case 'outline': return '14px';
+    case 'rounded':
+    default: return '14px';
+  }
+}
+
+function getIconRadius(style: string): string {
+  switch (style) {
+    case 'pill': return '14px';
+    case 'square': return '4px';
+    case 'soft': return '10px';
+    case 'outline': return '10px';
+    case 'rounded':
+    default: return '10px';
+  }
+}
+
+const cardRadius = getCardRadius(buttonStyle);
+const iconRadius = getIconRadius(buttonStyle);
 ---
 
 <BaseLayout
@@ -71,10 +98,11 @@ const buttonOpacity = client.button_opacity ?? 100;
               <a
                 href={link.url}
                 class="premium-link-card"
+                style={`border-radius: ${cardRadius};`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span class="premium-link-icon" style={`background: ${iconBgStyle};`}>
+                <span class="premium-link-icon" style={`background: ${iconBgStyle}; border-radius: ${iconRadius};`}>
                   <Icon name={iconName} size={22} />
                 </span>
                 <div class="premium-link-content">

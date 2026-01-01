@@ -29,6 +29,13 @@
       "when": 1767289872907,
       "tag": "0003_organic_longshot",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1767294316721,
+      "tag": "0004_fantastic_namorita",
+      "breakpoints": true
     }
   ]
 }

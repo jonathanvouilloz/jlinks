@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { BackgroundType, LayoutType } from '@jlinks/shared/types';
+  import type { BackgroundType, ButtonStyle, LayoutType } from '@jlinks/shared/types';
   import { Card, Button, Input, Toggle } from '$lib/components/ui';
-  import { ColorPicker, FontPresetSelector, FontSelector, LayoutSelector, OpacitySlider } from '$lib/components/settings';
+  import { ButtonStyleSelector, ColorPicker, FontPresetSelector, FontSelector, LayoutSelector, OpacitySlider } from '$lib/components/settings';
   import { Preview } from '$lib/components/dashboard';
   import { Download, QrCode, UserPlus } from 'lucide-svelte';
   import { authStore, clientStore, linksStore } from '$lib/stores';
@@ -34,6 +34,7 @@
 
   // Layout
   let layoutType = $state<LayoutType>('list');
+  let buttonStyle = $state<ButtonStyle>('rounded');
 
   // vCard fields
   let vcardEnabled = $state(false);
@@ -73,6 +74,7 @@
     font_text: fontText,
     // Layout
     layout_type: layoutType,
+    button_style: buttonStyle,
   } : null);
 
   // Initialize form values from client
@@ -93,6 +95,7 @@
       fontTitle = client.font_title || 'Inter';
       fontText = client.font_text || 'Inter';
       layoutType = client.layout_type || 'list';
+      buttonStyle = client.button_style || 'rounded';
       vcardEnabled = client.vcard_enabled || false;
       vcardName = client.vcard_name || '';
       vcardEmail = client.vcard_email || '';
@@ -135,6 +138,7 @@
       font_title: fontTitle,
       font_text: fontText,
       layout_type: layoutType,
+      button_style: buttonStyle,
     });
     savingAppearance = false;
   }
@@ -269,6 +273,8 @@
         <ColorPicker label="Couleur des boutons (par défaut)" value={primaryColor} onchange={(v) => primaryColor = v} />
 
         <OpacitySlider label="Opacité des boutons" value={buttonOpacity} onchange={(v) => buttonOpacity = v} />
+
+        <ButtonStyleSelector value={buttonStyle} onchange={(v) => buttonStyle = v} />
 
         <ColorPicker label="Couleur de fond (desktop)" value={outerBackgroundColor} onchange={(v) => outerBackgroundColor = v} />
         <p class="color-hint">Visible uniquement sur desktop, derrière la carte.</p>

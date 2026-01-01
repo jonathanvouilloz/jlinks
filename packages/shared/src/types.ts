@@ -23,6 +23,7 @@ export interface Client {
 
   // Layout
   layout_type: LayoutType;
+  button_style: ButtonStyle;
 
   // Meta
   bio: string | null;
@@ -62,6 +63,7 @@ export interface ClientSettings {
   font_title?: string;
   font_text?: string;
   layout_type?: LayoutType;
+  button_style?: ButtonStyle;
   bio?: string;
   meta_title?: string;
   meta_description?: string;
@@ -137,6 +139,7 @@ export interface Session {
 // Enums
 export type BackgroundType = 'solid' | 'gradient' | 'image';
 export type LayoutType = 'list' | 'cards' | 'grid' | 'premium';
+export type ButtonStyle = 'rounded' | 'pill' | 'square' | 'soft' | 'outline';
 export type PlanType = 'free' | 'pro';
 
 // Social preset keys

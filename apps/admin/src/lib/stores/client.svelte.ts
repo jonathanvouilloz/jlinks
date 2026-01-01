@@ -1,6 +1,6 @@
 // Client data store using Svelte 5 runes
 
-import type { Client, BackgroundType, LayoutType } from '@jlinks/shared/types';
+import type { Client, BackgroundType, LayoutType, ButtonStyle } from '@jlinks/shared/types';
 import { api, ApiError } from '$lib/api';
 import { toastStore } from './toast.svelte';
 import { authStore } from './auth.svelte';
@@ -56,6 +56,7 @@ async function updateSettings(data: {
   font_title?: string;
   font_text?: string;
   layout_type?: LayoutType;
+  button_style?: ButtonStyle;
 }): Promise<Client | null> {
   try {
     const updatedClient = await api.client.updateSettings(data);

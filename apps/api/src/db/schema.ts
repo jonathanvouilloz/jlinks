@@ -31,6 +31,7 @@ export const clients = sqliteTable('clients', {
 
   // Layout
   layout_type: text('layout_type').default('list'), // 'list' | 'cards' | 'grid' | 'premium'
+  button_style: text('button_style').default('rounded'), // 'rounded' | 'pill' | 'square' | 'soft' | 'outline'
 
   // Meta
   bio: text('bio'),

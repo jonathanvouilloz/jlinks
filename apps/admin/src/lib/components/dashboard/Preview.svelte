@@ -40,6 +40,23 @@
     return `rgba(${r}, ${g}, ${b}, ${alpha / 100})`;
   }
 
+  // Get border-radius based on button style
+  function getButtonRadius(style: string | undefined): string {
+    switch (style) {
+      case 'pill': return '50px';
+      case 'square': return '4px';
+      case 'soft': return '16px';
+      case 'outline': return '8px';
+      case 'rounded':
+      default: return '8px';
+    }
+  }
+
+  // Check if button style is outline
+  function isOutlineStyle(style: string | undefined): boolean {
+    return style === 'outline';
+  }
+
   // SVG icons for social presets
   function getIconSvg(iconName: string, size: number = 24): string {
     const icons: Record<string, string> = {
@@ -117,17 +134,24 @@
       : { text: '#ffffff', muted: 'rgba(255,255,255,0.7)' };
 
     const buttonOpacity = client.button_opacity ?? 100;
+    const buttonRadius = getButtonRadius(client.button_style);
+    const isOutline = isOutlineStyle(client.button_style);
     const linksHtml = activeLinks.map(link => {
       const preset = link.social_preset ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey] : null;
       // Use primaryColor for 'theme' preset, otherwise use preset color or custom color
       const bgColor = link.social_preset === 'theme'
         ? primaryColor
         : (preset?.bgColor || link.custom_bg_color || primaryColor);
-      const bgStyle = buttonOpacity < 100 && bgColor.startsWith('#') ? hexToRgba(bgColor, buttonOpacity) : bgColor;
+      const bgWithOpacity = buttonOpacity < 100 && bgColor.startsWith('#') ? hexToRgba(bgColor, buttonOpacity) : bgColor;
       const textColor = preset?.textColor || link.custom_text_color || '#ffffff';
 
+      // Apply outline or filled style
+      const btnStyle = isOutline
+        ? `background: transparent; border: 2px solid ${bgColor}; color: ${bgColor};`
+        : `background: ${bgWithOpacity}; color: ${textColor};`;
+
       return `
-        <a href="${link.url}" target="_blank" class="link-btn" style="background: ${bgStyle}; color: ${textColor};">
+        <a href="${link.url}" target="_blank" class="link-btn" style="${btnStyle}">
           ${link.title}
         </a>
       `;
@@ -188,7 +212,7 @@
           .link-btn {
             display: block;
             padding: 14px 20px;
-            border-radius: 12px;
+            border-radius: ${buttonRadius};
             text-decoration: none;
             font-weight: 500;
             text-align: center;
@@ -482,17 +506,23 @@
       : { text: '#ffffff', muted: 'rgba(255,255,255,0.7)' };
 
     const buttonOpacity = client.button_opacity ?? 100;
+    const buttonRadius = getButtonRadius(client.button_style);
+    const isOutline = isOutlineStyle(client.button_style);
     const linksHtml = links.map(link => {
       const preset = link.social_preset ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey] : null;
       const bgColor = link.social_preset === 'theme'
         ? primaryColor
         : (preset?.bgColor || link.custom_bg_color || primaryColor);
-      const bgStyle = buttonOpacity < 100 && bgColor.startsWith('#') ? hexToRgba(bgColor, buttonOpacity) : bgColor;
+      const bgWithOpacity = buttonOpacity < 100 && bgColor.startsWith('#') ? hexToRgba(bgColor, buttonOpacity) : bgColor;
       const textColor = preset?.textColor || link.custom_text_color || '#ffffff';
       const iconName = link.icon || preset?.icon || 'link';
 
+      const cardStyle = isOutline
+        ? `background: transparent; border: 2px solid ${bgColor}; color: ${bgColor};`
+        : `background: ${bgWithOpacity}; color: ${textColor};`;
+
       return `
-        <a href="${link.url}" target="_blank" class="link-card" style="background: ${bgStyle}; color: ${textColor};">
+        <a href="${link.url}" target="_blank" class="link-card" style="${cardStyle}">
           <span class="link-card-icon">${getIconSvg(iconName, 32)}</span>
           <span class="link-card-title">${link.title}</span>
           ${link.description ? `<span class="link-card-description">${link.description}</span>` : ''}
@@ -540,7 +570,7 @@
             flex-direction: column;
             align-items: center;
             padding: 1.5rem 1rem;
-            border-radius: 0.75rem;
+            border-radius: ${buttonRadius};
             text-align: center;
             text-decoration: none;
             transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -626,17 +656,23 @@
       : { text: '#ffffff', muted: 'rgba(255,255,255,0.7)' };
 
     const buttonOpacity = client.button_opacity ?? 100;
+    const buttonRadius = getButtonRadius(client.button_style);
+    const isOutline = isOutlineStyle(client.button_style);
     const linksHtml = links.map(link => {
       const preset = link.social_preset ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey] : null;
       const bgColor = link.social_preset === 'theme'
         ? primaryColor
         : (preset?.bgColor || link.custom_bg_color || primaryColor);
-      const bgStyle = buttonOpacity < 100 && bgColor.startsWith('#') ? hexToRgba(bgColor, buttonOpacity) : bgColor;
+      const bgWithOpacity = buttonOpacity < 100 && bgColor.startsWith('#') ? hexToRgba(bgColor, buttonOpacity) : bgColor;
       const textColor = preset?.textColor || link.custom_text_color || '#ffffff';
       const iconName = link.icon || preset?.icon || 'link';
 
+      const gridStyle = isOutline
+        ? `background: transparent; border: 2px solid ${bgColor}; color: ${bgColor};`
+        : `background: ${bgWithOpacity}; color: ${textColor};`;
+
       return `
-        <a href="${link.url}" target="_blank" class="link-grid-item" style="background: ${bgStyle}; color: ${textColor};" title="${link.title}">
+        <a href="${link.url}" target="_blank" class="link-grid-item" style="${gridStyle}" title="${link.title}">
           <span class="link-grid-icon">${getIconSvg(iconName, 28)}</span>
           <span class="link-grid-title">${link.title}</span>
         </a>
@@ -684,7 +720,7 @@
             align-items: center;
             justify-content: center;
             aspect-ratio: 1;
-            border-radius: 1rem;
+            border-radius: ${buttonRadius};
             text-align: center;
             text-decoration: none;
             padding: 1rem;

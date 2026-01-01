@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { SOCIAL_PRESETS } from '@jlinks/shared';
-import type { SocialPresetKey } from '@jlinks/shared';
+import type { SocialPresetKey, ButtonStyle } from '@jlinks/shared';
 
 interface Props {
   title: string;
@@ -11,9 +11,10 @@ interface Props {
   bgColor?: string;
   textColor?: string;
   opacity?: number;
+  buttonStyle?: ButtonStyle;
 }
 
-const { title, url, icon, socialPreset, bgColor = '#000000', textColor = '#FFFFFF', opacity = 100 } = Astro.props;
+const { title, url, icon, socialPreset, bgColor = '#000000', textColor = '#FFFFFF', opacity = 100, buttonStyle = 'rounded' } = Astro.props;
 
 // Get preset styling if using a social preset
 const preset = socialPreset ? SOCIAL_PRESETS[socialPreset as SocialPresetKey] : null;
@@ -30,10 +31,30 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha / 100})`;
 }
 
+// Get border-radius based on button style
+function getButtonRadius(style: ButtonStyle): string {
+  switch (style) {
+    case 'pill': return '50px';
+    case 'square': return '4px';
+    case 'soft': return '16px';
+    case 'outline': return '8px';
+    case 'rounded':
+    default: return '8px';
+  }
+}
+
+const isOutline = buttonStyle === 'outline';
+const buttonRadius = getButtonRadius(buttonStyle);
+
 // Apply opacity only to solid hex colors
-const bgStyle = opacity < 100 && finalBgColor.startsWith('#')
+const bgWithOpacity = opacity < 100 && finalBgColor.startsWith('#')
   ? hexToRgba(finalBgColor, opacity)
   : finalBgColor;
+
+// Build style string based on button style
+const styleString = isOutline
+  ? `background: transparent; border: 2px solid ${finalBgColor}; color: ${finalBgColor}; border-radius: ${buttonRadius};`
+  : `background: ${bgWithOpacity}; color: ${finalTextColor}; border-radius: ${buttonRadius};`;
 ---
 
 <a
@@ -41,7 +62,7 @@ const bgStyle = opacity < 100 && finalBgColor.startsWith('#')
   class="link-button"
   target="_blank"
   rel="noopener noreferrer"
-  style={`background: ${bgStyle}; color: ${finalTextColor};`}
+  style={styleString}
 >
   <Icon name={iconName} size={20} />
   <span>{title}</span>
@@ -54,7 +75,6 @@ const bgStyle = opacity < 100 && finalBgColor.startsWith('#')
     justify-content: center;
     gap: 0.75rem;
     padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
     font-size: 1rem;
     font-weight: 500;
     transition:

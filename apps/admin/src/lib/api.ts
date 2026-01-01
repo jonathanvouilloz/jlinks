@@ -11,6 +11,7 @@ import type {
   PublishResponse,
   BackgroundType,
   LayoutType,
+  ButtonStyle,
   PlanType
 } from '@jlinks/shared/types';
 
@@ -122,6 +123,7 @@ export const client = {
     font_title?: string;
     font_text?: string;
     layout_type?: LayoutType;
+    button_style?: ButtonStyle;
   }): Promise<Client> {
     return request('/clients/me/settings', {
       method: 'PUT',
