@@ -1,0 +1,278 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import ProfileHeader from '../components/ProfileHeader.astro';
+import Icon from '../components/Icon.astro';
+import VCardButton from '../components/VCardButton.astro';
+import Footer from '../components/Footer.astro';
+import { ExternalLink } from 'lucide-astro';
+import { SOCIAL_PRESETS } from '@jlinks/shared';
+import type { SocialPresetKey } from '@jlinks/shared';
+
+interface Props {
+  client: any;
+  links: any[];
+}
+
+const { client, links } = Astro.props;
+
+// Premium layout always uses dark background for optimal glass effect
+const darkBackground = '#0f0f0f';
+---
+
+<BaseLayout
+  title={client.meta_title || client.name}
+  description={client.meta_description || client.bio}
+  fontTitle={client.font_title}
+  fontText={client.font_text}
+  backgroundColor={darkBackground}
+  textColor="#ffffff"
+>
+  <div class="premium-container">
+    <div class="premium-glass">
+      <ProfileHeader
+        name={client.name}
+        bio={client.bio}
+        imageUrl={client.profile_image_url}
+        logoUrl={client.logo_url}
+      />
+
+      <div class="premium-links">
+        {
+          links.map((link) => {
+            // Get icon and background color from preset or fallback
+            const preset = link.social_preset && link.social_preset !== 'theme'
+              ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey]
+              : null;
+
+            const iconBgColor = link.social_preset === 'theme'
+              ? client.primary_color
+              : preset?.bgColor || link.custom_bg_color || client.primary_color;
+
+            const iconName = link.icon || preset?.icon || 'link';
+
+            return (
+              <a
+                href={link.url}
+                class="premium-link-card"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span class="premium-link-icon" style={`background: ${iconBgColor};`}>
+                  <Icon name={iconName} size={22} />
+                </span>
+                <div class="premium-link-content">
+                  <span class="premium-link-title">{link.title}</span>
+                  {link.description && (
+                    <span class="premium-link-description">{link.description}</span>
+                  )}
+                </div>
+                <span class="premium-link-arrow">
+                  <ExternalLink size={18} />
+                </span>
+              </a>
+            );
+          })
+        }
+      </div>
+
+      {client.vcard_enabled && (
+        <div class="vcard-wrapper">
+          <VCardButton slug={client.slug} />
+        </div>
+      )}
+
+      <Footer showBranding={client.plan !== 'pro'} />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Premium container - full screen dark background */
+  .premium-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+    background: #0A0A0A;
+  }
+
+  /* Card container - subtle distinction */
+  .premium-glass {
+    max-width: 580px;
+    width: 100%;
+    background: #141414;
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    border: 1px solid #1F1F1F;
+  }
+
+  /* Override profile header styles for premium */
+  .premium-glass :global(.profile-header) {
+    margin-bottom: 2rem;
+  }
+
+  .premium-glass :global(.profile-image) {
+    width: 120px;
+    height: 120px;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .premium-glass :global(.profile-name) {
+    color: #ffffff;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  .premium-glass :global(.profile-bio) {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 400px;
+    margin: 0.75rem auto 0;
+  }
+
+  /* Links list */
+  .premium-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Link card */
+  .premium-link-card {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.5rem;
+    background: #2A2A2A;
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .premium-link-card:hover {
+    background: #3C3C3C;
+  }
+
+  /* Icon square */
+  .premium-link-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #ffffff;
+  }
+
+  .premium-link-icon :global(svg) {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Content */
+  .premium-link-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .premium-link-title {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .premium-link-description {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Arrow */
+  .premium-link-arrow {
+    color: #636363;
+    flex-shrink: 0;
+  }
+
+  /* Override footer for premium */
+  .premium-glass :global(.footer) {
+    margin-top: 1.5rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .premium-glass :global(.footer a) {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .premium-glass :global(.footer a:hover) {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* VCard wrapper for centering */
+  .vcard-wrapper {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  /* VCard button override - subtle style */
+  .vcard-wrapper :global(.vcard-button) {
+    display: inline-flex;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: none;
+    color: #636363;
+    font-size: 0.75rem;
+    opacity: 1;
+  }
+
+  .vcard-wrapper :global(.vcard-button svg) {
+    width: 14px;
+    height: 14px;
+  }
+
+  .vcard-wrapper :global(.vcard-button:hover) {
+    background: transparent;
+    color: #888888;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .premium-container {
+      padding: 1rem 0.75rem;
+    }
+
+    .premium-glass {
+      padding: 2rem 1.25rem;
+      border-radius: 20px;
+    }
+
+    .premium-glass :global(.profile-image) {
+      width: 96px;
+      height: 96px;
+    }
+
+    .premium-glass :global(.profile-name) {
+      font-size: 1.5rem;
+    }
+
+    .premium-link-icon {
+      width: 44px;
+      height: 44px;
+    }
+  }
+</style>

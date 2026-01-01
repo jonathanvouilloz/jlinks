@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { LayoutType } from '@jlinks/shared/types';
-  import { List, LayoutGrid, Grid3X3 } from 'lucide-svelte';
+  import { List, LayoutGrid, Grid3X3, Sparkles } from 'lucide-svelte';
 
   interface Props {
     value: LayoutType;
@@ -13,6 +13,7 @@
     { type: 'list', label: 'Liste', icon: List },
     { type: 'cards', label: 'Cartes', icon: LayoutGrid },
     { type: 'grid', label: 'Grille', icon: Grid3X3 },
+    { type: 'premium', label: 'Premium', icon: Sparkles },
   ];
 </script>
 
@@ -48,8 +49,14 @@
 
   .layout-options {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--space-3);
+  }
+
+  @media (max-width: 500px) {
+    .layout-options {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   .layout-option {

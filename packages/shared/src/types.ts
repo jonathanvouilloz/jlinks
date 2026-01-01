@@ -130,7 +130,7 @@ export interface Session {
 
 // Enums
 export type BackgroundType = 'solid' | 'gradient' | 'image';
-export type LayoutType = 'list' | 'cards' | 'grid';
+export type LayoutType = 'list' | 'cards' | 'grid' | 'premium';
 export type PlanType = 'free' | 'pro';
 
 // Social preset keys

@@ -2,6 +2,7 @@
 import ListLayout from '../layouts/ListLayout.astro';
 import CardsLayout from '../layouts/CardsLayout.astro';
 import GridLayout from '../layouts/GridLayout.astro';
+import PremiumLayout from '../layouts/PremiumLayout.astro';
 
 // Ensure API_URL is configured for production builds
 const API_URL = import.meta.env.API_URL;
@@ -62,6 +63,7 @@ const layouts = {
   list: ListLayout,
   cards: CardsLayout,
   grid: GridLayout,
+  premium: PremiumLayout,
 } as const;
 
 type LayoutType = keyof typeof layouts;

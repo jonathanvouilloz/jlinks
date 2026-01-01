@@ -27,7 +27,7 @@ export const clients = sqliteTable('clients', {
   font_text: text('font_text').default('Inter'),
 
   // Layout
-  layout_type: text('layout_type').default('list'), // 'list' | 'cards' | 'grid'
+  layout_type: text('layout_type').default('list'), // 'list' | 'cards' | 'grid' | 'premium'
 
   // Meta
   bio: text('bio'),

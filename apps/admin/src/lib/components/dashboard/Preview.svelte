@@ -64,6 +64,13 @@
     const fontTitle = client.font_title || 'Inter';
     const fontText = client.font_text || 'Inter';
     const primaryColor = client.primary_color || '#00d9a3';
+
+    // Premium layout has its own rendering
+    if (client.layout_type === 'premium') {
+      return generatePremiumHtml(client, activeLinks, fontTitle, fontText, primaryColor);
+    }
+
+    // Standard layouts
     const bgValue = client.background_value || '#ffffff';
     const bgStyle = client.background_type === 'gradient'
       ? `background: ${bgValue};`
@@ -185,6 +192,182 @@
             ${linksHtml || '<div class="empty-state">Aucun lien actif</div>'}
           </div>
 
+          <div class="footer">
+            <a href="https://jonlabs.ch">Créé avec jLinks</a>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+  }
+
+  function generatePremiumHtml(client: Client, links: Link[], fontTitle: string, fontText: string, primaryColor: string): string {
+    const linksHtml = links.map(link => {
+      const preset = link.social_preset && link.social_preset !== 'theme'
+        ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey]
+        : null;
+      const iconBgColor = link.social_preset === 'theme'
+        ? primaryColor
+        : (preset?.bgColor || link.custom_bg_color || primaryColor);
+
+      return `
+        <a href="${link.url}" target="_blank" class="premium-link-card">
+          <span class="premium-link-icon" style="background: ${iconBgColor};">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </span>
+          <div class="premium-link-content">
+            <span class="premium-link-title">${link.title}</span>
+            ${link.description ? `<span class="premium-link-description">${link.description}</span>` : ''}
+          </div>
+          <span class="premium-link-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </span>
+        </a>
+      `;
+    }).join('');
+
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=${fontTitle.replace(' ', '+')}:wght@400;600&family=${fontText.replace(' ', '+')}:wght@400;500&display=swap" rel="stylesheet">
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          body {
+            font-family: '${fontText}', sans-serif;
+            min-height: 100vh;
+            background: #0A0A0A;
+            display: flex;
+            justify-content: center;
+            padding: 24px 12px;
+          }
+          .premium-glass {
+            max-width: 100%;
+            width: 100%;
+            background: #141414;
+            border-radius: 20px;
+            padding: 24px 16px;
+            border: 1px solid #1F1F1F;
+          }
+          .profile {
+            text-align: center;
+            margin-bottom: 24px;
+          }
+          .profile-image {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 12px;
+            border: 3px solid rgba(255,255,255,0.15);
+          }
+          .profile-name {
+            font-family: '${fontTitle}', sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+          }
+          .profile-bio {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.5;
+          }
+          .premium-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+          }
+          .premium-link-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px;
+            background: #2A2A2A;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: background 0.2s;
+          }
+          .premium-link-card:hover {
+            background: #3C3C3C;
+          }
+          .premium-link-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #ffffff;
+          }
+          .premium-link-icon svg {
+            width: 20px;
+            height: 20px;
+          }
+          .premium-link-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+          }
+          .premium-link-title {
+            font-weight: 500;
+            font-size: 14px;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .premium-link-description {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .premium-link-arrow {
+            color: #636363;
+            flex-shrink: 0;
+          }
+          .footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+          }
+          .footer a {
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+          }
+          .empty-state {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 32px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="premium-glass">
+          <div class="profile">
+            ${client.profile_image_url ? `<img src="${client.profile_image_url}" alt="${client.name}" class="profile-image" />` : ''}
+            <h1 class="profile-name">${client.name}</h1>
+            ${client.bio ? `<p class="profile-bio">${client.bio}</p>` : ''}
+          </div>
+          <div class="premium-links">
+            ${linksHtml || '<div class="empty-state">Aucun lien actif</div>'}
+          </div>
           <div class="footer">
             <a href="https://jonlabs.ch">Créé avec jLinks</a>
           </div>
