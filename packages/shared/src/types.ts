@@ -13,6 +13,7 @@ export interface Client {
   secondary_color: string;
   background_type: BackgroundType;
   background_value: string;
+  outer_background_color: string;
 
   // Typography
   font_preset: string | null;
@@ -54,6 +55,7 @@ export interface ClientSettings {
   secondary_color?: string;
   background_type?: BackgroundType;
   background_value?: string;
+  outer_background_color?: string;
   font_preset?: string | null;
   font_title?: string;
   font_text?: string;

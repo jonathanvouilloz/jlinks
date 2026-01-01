@@ -1,0 +1,1 @@
+ALTER TABLE `clients` ADD `outer_background_color` text DEFAULT '#f5f5f5';

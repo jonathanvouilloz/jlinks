@@ -2,8 +2,8 @@
   import '../styles/global.css';
   import type { Snippet } from 'svelte';
   import { page } from '$app/stores';
-  import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
+  import { browser } from '$app/environment';
   import { Sidebar, Header, ToastContainer } from '$lib/components/layout';
   import { authStore, clientStore, linksStore } from '$lib/stores';
 
@@ -38,35 +38,50 @@
   let pageTitle = $derived(getPageTitle($page.url.pathname));
   let showLayout = $derived(!isPublicPath($page.url.pathname) && authStore.isAuthenticated);
 
-  onMount(async () => {
-    // Initialize auth state
-    await authStore.init();
+  // Track if we've initialized
+  let hasInitialized = $state(false);
 
-    const currentPath = $page.url.pathname;
+  // Initialize auth on mount (client-side only)
+  $effect(() => {
+    if (!browser || hasInitialized) return;
+    hasInitialized = true;
 
-    // Redirect logic after auth init
-    if (!authStore.isAuthenticated && !isPublicPath(currentPath)) {
-      goto('/login');
-      return;
-    }
+    console.log('[Layout] $effect running - initializing auth');
 
-    if (authStore.isAuthenticated && currentPath === '/login') {
-      goto('/');
-      return;
-    }
+    (async () => {
+      try {
+        await authStore.init();
+        console.log('[Layout] authStore.init() completed, loading:', authStore.loading, 'isAuthenticated:', authStore.isAuthenticated);
+      } catch (e) {
+        console.error('[Layout] authStore.init() failed:', e);
+      }
 
-    if (requiresSuperAdmin(currentPath) && !authStore.isSuperAdmin) {
-      goto('/');
-      return;
-    }
+      const currentPath = $page.url.pathname;
 
-    // Load initial data for authenticated users
-    if (authStore.isAuthenticated && authStore.isClient) {
-      await Promise.all([
-        clientStore.loadPublishStatus(),
-        linksStore.loadLinks()
-      ]);
-    }
+      // Redirect logic after auth init
+      if (!authStore.isAuthenticated && !isPublicPath(currentPath)) {
+        goto('/login');
+        return;
+      }
+
+      if (authStore.isAuthenticated && currentPath === '/login') {
+        goto('/');
+        return;
+      }
+
+      if (requiresSuperAdmin(currentPath) && !authStore.isSuperAdmin) {
+        goto('/');
+        return;
+      }
+
+      // Load initial data for authenticated users
+      if (authStore.isAuthenticated && authStore.isClient) {
+        await Promise.all([
+          clientStore.loadPublishStatus(),
+          linksStore.loadLinks()
+        ]);
+      }
+    })();
   });
 </script>
 

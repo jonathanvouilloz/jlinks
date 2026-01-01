@@ -17,20 +17,25 @@ const isClient = $derived(user?.role === 'client' && client !== null);
 
 // Actions
 async function init(): Promise<void> {
+  console.log('[Auth] init() called, initialized:', initialized);
   if (initialized) return;
 
   loading = true;
+  console.log('[Auth] Calling api.auth.getSession()...');
   try {
     const session = await api.auth.getSession();
+    console.log('[Auth] Session received:', session);
     user = session.user;
     client = session.client;
   } catch (e) {
+    console.error('[Auth] getSession() failed:', e);
     // Not authenticated - this is expected
     user = null;
     client = null;
   } finally {
     loading = false;
     initialized = true;
+    console.log('[Auth] init() completed, loading:', loading);
   }
 }
 

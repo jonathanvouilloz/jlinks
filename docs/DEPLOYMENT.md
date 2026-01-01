@@ -230,23 +230,6 @@ Connecte-toi à ton gestionnaire DNS et ajoute ces enregistrements :
 5. Remplis les champs selon le tableau ci-dessus
 6. Sauvegarde
 
-#### Cloudflare
-
-1. Va sur [dash.cloudflare.com](https://dash.cloudflare.com)
-2. Sélectionne le domaine `jonlabs.ch`
-3. Clique "DNS" dans le menu
-4. Clique "+ Add record"
-5. **IMPORTANT** : Désactive le proxy (nuage orange → gris) pour `api.links`
-6. Pour les CNAME Vercel, le proxy peut rester actif
-
-#### OVH
-
-1. Va sur [ovh.com/manager](https://www.ovh.com/manager)
-2. Domaines → `jonlabs.ch` → Zone DNS
-3. Clique "Ajouter une entrée"
-4. Sélectionne le type (A ou CNAME)
-5. Remplis les champs
-
 ### 4.3 Vérifier la propagation DNS
 
 Après avoir ajouté les enregistrements, vérifie qu'ils se propagent :

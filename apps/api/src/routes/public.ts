@@ -59,6 +59,8 @@ export const publicRoutes = new Elysia({ prefix: '/public' })
           secondary_color: client.secondary_color,
           background_type: client.background_type,
           background_value: client.background_value,
+          outer_background_color: client.outer_background_color,
+          font_preset: client.font_preset,
           font_title: client.font_title,
           font_text: client.font_text,
           layout_type: client.layout_type,

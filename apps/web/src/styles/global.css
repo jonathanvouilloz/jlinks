@@ -34,15 +34,32 @@ button {
   font-family: inherit;
 }
 
-/* Container */
+/* Container - Mobile first (no card visible) */
 .container {
   width: 100%;
-  max-width: 680px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   padding: 2rem 1rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--backgroundColor);
+}
+
+/* Desktop: card centered with outer background */
+@media (min-width: 481px) {
+  body {
+    background: var(--outerBackgroundColor, #f5f5f5);
+  }
+
+  .container {
+    max-width: 420px;
+    min-height: auto;
+    margin: 2rem auto;
+    padding: 2rem 1.5rem;
+    border-radius: 24px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
 }
 
 /* Profile Header */

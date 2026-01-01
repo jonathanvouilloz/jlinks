@@ -24,6 +24,7 @@
   let primaryColor = $state('#00d9a3');
   let backgroundType = $state<BackgroundType>('solid');
   let backgroundValue = $state('#ffffff');
+  let outerBackgroundColor = $state('#f5f5f5');
 
   // Typography
   let fontPreset = $state<string | null>(null);
@@ -63,6 +64,7 @@
     primary_color: primaryColor,
     background_type: backgroundType,
     background_value: backgroundValue,
+    outer_background_color: outerBackgroundColor,
     // Typography
     font_preset: fontPreset,
     font_title: fontTitle,
@@ -83,6 +85,7 @@
       primaryColor = client.primary_color || '#00d9a3';
       backgroundType = client.background_type || 'solid';
       backgroundValue = client.background_value || '#ffffff';
+      outerBackgroundColor = client.outer_background_color || '#f5f5f5';
       fontPreset = client.font_preset;
       fontTitle = client.font_title || 'Inter';
       fontText = client.font_text || 'Inter';
@@ -123,6 +126,7 @@
       primary_color: primaryColor,
       background_type: backgroundType,
       background_value: backgroundValue,
+      outer_background_color: outerBackgroundColor,
       font_preset: fontPreset,
       font_title: fontTitle,
       font_text: fontText,
@@ -259,6 +263,9 @@
         {/if}
 
         <ColorPicker label="Couleur des boutons (par défaut)" value={primaryColor} onchange={(v) => primaryColor = v} />
+
+        <ColorPicker label="Couleur de fond (desktop)" value={outerBackgroundColor} onchange={(v) => outerBackgroundColor = v} />
+        <p class="color-hint">Visible uniquement sur desktop, derrière la carte.</p>
 
         <Button variant="primary" onclick={saveAppearance} loading={savingAppearance}>
           Enregistrer
@@ -653,5 +660,11 @@
     gap: var(--space-4);
     padding-top: var(--space-4);
     border-top: 1px solid var(--color-border);
+  }
+
+  .color-hint {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    margin: calc(-1 * var(--space-2)) 0 0;
   }
 </style>

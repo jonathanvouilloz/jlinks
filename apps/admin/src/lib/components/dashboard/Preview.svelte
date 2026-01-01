@@ -202,6 +202,21 @@
             color: ${textColors.muted};
             padding: 40px;
           }
+          .vcard-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid currentColor;
+            opacity: 0.8;
+            margin: 2rem auto 0;
+            color: ${textColors.muted};
+            text-decoration: none;
+          }
         </style>
       </head>
       <body>
@@ -215,6 +230,18 @@
           <div class="links">
             ${linksHtml || '<div class="empty-state">Aucun lien actif</div>'}
           </div>
+
+          ${client.vcard_enabled ? `
+            <a href="#" class="vcard-button" onclick="return false;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/>
+                <line x1="22" y1="11" x2="16" y2="11"/>
+              </svg>
+              Ajouter aux contacts
+            </a>
+          ` : ''}
 
           <div class="footer">
             <a href="https://jonlabs.ch">Créé avec jLinks</a>
@@ -380,6 +407,21 @@
             color: rgba(255, 255, 255, 0.5);
             padding: 32px;
           }
+          .vcard-wrapper {
+            text-align: center;
+            margin-top: 1.5rem;
+          }
+          .vcard-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: none;
+            color: #636363;
+            font-size: 0.75rem;
+            text-decoration: none;
+          }
         </style>
       </head>
       <body>
@@ -392,6 +434,19 @@
           <div class="premium-links">
             ${linksHtml || '<div class="empty-state">Aucun lien actif</div>'}
           </div>
+          ${client.vcard_enabled ? `
+            <div class="vcard-wrapper">
+              <a href="#" class="vcard-button" onclick="return false;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <line x1="19" y1="8" x2="19" y2="14"/>
+                  <line x1="22" y1="11" x2="16" y2="11"/>
+                </svg>
+                Ajouter aux contacts
+              </a>
+            </div>
+          ` : ''}
           <div class="footer">
             <a href="https://jonlabs.ch">Créé avec jLinks</a>
           </div>
@@ -496,6 +551,21 @@
             text-align: center; color: ${textColors.muted};
             padding: 40px; grid-column: 1 / -1;
           }
+          .vcard-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid currentColor;
+            opacity: 0.8;
+            margin: 2rem auto 0;
+            color: ${textColors.muted};
+            text-decoration: none;
+          }
         </style>
       </head>
       <body>
@@ -508,6 +578,17 @@
           <div class="links-cards">
             ${linksHtml || '<div class="empty-state">Aucun lien actif</div>'}
           </div>
+          ${client.vcard_enabled ? `
+            <a href="#" class="vcard-button" onclick="return false;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/>
+                <line x1="22" y1="11" x2="16" y2="11"/>
+              </svg>
+              Ajouter aux contacts
+            </a>
+          ` : ''}
           <div class="footer">
             <a href="https://jonlabs.ch">Créé avec jLinks</a>
           </div>
@@ -613,6 +694,21 @@
             text-align: center; color: ${textColors.muted};
             padding: 40px; grid-column: 1 / -1;
           }
+          .vcard-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid currentColor;
+            opacity: 0.8;
+            margin: 2rem auto 0;
+            color: ${textColors.muted};
+            text-decoration: none;
+          }
         </style>
       </head>
       <body>
@@ -625,6 +721,17 @@
           <div class="links-grid">
             ${linksHtml || '<div class="empty-state">Aucun lien actif</div>'}
           </div>
+          ${client.vcard_enabled ? `
+            <a href="#" class="vcard-button" onclick="return false;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/>
+                <line x1="22" y1="11" x2="16" y2="11"/>
+              </svg>
+              Ajouter aux contacts
+            </a>
+          ` : ''}
           <div class="footer">
             <a href="https://jonlabs.ch">Créé avec jLinks</a>
           </div>

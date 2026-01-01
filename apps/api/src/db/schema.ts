@@ -21,6 +21,7 @@ export const clients = sqliteTable('clients', {
   secondary_color: text('secondary_color').default('#ffffff'),
   background_type: text('background_type').default('solid'), // 'solid' | 'gradient' | 'image'
   background_value: text('background_value').default('#ffffff'),
+  outer_background_color: text('outer_background_color').default('#f5f5f5'), // Desktop only - behind the card
 
   // Typography (Google Fonts)
   font_preset: text('font_preset'), // null = custom fonts

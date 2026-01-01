@@ -18,7 +18,7 @@
 <aside class="sidebar">
   <div class="sidebar-header">
     <a href="/" class="logo">
-      <span class="logo-text">jLinks</span>
+      <img src="/jLinks.webp" alt="jLinks" class="logo-image" />
     </a>
   </div>
 
@@ -93,10 +93,9 @@
     text-decoration: none;
   }
 
-  .logo-text {
-    font-size: var(--text-xl);
-    font-weight: var(--font-bold);
-    color: var(--color-primary);
+  .logo-image {
+    height: 32px;
+    width: auto;
   }
 
   .sidebar-nav {

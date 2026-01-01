@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const adminUrl = import.meta.env.DEV ? 'http://localhost:5173' : 'https://admin.links.jonlabs.ch';
 ---
 
 <BaseLayout title="jLinks" description="Create your personalized link page">
@@ -10,7 +12,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         Create your personalized link page
       </p>
       <a
-        href="https://admin.links.jonlabs.ch"
+        href={adminUrl}
         style="
           display: inline-block;
           background: #00D9A3;
