@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { BackgroundType, LayoutType } from '@jlinks/shared/types';
   import { Card, Button, Input, Toggle } from '$lib/components/ui';
-  import { ColorPicker, FontSelector, LayoutSelector } from '$lib/components/settings';
+  import { ColorPicker, FontPresetSelector, FontSelector, LayoutSelector } from '$lib/components/settings';
   import { Preview } from '$lib/components/dashboard';
   import { Download, QrCode, UserPlus } from 'lucide-svelte';
   import { authStore, clientStore, linksStore } from '$lib/stores';
@@ -26,6 +26,7 @@
   let backgroundValue = $state('#ffffff');
 
   // Typography
+  let fontPreset = $state<string | null>(null);
   let fontTitle = $state('Inter');
   let fontText = $state('Inter');
 
@@ -63,6 +64,7 @@
     background_type: backgroundType,
     background_value: backgroundValue,
     // Typography
+    font_preset: fontPreset,
     font_title: fontTitle,
     font_text: fontText,
     // Layout
@@ -81,6 +83,7 @@
       primaryColor = client.primary_color || '#00d9a3';
       backgroundType = client.background_type || 'solid';
       backgroundValue = client.background_value || '#ffffff';
+      fontPreset = client.font_preset;
       fontTitle = client.font_title || 'Inter';
       fontText = client.font_text || 'Inter';
       layoutType = client.layout_type || 'list';
@@ -120,6 +123,7 @@
       primary_color: primaryColor,
       background_type: backgroundType,
       background_value: backgroundValue,
+      font_preset: fontPreset,
       font_title: fontTitle,
       font_text: fontText,
       layout_type: layoutType,
@@ -268,8 +272,20 @@
         <h2>Typographie</h2>
       {/snippet}
       <div class="form-section">
-        <FontSelector label="Police des titres" value={fontTitle} onchange={(v) => fontTitle = v} />
-        <FontSelector label="Police du texte" value={fontText} onchange={(v) => fontText = v} />
+        <FontPresetSelector
+          value={fontPreset}
+          onchange={(preset, title, body) => {
+            fontPreset = preset;
+            fontTitle = title;
+            fontText = body;
+          }}
+        />
+        {#if fontPreset === null}
+          <div class="custom-fonts">
+            <FontSelector label="Police des titres" value={fontTitle} onchange={(v) => fontTitle = v} />
+            <FontSelector label="Police du texte" value={fontText} onchange={(v) => fontText = v} />
+          </div>
+        {/if}
         <Button variant="primary" onclick={saveAppearance} loading={savingAppearance}>
           Enregistrer
         </Button>
@@ -628,6 +644,14 @@
     flex-direction: column;
     gap: var(--space-3);
     padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .custom-fonts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-top: var(--space-4);
     border-top: 1px solid var(--color-border);
   }
 </style>

@@ -50,6 +50,7 @@ async function updateSettings(data: {
   secondary_color?: string;
   background_type?: BackgroundType;
   background_value?: string;
+  font_preset?: string | null;
   font_title?: string;
   font_text?: string;
   layout_type?: LayoutType;

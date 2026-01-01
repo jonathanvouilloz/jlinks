@@ -1,9 +1,11 @@
 ---
 import '../styles/global.css';
+import { FONT_PRESETS, isValidFontPresetId } from '@jlinks/shared/font-presets';
 
 interface Props {
   title: string;
   description?: string;
+  fontPreset?: string | null;
   fontTitle?: string;
   fontText?: string;
   backgroundColor?: string;
@@ -14,6 +16,7 @@ interface Props {
 const {
   title,
   description = 'Link page powered by jLinks',
+  fontPreset,
   fontTitle = 'Inter',
   fontText = 'Inter',
   backgroundColor = '#FAFAFA',
@@ -21,9 +24,14 @@ const {
   ogImage,
 } = Astro.props;
 
-// Build Google Fonts URL
-const fonts = [...new Set([fontTitle, fontText])];
-const fontsUrl = `https://fonts.googleapis.com/css2?${fonts.map((f) => `family=${encodeURIComponent(f)}:wght@400;500;600;700`).join('&')}&display=swap`;
+// Build Google Fonts URL - use preset URL if available for optimized loading
+let fontsUrl: string;
+if (fontPreset && isValidFontPresetId(fontPreset)) {
+  fontsUrl = FONT_PRESETS[fontPreset].googleFontsUrl;
+} else {
+  const fonts = [...new Set([fontTitle, fontText])];
+  fontsUrl = `https://fonts.googleapis.com/css2?${fonts.map((f) => `family=${encodeURIComponent(f)}:wght@400;500;600;700`).join('&')}&display=swap`;
+}
 
 // SEO URLs
 const siteUrl = import.meta.env.SITE_URL || 'https://links.jonlabs.ch';

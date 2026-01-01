@@ -23,6 +23,7 @@ export const clients = sqliteTable('clients', {
   background_value: text('background_value').default('#ffffff'),
 
   // Typography (Google Fonts)
+  font_preset: text('font_preset'), // null = custom fonts
   font_title: text('font_title').default('Inter'),
   font_text: text('font_text').default('Inter'),
 

@@ -33,6 +33,7 @@ async function request<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const url = `${PUBLIC_API_URL}${endpoint}`;
+  console.log('[API] Fetching:', url);
 
   const response = await fetch(url, {
     ...options,
@@ -42,6 +43,8 @@ async function request<T>(
       ...options.headers,
     },
   });
+
+  console.log('[API] Response status:', response.status);
 
   if (!response.ok) {
     let message = 'An error occurred';
@@ -113,6 +116,7 @@ export const client = {
     secondary_color?: string;
     background_type?: BackgroundType;
     background_value?: string;
+    font_preset?: string | null;
     font_title?: string;
     font_text?: string;
     layout_type?: LayoutType;

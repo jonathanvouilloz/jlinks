@@ -248,6 +248,7 @@ export const clientRoutes = new Elysia({ prefix: '/clients' })
               t.Union([t.Literal('solid'), t.Literal('gradient'), t.Literal('image')])
             ),
             background_value: t.Optional(t.String()),
+            font_preset: t.Optional(t.Union([t.String(), t.Null()])),
             font_title: t.Optional(t.String()),
             font_text: t.Optional(t.String()),
             layout_type: t.Optional(

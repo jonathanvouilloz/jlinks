@@ -9,6 +9,7 @@
     "./types": "./src/types.ts",
     "./plans": "./src/plans.ts",
     "./social-presets": "./src/social-presets.ts",
+    "./font-presets": "./src/font-presets.ts",
     "./vcard": "./src/vcard.ts"
   },
   "devDependencies": {

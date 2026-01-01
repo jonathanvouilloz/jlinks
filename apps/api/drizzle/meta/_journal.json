@@ -8,6 +8,13 @@
       "when": 1766984458156,
       "tag": "0000_strange_ser_duncan",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1767261557759,
+      "tag": "0001_soft_sersi",
+      "breakpoints": true
     }
   ]
 }
