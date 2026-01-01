@@ -19,6 +19,7 @@ export const clients = sqliteTable('clients', {
   // Colors
   primary_color: text('primary_color').default('#000000'),
   secondary_color: text('secondary_color').default('#ffffff'),
+  button_opacity: integer('button_opacity').default(100), // 0-100
   background_type: text('background_type').default('solid'), // 'solid' | 'gradient' | 'image'
   background_value: text('background_value').default('#ffffff'),
   outer_background_color: text('outer_background_color').default('#f5f5f5'), // Desktop only - behind the card

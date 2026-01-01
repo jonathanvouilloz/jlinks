@@ -10,6 +10,7 @@ interface Props {
   fontText?: string;
   backgroundColor?: string;
   outerBackgroundColor?: string;
+  containerBackgroundDesktop?: string;
   textColor?: string;
   ogImage?: string;
 }
@@ -22,6 +23,7 @@ const {
   fontText = 'Inter',
   backgroundColor = '#FAFAFA',
   outerBackgroundColor = '#f5f5f5',
+  containerBackgroundDesktop,
   textColor = '#0F172A',
   ogImage,
 } = Astro.props;
@@ -69,7 +71,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href={fontsUrl} rel="stylesheet" />
-    <style define:vars={{ fontTitle, fontText, backgroundColor, outerBackgroundColor, textColor }}>
+    <style define:vars={{ fontTitle, fontText, backgroundColor, outerBackgroundColor, containerBackgroundDesktop, textColor }}>
       body {
         background: var(--backgroundColor);
         color: var(--textColor);

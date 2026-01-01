@@ -60,6 +60,7 @@ export const publicRoutes = new Elysia({ prefix: '/public' })
           background_type: client.background_type,
           background_value: client.background_value,
           outer_background_color: client.outer_background_color,
+          button_opacity: client.button_opacity,
           font_preset: client.font_preset,
           font_title: client.font_title,
           font_text: client.font_text,

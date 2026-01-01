@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { BackgroundType, LayoutType } from '@jlinks/shared/types';
   import { Card, Button, Input, Toggle } from '$lib/components/ui';
-  import { ColorPicker, FontPresetSelector, FontSelector, LayoutSelector } from '$lib/components/settings';
+  import { ColorPicker, FontPresetSelector, FontSelector, LayoutSelector, OpacitySlider } from '$lib/components/settings';
   import { Preview } from '$lib/components/dashboard';
   import { Download, QrCode, UserPlus } from 'lucide-svelte';
   import { authStore, clientStore, linksStore } from '$lib/stores';
@@ -22,6 +22,7 @@
 
   // Appearance fields
   let primaryColor = $state('#00d9a3');
+  let buttonOpacity = $state(100);
   let backgroundType = $state<BackgroundType>('solid');
   let backgroundValue = $state('#ffffff');
   let outerBackgroundColor = $state('#f5f5f5');
@@ -62,6 +63,7 @@
     profile_image_url: profileImageUrl || null,
     // Appearance
     primary_color: primaryColor,
+    button_opacity: buttonOpacity,
     background_type: backgroundType,
     background_value: backgroundValue,
     outer_background_color: outerBackgroundColor,
@@ -83,6 +85,7 @@
       logoUrl = client.logo_url || '';
       profileImageUrl = client.profile_image_url || '';
       primaryColor = client.primary_color || '#00d9a3';
+      buttonOpacity = client.button_opacity ?? 100;
       backgroundType = client.background_type || 'solid';
       backgroundValue = client.background_value || '#ffffff';
       outerBackgroundColor = client.outer_background_color || '#f5f5f5';
@@ -124,6 +127,7 @@
     savingAppearance = true;
     await clientStore.updateSettings({
       primary_color: primaryColor,
+      button_opacity: buttonOpacity,
       background_type: backgroundType,
       background_value: backgroundValue,
       outer_background_color: outerBackgroundColor,
@@ -263,6 +267,8 @@
         {/if}
 
         <ColorPicker label="Couleur des boutons (par défaut)" value={primaryColor} onchange={(v) => primaryColor = v} />
+
+        <OpacitySlider label="Opacité des boutons" value={buttonOpacity} onchange={(v) => buttonOpacity = v} />
 
         <ColorPicker label="Couleur de fond (desktop)" value={outerBackgroundColor} onchange={(v) => outerBackgroundColor = v} />
         <p class="color-hint">Visible uniquement sur desktop, derrière la carte.</p>

@@ -1,0 +1,1 @@
+ALTER TABLE `clients` ADD `button_opacity` integer DEFAULT 100;

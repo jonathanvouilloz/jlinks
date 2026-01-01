@@ -114,6 +114,7 @@ export const client = {
   async updateSettings(data: {
     primary_color?: string;
     secondary_color?: string;
+    button_opacity?: number;
     background_type?: BackgroundType;
     background_value?: string;
     outer_background_color?: string;

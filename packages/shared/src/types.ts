@@ -11,6 +11,7 @@ export interface Client {
   // Colors
   primary_color: string;
   secondary_color: string;
+  button_opacity: number; // 0-100
   background_type: BackgroundType;
   background_value: string;
   outer_background_color: string;
@@ -53,6 +54,7 @@ export interface Client {
 export interface ClientSettings {
   primary_color?: string;
   secondary_color?: string;
+  button_opacity?: number; // 0-100
   background_type?: BackgroundType;
   background_value?: string;
   outer_background_color?: string;

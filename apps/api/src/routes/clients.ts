@@ -244,6 +244,7 @@ export const clientRoutes = new Elysia({ prefix: '/clients' })
           body: t.Object({
             primary_color: t.Optional(t.String({ pattern: '^#[0-9a-fA-F]{6}$' })),
             secondary_color: t.Optional(t.String({ pattern: '^#[0-9a-fA-F]{6}$' })),
+            button_opacity: t.Optional(t.Number({ minimum: 0, maximum: 100 })),
             background_type: t.Optional(
               t.Union([t.Literal('solid'), t.Literal('gradient'), t.Literal('image')])
             ),

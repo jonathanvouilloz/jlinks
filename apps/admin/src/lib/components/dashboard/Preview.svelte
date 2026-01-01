@@ -31,6 +31,15 @@
     return { text: '#ffffff', muted: 'rgba(255,255,255,0.7)' };
   }
 
+  // Convert hex to rgba with opacity
+  function hexToRgba(hex: string, alpha: number): string {
+    if (!hex || !hex.startsWith('#')) return hex;
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha / 100})`;
+  }
+
   // SVG icons for social presets
   function getIconSvg(iconName: string, size: number = 24): string {
     const icons: Record<string, string> = {
@@ -99,7 +108,7 @@
     const bgStyle = client.background_type === 'gradient'
       ? `background: ${bgValue};`
       : client.background_type === 'image'
-        ? `background: url(${bgValue}) center/cover no-repeat;`
+        ? `background: url('${bgValue}') center/cover no-repeat;`
         : `background: ${bgValue};`;
 
     // Calculate text colors based on background
@@ -107,16 +116,18 @@
       ? getTextColorForBackground(bgValue)
       : { text: '#ffffff', muted: 'rgba(255,255,255,0.7)' };
 
+    const buttonOpacity = client.button_opacity ?? 100;
     const linksHtml = activeLinks.map(link => {
       const preset = link.social_preset ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey] : null;
       // Use primaryColor for 'theme' preset, otherwise use preset color or custom color
       const bgColor = link.social_preset === 'theme'
         ? primaryColor
         : (preset?.bgColor || link.custom_bg_color || primaryColor);
+      const bgStyle = buttonOpacity < 100 && bgColor.startsWith('#') ? hexToRgba(bgColor, buttonOpacity) : bgColor;
       const textColor = preset?.textColor || link.custom_text_color || '#ffffff';
 
       return `
-        <a href="${link.url}" target="_blank" class="link-btn" style="background: ${bgColor}; color: ${textColor};">
+        <a href="${link.url}" target="_blank" class="link-btn" style="background: ${bgStyle}; color: ${textColor};">
           ${link.title}
         </a>
       `;
@@ -253,6 +264,7 @@
   }
 
   function generatePremiumHtml(client: Client, links: Link[], fontTitle: string, fontText: string, primaryColor: string): string {
+    const buttonOpacity = client.button_opacity ?? 100;
     const linksHtml = links.map(link => {
       const preset = link.social_preset && link.social_preset !== 'theme'
         ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey]
@@ -260,10 +272,11 @@
       const iconBgColor = link.social_preset === 'theme'
         ? primaryColor
         : (preset?.bgColor || link.custom_bg_color || primaryColor);
+      const iconBgStyle = buttonOpacity < 100 && iconBgColor.startsWith('#') ? hexToRgba(iconBgColor, buttonOpacity) : iconBgColor;
 
       return `
         <a href="${link.url}" target="_blank" class="premium-link-card">
-          <span class="premium-link-icon" style="background: ${iconBgColor};">
+          <span class="premium-link-icon" style="background: ${iconBgStyle};">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
               <polyline points="15 3 21 3 21 9"></polyline>
@@ -458,26 +471,28 @@
 
   function generateCardsHtml(client: Client, links: Link[], fontTitle: string, fontText: string, primaryColor: string): string {
     const bgValue = client.background_value || '#ffffff';
-    const bgStyle = client.background_type === 'gradient'
+    const pageBgStyle = client.background_type === 'gradient'
       ? `background: ${bgValue};`
       : client.background_type === 'image'
-        ? `background: url(${bgValue}) center/cover no-repeat;`
+        ? `background: url('${bgValue}') center/cover no-repeat;`
         : `background: ${bgValue};`;
 
     const textColors = client.background_type === 'solid'
       ? getTextColorForBackground(bgValue)
       : { text: '#ffffff', muted: 'rgba(255,255,255,0.7)' };
 
+    const buttonOpacity = client.button_opacity ?? 100;
     const linksHtml = links.map(link => {
       const preset = link.social_preset ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey] : null;
       const bgColor = link.social_preset === 'theme'
         ? primaryColor
         : (preset?.bgColor || link.custom_bg_color || primaryColor);
+      const bgStyle = buttonOpacity < 100 && bgColor.startsWith('#') ? hexToRgba(bgColor, buttonOpacity) : bgColor;
       const textColor = preset?.textColor || link.custom_text_color || '#ffffff';
       const iconName = link.icon || preset?.icon || 'link';
 
       return `
-        <a href="${link.url}" target="_blank" class="link-card" style="background: ${bgColor}; color: ${textColor};">
+        <a href="${link.url}" target="_blank" class="link-card" style="background: ${bgStyle}; color: ${textColor};">
           <span class="link-card-icon">${getIconSvg(iconName, 32)}</span>
           <span class="link-card-title">${link.title}</span>
           ${link.description ? `<span class="link-card-description">${link.description}</span>` : ''}
@@ -497,7 +512,7 @@
           body {
             font-family: '${fontText}', sans-serif;
             min-height: 100vh;
-            ${bgStyle}
+            ${pageBgStyle}
             padding: 40px 20px;
           }
           .container { max-width: 480px; margin: 0 auto; }
@@ -600,26 +615,28 @@
 
   function generateGridHtml(client: Client, links: Link[], fontTitle: string, fontText: string, primaryColor: string): string {
     const bgValue = client.background_value || '#ffffff';
-    const bgStyle = client.background_type === 'gradient'
+    const pageBgStyle = client.background_type === 'gradient'
       ? `background: ${bgValue};`
       : client.background_type === 'image'
-        ? `background: url(${bgValue}) center/cover no-repeat;`
+        ? `background: url('${bgValue}') center/cover no-repeat;`
         : `background: ${bgValue};`;
 
     const textColors = client.background_type === 'solid'
       ? getTextColorForBackground(bgValue)
       : { text: '#ffffff', muted: 'rgba(255,255,255,0.7)' };
 
+    const buttonOpacity = client.button_opacity ?? 100;
     const linksHtml = links.map(link => {
       const preset = link.social_preset ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey] : null;
       const bgColor = link.social_preset === 'theme'
         ? primaryColor
         : (preset?.bgColor || link.custom_bg_color || primaryColor);
+      const bgStyle = buttonOpacity < 100 && bgColor.startsWith('#') ? hexToRgba(bgColor, buttonOpacity) : bgColor;
       const textColor = preset?.textColor || link.custom_text_color || '#ffffff';
       const iconName = link.icon || preset?.icon || 'link';
 
       return `
-        <a href="${link.url}" target="_blank" class="link-grid-item" style="background: ${bgColor}; color: ${textColor};" title="${link.title}">
+        <a href="${link.url}" target="_blank" class="link-grid-item" style="background: ${bgStyle}; color: ${textColor};" title="${link.title}">
           <span class="link-grid-icon">${getIconSvg(iconName, 28)}</span>
           <span class="link-grid-title">${link.title}</span>
         </a>
@@ -638,7 +655,7 @@
           body {
             font-family: '${fontText}', sans-serif;
             min-height: 100vh;
-            ${bgStyle}
+            ${pageBgStyle}
             padding: 40px 20px;
           }
           .container { max-width: 480px; margin: 0 auto; }

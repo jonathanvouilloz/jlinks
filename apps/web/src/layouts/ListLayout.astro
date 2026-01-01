@@ -31,6 +31,20 @@ function getTextColorForBackground(bgColor: string, bgType: string): string {
 }
 
 const textColor = getTextColorForBackground(client.background_value, client.background_type);
+
+// Transform background based on type
+const bgValue = client.background_value || '#ffffff';
+const isImageBg = client.background_type === 'image';
+
+// For image backgrounds: apply image to both mobile (backgroundColor) and desktop (outerBackgroundColor)
+// For solid/gradient: card gets the background, outer uses configured color
+const backgroundColor = isImageBg
+  ? `url('${bgValue}') center/cover no-repeat`
+  : bgValue;
+const containerBackgroundDesktop = isImageBg ? 'transparent' : bgValue;
+const outerBackgroundColor = isImageBg
+  ? `url('${bgValue}') center/cover no-repeat`
+  : client.outer_background_color;
 ---
 
 <BaseLayout
@@ -39,8 +53,9 @@ const textColor = getTextColorForBackground(client.background_value, client.back
   fontPreset={client.font_preset}
   fontTitle={client.font_title}
   fontText={client.font_text}
-  backgroundColor={client.background_value}
-  outerBackgroundColor={client.outer_background_color}
+  backgroundColor={backgroundColor}
+  outerBackgroundColor={outerBackgroundColor}
+  containerBackgroundDesktop={containerBackgroundDesktop}
   textColor={textColor}
 >
   <main class="container">
@@ -64,6 +79,7 @@ const textColor = getTextColorForBackground(client.background_value, client.back
               socialPreset={useTheme ? null : link.social_preset}
               bgColor={useTheme ? client.primary_color : (link.custom_bg_color || client.primary_color)}
               textColor={link.custom_text_color || '#FFFFFF'}
+              opacity={client.button_opacity ?? 100}
             />
           );
         })
