@@ -26,6 +26,7 @@ const darkBackground = '#0f0f0f';
   fontTitle={client.font_title}
   fontText={client.font_text}
   backgroundColor={darkBackground}
+  outerBackgroundColor={client.outer_background_color || '#0A0A0A'}
   textColor="#ffffff"
 >
   <div class="premium-container">
@@ -88,24 +89,41 @@ const darkBackground = '#0f0f0f';
 </BaseLayout>
 
 <style>
-  /* Premium container - full screen dark background */
+  /* Premium container - mobile first (no card, full screen) */
   .premium-container {
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 2rem 1rem;
-    background: #0A0A0A;
+    padding: 0;
+    background: #141414;
   }
 
-  /* Card container - subtle distinction */
+  /* Card container - mobile: full screen, no card styling */
   .premium-glass {
-    max-width: 580px;
+    max-width: 100%;
     width: 100%;
     background: #141414;
-    border-radius: 24px;
-    padding: 2.5rem 2rem;
-    border: 1px solid #1F1F1F;
+    border-radius: 0;
+    padding: 2rem 1rem;
+    border: none;
+    min-height: 100vh;
+  }
+
+  /* Desktop: show card with outer background */
+  @media (min-width: 481px) {
+    .premium-container {
+      padding: 2rem 1rem;
+      background: var(--outerBackgroundColor, #0A0A0A);
+    }
+
+    .premium-glass {
+      max-width: 420px;
+      min-height: auto;
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      border: 1px solid #1F1F1F;
+    }
   }
 
   /* Override profile header styles for premium */
@@ -147,8 +165,8 @@ const darkBackground = '#0f0f0f';
   .premium-link-card {
     display: flex;
     align-items: center;
-    gap: 0.875rem;
-    padding: 0.5rem;
+    gap: 1rem;
+    padding: 0.75rem;
     background: #2A2A2A;
     border-radius: 14px;
     text-decoration: none;
@@ -205,8 +223,12 @@ const darkBackground = '#0f0f0f';
 
   /* Arrow */
   .premium-link-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #636363;
     flex-shrink: 0;
+    padding-right: 0.5rem;
   }
 
   /* Override footer for premium */
@@ -251,17 +273,8 @@ const darkBackground = '#0f0f0f';
     color: #888888;
   }
 
-  /* Responsive */
+  /* Mobile adjustments for profile elements */
   @media (max-width: 480px) {
-    .premium-container {
-      padding: 1rem 0.75rem;
-    }
-
-    .premium-glass {
-      padding: 2rem 1.25rem;
-      border-radius: 20px;
-    }
-
     .premium-glass :global(.profile-image) {
       width: 96px;
       height: 96px;
@@ -269,11 +282,6 @@ const darkBackground = '#0f0f0f';
 
     .premium-glass :global(.profile-name) {
       font-size: 1.5rem;
-    }
-
-    .premium-link-icon {
-      width: 44px;
-      height: 44px;
     }
   }
 </style>
