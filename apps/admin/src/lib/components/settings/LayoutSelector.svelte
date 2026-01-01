@@ -9,10 +9,10 @@
 
   let { value, onchange }: Props = $props();
 
-  const layouts: Array<{ type: LayoutType; label: string; icon: typeof List }> = [
+  const layouts: Array<{ type: LayoutType; label: string; icon: typeof List; disabled?: boolean }> = [
     { type: 'list', label: 'Liste', icon: List },
-    { type: 'cards', label: 'Cartes', icon: LayoutGrid },
-    { type: 'grid', label: 'Grille', icon: Grid3X3 },
+    { type: 'cards', label: 'Cartes', icon: LayoutGrid, disabled: true },
+    { type: 'grid', label: 'Grille', icon: Grid3X3, disabled: true },
     { type: 'premium', label: 'Premium', icon: Sparkles },
   ];
 </script>
@@ -25,10 +25,15 @@
         type="button"
         class="layout-option"
         class:selected={value === layout.type}
-        onclick={() => onchange(layout.type)}
+        class:disabled={layout.disabled}
+        disabled={layout.disabled}
+        onclick={() => !layout.disabled && onchange(layout.type)}
       >
         <svelte:component this={layout.icon} size={24} />
         <span>{layout.label}</span>
+        {#if layout.disabled}
+          <span class="coming-soon">Bientôt</span>
+        {/if}
       </button>
     {/each}
   </div>
@@ -87,5 +92,22 @@
   .layout-option span {
     font-size: var(--text-sm);
     font-weight: var(--font-medium);
+  }
+
+  .layout-option.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .layout-option.disabled:hover {
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+  }
+
+  .coming-soon {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    font-weight: var(--font-normal);
   }
 </style>
