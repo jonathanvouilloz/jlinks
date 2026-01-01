@@ -2,6 +2,7 @@
   import type { Link, CreateLinkInput, SocialPresetKey } from '@jlinks/shared/types';
   import { SOCIAL_PRESETS, getSocialPresetKeys, detectSocialPreset } from '@jlinks/shared/social-presets';
   import { Modal, Input, Button, Toggle } from '$lib/components/ui';
+  import { authStore } from '$lib/stores';
   import * as Icons from 'lucide-svelte';
 
   interface Props {
@@ -22,6 +23,27 @@
   let customBgColor = $state('#6366F1');
   let customTextColor = $state('#ffffff');
   let saving = $state(false);
+
+  // Get theme color from client
+  const themeColor = $derived(authStore.client?.primary_color || '#00d9a3');
+
+  // Preview colors (computed)
+  const previewBgColor = $derived(
+    useCustomStyle
+      ? customBgColor
+      : socialPreset === 'theme'
+        ? themeColor
+        : socialPreset
+          ? SOCIAL_PRESETS[socialPreset].bgColor
+          : themeColor
+  );
+  const previewTextColor = $derived(
+    useCustomStyle
+      ? customTextColor
+      : socialPreset
+        ? SOCIAL_PRESETS[socialPreset].textColor
+        : '#ffffff'
+  );
 
   // Reset form when modal opens/closes
   $effect(() => {
@@ -140,12 +162,13 @@
           {#each presetKeys as key}
             {@const preset = SOCIAL_PRESETS[key]}
             {@const IconComponent = getIconComponent(preset.icon)}
+            {@const bgColor = key === 'theme' ? themeColor : preset.bgColor}
             <button
               type="button"
               class="preset-btn"
               class:selected={socialPreset === key}
               onclick={() => socialPreset = key}
-              style="background: {preset.bgColor}; color: {preset.textColor};"
+              style="background: {bgColor}; color: {preset.textColor};"
             >
               <svelte:component this={IconComponent} size={18} />
               <span>{preset.label}</span>
@@ -159,7 +182,7 @@
       <span class="preview-label">Aperçu</span>
       <div
         class="preview-button"
-        style="background: {useCustomStyle ? customBgColor : (socialPreset ? SOCIAL_PRESETS[socialPreset].bgColor : 'var(--color-primary)')}; color: {useCustomStyle ? customTextColor : (socialPreset ? SOCIAL_PRESETS[socialPreset].textColor : '#ffffff')};"
+        style="background: {previewBgColor}; color: {previewTextColor};"
       >
         {title || 'Titre du lien'}
       </div>

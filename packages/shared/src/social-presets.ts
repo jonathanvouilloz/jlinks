@@ -9,6 +9,12 @@ export interface SocialPreset {
 }
 
 export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
+  theme: {
+    icon: 'palette',
+    label: 'Thème',
+    bgColor: '#00d9a3', // Default, will be overridden dynamically with client.primary_color
+    textColor: '#ffffff',
+  },
   instagram: {
     icon: 'instagram',
     label: 'Instagram',
@@ -71,12 +77,6 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
     bgColor: '#25D366',
     textColor: '#ffffff',
     urlPattern: /wa\.me|whatsapp\.com/i,
-  },
-  website: {
-    icon: 'globe',
-    label: 'Website',
-    bgColor: '#6366F1',
-    textColor: '#ffffff',
   },
 } as const;
 

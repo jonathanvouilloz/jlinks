@@ -135,6 +135,7 @@ export type PlanType = 'free' | 'pro';
 
 // Social preset keys
 export type SocialPresetKey =
+  | 'theme'
   | 'instagram'
   | 'youtube'
   | 'linkedin'
@@ -143,8 +144,7 @@ export type SocialPresetKey =
   | 'facebook'
   | 'github'
   | 'email'
-  | 'whatsapp'
-  | 'website';
+  | 'whatsapp';
 
 // API Response types
 export interface ApiResponse<T> {

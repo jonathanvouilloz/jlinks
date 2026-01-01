@@ -9,6 +9,28 @@
 
   let { client, links }: Props = $props();
 
+  // Calculate text color based on background luminance
+  function getTextColorForBackground(bgColor: string): { text: string; muted: string } {
+    // Default to light text for gradients/images
+    if (!bgColor || !bgColor.startsWith('#')) {
+      return { text: '#ffffff', muted: 'rgba(255,255,255,0.7)' };
+    }
+
+    const hex = bgColor.replace('#', '');
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 2), 16);
+    const b = parseInt(hex.substr(4, 2), 16);
+
+    // Calculate relative luminance (WCAG formula)
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+    // Return dark or light text based on background
+    if (luminance > 0.5) {
+      return { text: '#0f172a', muted: '#64748b' };
+    }
+    return { text: '#ffffff', muted: 'rgba(255,255,255,0.7)' };
+  }
+
   // Generate preview HTML
   const previewHtml = $derived(generatePreviewHtml(client, links));
 
@@ -49,9 +71,17 @@
         ? `background: url(${bgValue}) center/cover no-repeat;`
         : `background: ${bgValue};`;
 
+    // Calculate text colors based on background
+    const textColors = client.background_type === 'solid'
+      ? getTextColorForBackground(bgValue)
+      : { text: '#ffffff', muted: 'rgba(255,255,255,0.7)' };
+
     const linksHtml = activeLinks.map(link => {
       const preset = link.social_preset ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey] : null;
-      const bgColor = preset?.bgColor || link.custom_bg_color || primaryColor;
+      // Use primaryColor for 'theme' preset, otherwise use preset color or custom color
+      const bgColor = link.social_preset === 'theme'
+        ? primaryColor
+        : (preset?.bgColor || link.custom_bg_color || primaryColor);
       const textColor = preset?.textColor || link.custom_text_color || '#ffffff';
 
       return `
@@ -100,12 +130,12 @@
             font-family: '${fontTitle}', sans-serif;
             font-size: 24px;
             font-weight: 600;
-            color: ${client.background_type === 'solid' && bgValue === '#ffffff' ? '#0f172a' : '#ffffff'};
+            color: ${textColors.text};
             margin-bottom: 8px;
           }
           .profile-bio {
             font-size: 14px;
-            color: ${client.background_type === 'solid' && bgValue === '#ffffff' ? '#64748b' : 'rgba(255,255,255,0.8)'};
+            color: ${textColors.muted};
             line-height: 1.5;
           }
           .links {
@@ -130,7 +160,7 @@
             text-align: center;
             margin-top: 40px;
             font-size: 12px;
-            color: ${client.background_type === 'solid' && bgValue === '#ffffff' ? '#94a3b8' : 'rgba(255,255,255,0.5)'};
+            color: ${textColors.muted};
           }
           .footer a {
             color: inherit;
@@ -138,7 +168,7 @@
           }
           .empty-state {
             text-align: center;
-            color: ${client.background_type === 'solid' && bgValue === '#ffffff' ? '#64748b' : 'rgba(255,255,255,0.6)'};
+            color: ${textColors.muted};
             padding: 40px;
           }
         </style>

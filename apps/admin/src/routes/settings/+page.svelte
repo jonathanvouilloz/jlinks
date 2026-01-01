@@ -2,8 +2,9 @@
   import type { BackgroundType, LayoutType } from '@jlinks/shared/types';
   import { Card, Button, Input, Toggle } from '$lib/components/ui';
   import { ColorPicker, FontSelector, LayoutSelector } from '$lib/components/settings';
+  import { Preview } from '$lib/components/dashboard';
   import { Download, QrCode, UserPlus } from 'lucide-svelte';
-  import { authStore, clientStore } from '$lib/stores';
+  import { authStore, clientStore, linksStore } from '$lib/stores';
   import { api } from '$lib/api';
 
   // Get current client data
@@ -21,7 +22,6 @@
 
   // Appearance fields
   let primaryColor = $state('#00d9a3');
-  let secondaryColor = $state('#ffffff');
   let backgroundType = $state<BackgroundType>('solid');
   let backgroundValue = $state('#ffffff');
 
@@ -46,6 +46,29 @@
   let savingAppearance = $state(false);
   let savingVCard = $state(false);
 
+  // Preview mode toggle
+  let previewMode = $state<'current' | 'preview'>('preview');
+
+  // Preview client combining form values for real-time preview
+  const previewClient = $derived(client ? {
+    ...client,
+    // Profile
+    name,
+    bio,
+    // Branding
+    logo_url: logoUrl || null,
+    profile_image_url: profileImageUrl || null,
+    // Appearance
+    primary_color: primaryColor,
+    background_type: backgroundType,
+    background_value: backgroundValue,
+    // Typography
+    font_title: fontTitle,
+    font_text: fontText,
+    // Layout
+    layout_type: layoutType,
+  } : null);
+
   // Initialize form values from client
   $effect(() => {
     if (client) {
@@ -56,7 +79,6 @@
       logoUrl = client.logo_url || '';
       profileImageUrl = client.profile_image_url || '';
       primaryColor = client.primary_color || '#00d9a3';
-      secondaryColor = client.secondary_color || '#ffffff';
       backgroundType = client.background_type || 'solid';
       backgroundValue = client.background_value || '#ffffff';
       fontTitle = client.font_title || 'Inter';
@@ -96,7 +118,6 @@
     savingAppearance = true;
     await clientStore.updateSettings({
       primary_color: primaryColor,
-      secondary_color: secondaryColor,
       background_type: backgroundType,
       background_value: backgroundValue,
       font_title: fontTitle,
@@ -125,7 +146,9 @@
 </svelte:head>
 
 <div class="settings-page">
-  <div class="settings-grid">
+  <div class="settings-layout">
+    <div class="settings-content">
+      <div class="settings-grid">
     <!-- Profile Section -->
     <Card>
       {#snippet header()}
@@ -212,11 +235,6 @@
         <h2>Apparence</h2>
       {/snippet}
       <div class="form-section">
-        <div class="color-row">
-          <ColorPicker label="Couleur primaire" value={primaryColor} onchange={(v) => primaryColor = v} />
-          <ColorPicker label="Couleur secondaire" value={secondaryColor} onchange={(v) => secondaryColor = v} />
-        </div>
-
         <div class="form-field">
           <label for="bg-type">Type d'arrière-plan</label>
           <select id="bg-type" bind:value={backgroundType}>
@@ -226,11 +244,17 @@
           </select>
         </div>
 
-        <Input
-          label={backgroundType === 'solid' ? 'Couleur' : backgroundType === 'gradient' ? 'Dégradé CSS' : 'URL de l\'image'}
-          bind:value={backgroundValue}
-          placeholder={backgroundType === 'solid' ? '#ffffff' : backgroundType === 'gradient' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'https://example.com/bg.jpg'}
-        />
+        {#if backgroundType === 'solid'}
+          <ColorPicker label="Couleur de fond" value={backgroundValue} onchange={(v) => backgroundValue = v} />
+        {:else}
+          <Input
+            label={backgroundType === 'gradient' ? 'Dégradé CSS' : 'URL de l\'image'}
+            bind:value={backgroundValue}
+            placeholder={backgroundType === 'gradient' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'https://example.com/bg.jpg'}
+          />
+        {/if}
+
+        <ColorPicker label="Couleur des boutons (par défaut)" value={primaryColor} onchange={(v) => primaryColor = v} />
 
         <Button variant="primary" onclick={saveAppearance} loading={savingAppearance}>
           Enregistrer
@@ -341,18 +365,119 @@
         </Button>
       </div>
     </Card>
+      </div>
+    </div>
+
+    <!-- Preview Panel -->
+    <div class="settings-preview">
+      <div class="preview-mode-toggle">
+        <button
+          type="button"
+          class="toggle-btn"
+          class:active={previewMode === 'current'}
+          onclick={() => { previewMode = 'current'; }}
+        >
+          Publié
+        </button>
+        <button
+          type="button"
+          class="toggle-btn"
+          class:active={previewMode === 'preview'}
+          onclick={() => { previewMode = 'preview'; }}
+        >
+          Brouillon
+        </button>
+      </div>
+      {#if previewMode === 'preview'}
+        <p class="preview-hint">Modifie les champs ci-contre pour voir l'aperçu en temps réel</p>
+      {/if}
+      {#key previewMode}
+        <Preview client={previewMode === 'current' ? authStore.client : previewClient} links={linksStore.links} />
+      {/key}
+    </div>
   </div>
 </div>
 
 <style>
   .settings-page {
-    max-width: 1000px;
+    height: 100%;
+  }
+
+  .settings-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: var(--space-6);
+    height: calc(100vh - var(--header-height) - var(--space-12));
+  }
+
+  .settings-content {
+    overflow-y: auto;
+    padding-right: var(--space-2);
+  }
+
+  .settings-preview {
+    position: sticky;
+    top: 0;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .preview-mode-toggle {
+    display: flex;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-1);
+  }
+
+  .toggle-btn {
+    flex: 1;
+    padding: var(--space-2) var(--space-3);
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .toggle-btn:hover {
+    color: var(--color-text);
+  }
+
+  .toggle-btn.active {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .preview-hint {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-align: center;
+    margin: 0;
+    padding: var(--space-2);
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
   }
 
   .settings-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-6);
+  }
+
+  @media (max-width: 1200px) {
+    .settings-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .settings-preview {
+      display: none;
+    }
   }
 
   @media (max-width: 900px) {
@@ -401,12 +526,6 @@
     font-size: var(--text-xs);
     color: var(--color-text-muted);
     text-align: right;
-  }
-
-  .color-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-4);
   }
 
   .section-description {

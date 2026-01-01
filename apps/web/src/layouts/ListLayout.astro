@@ -11,6 +11,26 @@ interface Props {
 }
 
 const { client, links } = Astro.props;
+
+// Calculate text color based on background luminance
+function getTextColorForBackground(bgColor: string, bgType: string): string {
+  // Default to light text for gradients/images
+  if (bgType !== 'solid' || !bgColor || !bgColor.startsWith('#')) {
+    return '#ffffff';
+  }
+
+  const hex = bgColor.replace('#', '');
+  const r = parseInt(hex.substr(0, 2), 16);
+  const g = parseInt(hex.substr(2, 2), 16);
+  const b = parseInt(hex.substr(4, 2), 16);
+
+  // Calculate relative luminance (WCAG formula)
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+  return luminance > 0.5 ? '#0f172a' : '#ffffff';
+}
+
+const textColor = getTextColorForBackground(client.background_value, client.background_type);
 ---
 
 <BaseLayout
@@ -19,7 +39,7 @@ const { client, links } = Astro.props;
   fontTitle={client.font_title}
   fontText={client.font_text}
   backgroundColor={client.background_value}
-  textColor={client.secondary_color}
+  textColor={textColor}
 >
   <main class="container">
     <ProfileHeader
@@ -31,16 +51,20 @@ const { client, links } = Astro.props;
 
     <div class="links-list">
       {
-        links.map((link) => (
-          <LinkButton
-            title={link.title}
-            url={link.url}
-            icon={link.icon}
-            socialPreset={link.social_preset}
-            bgColor={link.custom_bg_color || client.primary_color}
-            textColor={link.custom_text_color || '#FFFFFF'}
-          />
-        ))
+        links.map((link) => {
+          // For 'theme' preset, use primary_color directly (ignore preset.bgColor)
+          const useTheme = link.social_preset === 'theme';
+          return (
+            <LinkButton
+              title={link.title}
+              url={link.url}
+              icon={link.icon}
+              socialPreset={useTheme ? null : link.social_preset}
+              bgColor={useTheme ? client.primary_color : (link.custom_bg_color || client.primary_color)}
+              textColor={link.custom_text_color || '#FFFFFF'}
+            />
+          );
+        })
       }
     </div>
 

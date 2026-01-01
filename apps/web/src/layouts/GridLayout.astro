@@ -13,6 +13,23 @@ interface Props {
 }
 
 const { client, links } = Astro.props;
+
+// Calculate text color based on background luminance
+function getTextColorForBackground(bgColor: string, bgType: string): string {
+  if (bgType !== 'solid' || !bgColor || !bgColor.startsWith('#')) {
+    return '#ffffff';
+  }
+
+  const hex = bgColor.replace('#', '');
+  const r = parseInt(hex.substr(0, 2), 16);
+  const g = parseInt(hex.substr(2, 2), 16);
+  const b = parseInt(hex.substr(4, 2), 16);
+
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.5 ? '#0f172a' : '#ffffff';
+}
+
+const pageTextColor = getTextColorForBackground(client.background_value, client.background_type);
 ---
 
 <BaseLayout
@@ -21,7 +38,7 @@ const { client, links } = Astro.props;
   fontTitle={client.font_title}
   fontText={client.font_text}
   backgroundColor={client.background_value}
-  textColor={client.secondary_color}
+  textColor={pageTextColor}
 >
   <main class="container">
     <ProfileHeader
@@ -34,10 +51,12 @@ const { client, links } = Astro.props;
     <div class="links-grid">
       {
         links.map((link) => {
-          const preset = link.social_preset
+          // For 'theme' preset, use primary_color directly (ignore preset.bgColor)
+          const useTheme = link.social_preset === 'theme';
+          const preset = link.social_preset && !useTheme
             ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey]
             : null;
-          const bgColor = preset?.bgColor || link.custom_bg_color || client.primary_color;
+          const bgColor = useTheme ? client.primary_color : (preset?.bgColor || link.custom_bg_color || client.primary_color);
           const textColor = preset?.textColor || link.custom_text_color || '#FFFFFF';
           const iconName = link.icon || preset?.icon || 'link';
 

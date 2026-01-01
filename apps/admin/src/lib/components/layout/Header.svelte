@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { PUBLIC_SITE_URL } from '$env/static/public';
   import { Button, Badge } from '$lib/components/ui';
-  import { Upload } from 'lucide-svelte';
+  import { Upload, ExternalLink } from 'lucide-svelte';
   import { authStore, clientStore } from '$lib/stores';
 
   interface Props {
@@ -23,7 +24,16 @@
   </div>
 
   <div class="header-right">
-    {#if authStore.isClient}
+    {#if authStore.isClient && authStore.client?.slug}
+      <a
+        href="{PUBLIC_SITE_URL}/{authStore.client.slug}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="live-link"
+      >
+        <ExternalLink size={16} />
+        Voir ma page
+      </a>
       <Button
         variant="primary"
         onclick={handlePublish}
@@ -65,5 +75,25 @@
     display: flex;
     align-items: center;
     gap: var(--space-3);
+  }
+
+  .live-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    transition: all var(--transition-fast);
+  }
+
+  .live-link:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
 </style>

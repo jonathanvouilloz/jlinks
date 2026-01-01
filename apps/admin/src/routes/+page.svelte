@@ -1,9 +1,28 @@
 <script lang="ts">
+  import { PUBLIC_SITE_URL } from '$env/static/public';
   import type { Link, CreateLinkInput, UpdateLinkInput } from '@jlinks/shared/types';
   import { Button, Card, Modal } from '$lib/components/ui';
   import { LinksList, LinkForm, Preview } from '$lib/components/dashboard';
-  import { Plus, AlertCircle } from 'lucide-svelte';
-  import { authStore, linksStore } from '$lib/stores';
+  import { Plus, AlertCircle, ExternalLink, Copy, Check } from 'lucide-svelte';
+  import { authStore, linksStore, toastStore } from '$lib/stores';
+
+  // Derived live URL
+  const liveUrl = $derived(authStore.client?.slug ? `${PUBLIC_SITE_URL}/${authStore.client.slug}` : null);
+
+  // Copy state
+  let copied = $state(false);
+
+  async function copyLink() {
+    if (!liveUrl) return;
+    try {
+      await navigator.clipboard.writeText(liveUrl);
+      copied = true;
+      toastStore.success('Lien copié !');
+      setTimeout(() => copied = false, 2000);
+    } catch {
+      toastStore.error('Impossible de copier le lien');
+    }
+  }
 
   // Modal state
   let showLinkForm = $state(false);
@@ -105,6 +124,24 @@
 
       <!-- Right: Preview -->
       <div class="preview-panel">
+        {#if liveUrl}
+          <div class="live-url-section">
+            <span class="live-url-label">Lien de ta page</span>
+            <div class="live-url-row">
+              <a href={liveUrl} target="_blank" rel="noopener noreferrer" class="live-url-link">
+                {liveUrl}
+                <ExternalLink size={14} />
+              </a>
+              <button class="copy-btn" onclick={copyLink} title="Copier le lien">
+                {#if copied}
+                  <Check size={16} />
+                {:else}
+                  <Copy size={16} />
+                {/if}
+              </button>
+            </div>
+          </div>
+        {/if}
         <Preview client={authStore.client} links={linksStore.links} />
       </div>
     </div>
@@ -183,6 +220,65 @@
 
   .preview-panel {
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .live-url-section {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .live-url-label {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-2);
+  }
+
+  .live-url-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .live-url-link {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-primary);
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .live-url-link:hover {
+    text-decoration: underline;
+  }
+
+  .copy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .copy-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
 
   .loading {
