@@ -14,8 +14,22 @@ export interface AuthContext {
  * Extracts session from cookie and validates it
  */
 export const authMiddleware = new Elysia({ name: 'auth' })
-  .derive(async ({ cookie }): Promise<AuthContext> => {
-    const sessionId = cookie.session?.value;
+  .derive({ as: 'global' }, async ({ cookie, request }): Promise<AuthContext> => {
+    // Try to get session from Elysia cookie object first
+    let sessionId = cookie.session?.value;
+
+    // Fallback: parse raw Cookie header if Elysia didn't parse it
+    const cookieHeader = request.headers.get('cookie');
+    console.log('[Auth] Raw cookie header:', cookieHeader);
+
+    if (!sessionId && cookieHeader) {
+      const match = cookieHeader.match(/session=([^;]+)/);
+      if (match) {
+        sessionId = match[1];
+      }
+    }
+
+    console.log('[Auth] sessionId:', sessionId);
 
     if (!sessionId) {
       return { user: null, client: null, session: null };
@@ -23,10 +37,13 @@ export const authMiddleware = new Elysia({ name: 'auth' })
 
     try {
       // Get session and check if it's valid
+      const now = new Date().toISOString();
+      console.log('[Auth] Querying session, now:', now);
+
       const session = await db.query.sessions.findFirst({
         where: and(
           eq(sessions.id, sessionId),
-          gt(sessions.expires_at, new Date().toISOString())
+          gt(sessions.expires_at, now)
         ),
         with: {
           user: {
@@ -36,6 +53,12 @@ export const authMiddleware = new Elysia({ name: 'auth' })
           },
         },
       });
+
+      console.log('[Auth] Session found:', session ? 'yes' : 'no');
+      if (session) {
+        console.log('[Auth] Session user:', session.user?.email);
+        console.log('[Auth] Session client:', session.user?.client?.name);
+      }
 
       if (!session || !session.user) {
         return { user: null, client: null, session: null };
