@@ -1,0 +1,25 @@
+---
+interface Props {
+  adminUrl: string;
+}
+
+const { adminUrl } = Astro.props;
+---
+
+<section class="landing-section final-cta">
+  <div class="landing-container">
+    <h2 class="final-cta__title" data-animate data-i18n="finalCta.title">
+      Ta page de liens, sans prise de tête.
+    </h2>
+
+    <div class="final-cta__cta" data-animate>
+      <a href={adminUrl} class="btn btn--primary btn--large" data-i18n="finalCta.cta">
+        Créer ma page gratuitement
+      </a>
+    </div>
+
+    <p class="final-cta__note" data-animate data-i18n="finalCta.note">
+      Gratuit • 2 minutes • Sans carte
+    </p>
+  </div>
+</section>

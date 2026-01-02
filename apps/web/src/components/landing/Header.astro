@@ -1,0 +1,38 @@
+---
+interface Props {
+  adminUrl: string;
+}
+
+const { adminUrl } = Astro.props;
+---
+
+<header class="landing-header">
+  <div class="landing-header__inner">
+    <!-- Gauche: Logo -->
+    <a href="/" class="landing-logo">jLinks</a>
+
+    <!-- Centre: Navigation sections -->
+    <nav class="landing-nav__sections">
+      <a href="#features" data-i18n="header.nav.features">Fonctionnalités</a>
+      <a href="#pricing" data-i18n="header.nav.pricing">Tarifs</a>
+      <a href="#faq" data-i18n="header.nav.faq">FAQ</a>
+    </nav>
+
+    <!-- Droite: CTA + Langue -->
+    <div class="landing-nav__actions">
+      <a href={adminUrl} class="btn btn--primary btn--small" data-i18n="header.cta">
+        Créer ma page
+      </a>
+      <button class="lang-toggle" id="lang-toggle" aria-label="Toggle language">
+        <span data-i18n-lang>FR</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Language toggle is handled by landing.ts
+</script>

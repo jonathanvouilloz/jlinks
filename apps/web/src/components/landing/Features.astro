@@ -1,0 +1,112 @@
+---
+// Features section with 3 key differentiators
+---
+
+<section id="features" class="landing-section features">
+  <div class="landing-container">
+    <h2 class="features__title" data-animate data-i18n="features.title">
+      Ce que jLinks offre.
+    </h2>
+
+    <div class="features__grid">
+      <!-- QR Code Feature -->
+      <article class="feature-card" data-animate data-animate-delay="1">
+        <div class="feature-card__icon">
+          <svg class="feature-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor"/>
+            <rect x="28" y="4" width="16" height="16" rx="2" fill="currentColor"/>
+            <rect x="4" y="28" width="16" height="16" rx="2" fill="currentColor"/>
+            <rect x="28" y="28" width="8" height="8" rx="1" fill="currentColor"/>
+            <rect x="36" y="36" width="8" height="8" rx="1" fill="currentColor"/>
+            <rect x="28" y="40" width="4" height="4" fill="currentColor"/>
+            <rect x="40" y="28" width="4" height="4" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="feature-card__content">
+          <h3 class="feature-card__title" data-i18n="features.qr.title">
+            QR Code à tes couleurs
+          </h3>
+          <p class="feature-card__description" data-i18n="features.qr.description">
+            Télécharge ton QR code brandé en 1 clic. Parfait pour cartes de visite, flyers, menus.
+          </p>
+          <span class="feature-card__note" data-i18n="features.qr.note">
+            Chez Linktree, c'est payant. Ici, c'est inclus.
+          </span>
+        </div>
+      </article>
+
+      <!-- Contact Button Feature -->
+      <article class="feature-card" data-animate data-animate-delay="2">
+        <div class="feature-card__icon">
+          <svg class="feature-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="16" r="10" fill="currentColor"/>
+            <path d="M8 44c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="36" cy="36" r="8" fill="#00D9A3"/>
+            <path d="M36 32v8M32 36h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="feature-card__content">
+          <h3 class="feature-card__title" data-i18n="features.contact.title">
+            Bouton "Ajouter aux contacts"
+          </h3>
+          <p class="feature-card__description" data-i18n="features.contact.description">
+            Tes visiteurs t'ajoutent à leur téléphone en un tap. Nom, email, téléphone — tout est là.
+          </p>
+          <span class="feature-card__note" data-i18n="features.contact.note">
+            Linktree ne propose pas ça. Nous, oui.
+          </span>
+        </div>
+      </article>
+
+      <!-- Themes Feature -->
+      <article class="feature-card" data-animate data-animate-delay="3">
+        <div class="feature-card__icon">
+          <svg class="feature-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="8" width="18" height="18" rx="4" fill="#00D9A3"/>
+            <rect x="26" y="8" width="18" height="18" rx="4" fill="#0f172a"/>
+            <rect x="4" y="30" width="18" height="18" rx="4" fill="#64748b"/>
+            <rect x="26" y="30" width="18" height="18" rx="4" fill="#f59e0b"/>
+          </svg>
+        </div>
+        <div class="feature-card__content">
+          <h3 class="feature-card__title" data-i18n="features.themes.title">
+            10 thèmes pro. Gratuits.
+          </h3>
+          <p class="feature-card__description" data-i18n="features.themes.description">
+            Pas juste "une couleur". De vrais combos de fonts et styles créés par des designers.
+          </p>
+          <span class="feature-card__note" data-i18n="features.themes.note">
+            Modern, Elegant, Bold, Friendly...
+          </span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    color: var(--color-primary);
+  }
+
+  .feature-card {
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  @media (min-width: 768px) {
+    .features__grid {
+      align-items: stretch;
+    }
+
+    .feature-card__description {
+      flex: 1;
+    }
+  }
+</style>

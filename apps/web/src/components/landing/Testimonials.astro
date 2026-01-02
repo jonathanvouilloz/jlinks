@@ -1,0 +1,91 @@
+---
+// Testimonials carousel section
+import { ChevronLeft, ChevronRight, BadgeCheck } from 'lucide-astro';
+---
+
+<section class="landing-section landing-section--alt testimonials">
+  <div class="landing-container">
+    <h2 class="testimonials__title" data-animate data-i18n="testimonials.title">
+      Ils ont fait le switch.
+    </h2>
+
+    <div class="carousel" data-testimonials-carousel>
+      <div class="carousel__track" data-carousel-track>
+        <!-- Testimonial 1 -->
+        <blockquote class="carousel__card" data-carousel-card>
+          <div class="carousel__card-inner">
+            <span class="carousel__quote-mark">"</span>
+            <p class="carousel__quote" data-i18n="testimonials.items.0.quote">
+              J'avais Linktree. Maintenant j'ai les mêmes features, plus le QR code brandé, gratuitement.
+            </p>
+            <div class="carousel__author">
+              <div class="carousel__avatar carousel__avatar--1" data-i18n="testimonials.items.0.initials">ML</div>
+              <div class="carousel__author-info">
+                <span class="carousel__author-name" data-i18n="testimonials.items.0.name">Marie L.</span>
+                <span class="carousel__author-role" data-i18n="testimonials.items.0.role">Freelance</span>
+              </div>
+              <div class="carousel__badge-separator"></div>
+              <div class="carousel__badge">
+                <BadgeCheck class="carousel__badge-icon" size={18} />
+                <span data-i18n="testimonials.proBadge">Pro User</span>
+              </div>
+            </div>
+          </div>
+        </blockquote>
+
+        <!-- Testimonial 2 -->
+        <blockquote class="carousel__card" data-carousel-card>
+          <div class="carousel__card-inner">
+            <span class="carousel__quote-mark">"</span>
+            <p class="carousel__quote" data-i18n="testimonials.items.1.quote">
+              Le bouton pour s'ajouter aux contacts, mes clients adorent. C'est tout bête mais personne d'autre ne le fait.
+            </p>
+            <div class="carousel__author">
+              <div class="carousel__avatar carousel__avatar--2" data-i18n="testimonials.items.1.initials">TR</div>
+              <div class="carousel__author-info">
+                <span class="carousel__author-name" data-i18n="testimonials.items.1.name">Thomas R.</span>
+                <span class="carousel__author-role" data-i18n="testimonials.items.1.role">Coach</span>
+              </div>
+            </div>
+          </div>
+        </blockquote>
+
+        <!-- Testimonial 3 -->
+        <blockquote class="carousel__card" data-carousel-card>
+          <div class="carousel__card-inner">
+            <span class="carousel__quote-mark">"</span>
+            <p class="carousel__quote" data-i18n="testimonials.items.2.quote">
+              Simple, rapide, joli. Exactement ce qu'il me fallait.
+            </p>
+            <div class="carousel__author">
+              <div class="carousel__avatar carousel__avatar--3" data-i18n="testimonials.items.2.initials">SM</div>
+              <div class="carousel__author-info">
+                <span class="carousel__author-name" data-i18n="testimonials.items.2.name">Sophie M.</span>
+                <span class="carousel__author-role" data-i18n="testimonials.items.2.role">Photographe</span>
+              </div>
+            </div>
+          </div>
+        </blockquote>
+      </div>
+    </div>
+
+    <div class="carousel__nav">
+      <button
+        class="carousel__btn carousel__btn--prev"
+        data-carousel-prev
+        aria-label="Témoignage précédent"
+        data-i18n-aria="testimonials.prevSlide"
+      >
+        <ChevronLeft size={20} />
+      </button>
+      <button
+        class="carousel__btn carousel__btn--next"
+        data-carousel-next
+        aria-label="Témoignage suivant"
+        data-i18n-aria="testimonials.nextSlide"
+      >
+        <ChevronRight size={20} />
+      </button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,243 @@
+---
+import { FONT_PRESETS } from '@jlinks/shared/font-presets';
+
+interface Props {
+  adminUrl: string;
+}
+
+const { adminUrl } = Astro.props;
+
+// Select 5 themes to showcase
+const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as const;
+---
+
+<section class="landing-section landing-section--alt demo">
+  <div class="landing-container">
+    <h2 class="demo__title" data-animate data-i18n="demo.title">
+      Vois par toi-même.
+    </h2>
+
+    <div class="demo__tabs" role="tablist" data-animate>
+      {demoThemes.map((themeId, index) => (
+        <button
+          class="demo__tab"
+          role="tab"
+          data-theme={themeId}
+          aria-selected={index === 0 ? 'true' : 'false'}
+        >
+          {FONT_PRESETS[themeId].name}
+        </button>
+      ))}
+    </div>
+
+    <div class="demo__preview" data-animate>
+      <div class="demo__phone" id="demo-phone">
+        <div class="demo__phone-frame">
+          <div class="demo__phone-notch"></div>
+          <div class="demo__phone-screen" id="demo-screen">
+            <div class="demo__content">
+              <div class="demo__avatar"></div>
+              <div class="demo__name">Jon Labs</div>
+              <div class="demo__bio">Studio web - Genève</div>
+              <div class="demo__links">
+                <a href="#" class="demo__link">Notre site</a>
+                <a href="#" class="demo__link">Instagram</a>
+                <a href="#" class="demo__link">Prendre rendez-vous</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="demo__subtitle" data-animate data-i18n="demo.subtitle">
+      C'est ta page dans 2 minutes.
+    </p>
+
+    <div class="text-center" data-animate>
+      <a href={adminUrl} class="btn btn--primary" data-i18n="demo.cta">
+        Créer la mienne
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .demo__phone {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .demo__phone-frame {
+    position: relative;
+    background: #1a1a1a;
+    border-radius: 36px;
+    padding: 12px;
+    box-shadow:
+      0 25px 50px -12px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  }
+
+  .demo__phone-notch {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 24px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    z-index: 10;
+  }
+
+  .demo__phone-screen {
+    background: var(--demo-bg, #fafafa);
+    border-radius: 28px;
+    padding: 48px 20px 32px;
+    min-height: 420px;
+    transition: background-color 0.4s ease;
+  }
+
+  .demo__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .demo__avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--demo-primary, #00D9A3) 0%, var(--demo-primary-dark, #00b88a) 100%);
+  }
+
+  .demo__name {
+    font-family: var(--demo-font-title, 'Manrope', sans-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--demo-text, #0f172a);
+    transition: font-family 0.3s ease;
+  }
+
+  .demo__bio {
+    font-family: var(--demo-font-body, 'Inter', sans-serif);
+    font-size: 0.875rem;
+    color: var(--demo-text-secondary, #64748b);
+    transition: font-family 0.3s ease;
+  }
+
+  .demo__links {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .demo__link {
+    display: block;
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--demo-primary, #00D9A3);
+    color: white;
+    font-family: var(--demo-font-body, 'Inter', sans-serif);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .demo__link:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+
+  /* Theme configurations - applied via JS */
+  .demo__phone-screen[data-theme="modern-pro"] {
+    --demo-bg: #fafafa;
+    --demo-primary: #00D9A3;
+    --demo-primary-dark: #00b88a;
+    --demo-text: #0f172a;
+    --demo-text-secondary: #64748b;
+    --demo-font-title: 'Manrope', sans-serif;
+    --demo-font-body: 'Inter', sans-serif;
+  }
+
+  .demo__phone-screen[data-theme="elegant"] {
+    --demo-bg: #fdf8f3;
+    --demo-primary: #1a1a1a;
+    --demo-primary-dark: #000;
+    --demo-text: #1a1a1a;
+    --demo-text-secondary: #6b5c4c;
+    --demo-font-title: 'Playfair Display', serif;
+    --demo-font-body: 'DM Sans', sans-serif;
+  }
+
+  .demo__phone-screen[data-theme="bold"] {
+    --demo-bg: #0f0f0f;
+    --demo-primary: #ff4757;
+    --demo-primary-dark: #e8414f;
+    --demo-text: #ffffff;
+    --demo-text-secondary: #a0a0a0;
+    --demo-font-title: 'Syne', sans-serif;
+    --demo-font-body: 'Barlow', sans-serif;
+  }
+
+  .demo__phone-screen[data-theme="friendly"] {
+    --demo-bg: #fff5f5;
+    --demo-primary: #f59e0b;
+    --demo-primary-dark: #d97706;
+    --demo-text: #1f2937;
+    --demo-text-secondary: #6b7280;
+    --demo-font-title: 'Nunito', sans-serif;
+    --demo-font-body: 'Nunito', sans-serif;
+  }
+
+  .demo__phone-screen[data-theme="clean"] {
+    --demo-bg: #ffffff;
+    --demo-primary: #3b82f6;
+    --demo-primary-dark: #2563eb;
+    --demo-text: #111827;
+    --demo-text-secondary: #6b7280;
+    --demo-font-title: 'DM Sans', sans-serif;
+    --demo-font-body: 'DM Sans', sans-serif;
+  }
+
+  @media (min-width: 768px) {
+    .demo__phone {
+      max-width: 300px;
+    }
+
+    .demo__phone-screen {
+      min-height: 460px;
+    }
+  }
+</style>
+
+<script>
+  // Theme demo interaction
+  const tabs = document.querySelectorAll('.demo__tab');
+  const screen = document.getElementById('demo-screen');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      // Update active tab
+      tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+      tab.setAttribute('aria-selected', 'true');
+
+      // Update theme
+      const themeId = tab.getAttribute('data-theme');
+      if (screen && themeId) {
+        screen.setAttribute('data-theme', themeId);
+      }
+    });
+  });
+
+  // Set initial theme
+  if (screen) {
+    screen.setAttribute('data-theme', 'modern-pro');
+  }
+</script>

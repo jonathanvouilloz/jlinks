@@ -1,0 +1,98 @@
+---
+// FAQ section with accordion
+---
+
+<section id="faq" class="landing-section faq">
+  <div class="landing-container landing-container--narrow">
+    <h2 class="faq__title" data-animate data-i18n="faq.title">
+      Questions fréquentes
+    </h2>
+
+    <div class="faq__list" data-animate>
+      <details class="faq__item">
+        <summary data-i18n="faq.items.0.question">
+          C'est vraiment gratuit ?
+        </summary>
+        <p data-i18n="faq.items.0.answer">
+          Oui. Pas de période d'essai, pas de piège. Le plan Free est gratuit pour toujours. Le plan Pro existe pour ceux qui veulent les analytics et retirer le badge.
+        </p>
+      </details>
+
+      <details class="faq__item">
+        <summary data-i18n="faq.items.1.question">
+          Pourquoi c'est gratuit ?
+        </summary>
+        <p data-i18n="faq.items.1.answer">
+          jLinks est un projet de Jon Labs, un studio web basé à Genève. On l'a créé pour nos clients, puis on s'est dit que ça pourrait servir à tout le monde.
+        </p>
+      </details>
+
+      <details class="faq__item">
+        <summary data-i18n="faq.items.2.question">
+          C'est quoi la différence avec Linktree ?
+        </summary>
+        <p data-i18n="faq.items.2.answer">
+          On garde l'essentiel. Liens, personnalisation, c'est pareil. Ce qu'on ajoute : QR code brandé gratuit, bouton "ajouter aux contacts", et un prix Pro 2x moins cher.
+        </p>
+      </details>
+
+      <details class="faq__item">
+        <summary data-i18n="faq.items.3.question">
+          Je peux migrer depuis Linktree ?
+        </summary>
+        <p data-i18n="faq.items.3.answer">
+          En 2 minutes. Tu crées ta page, tu copies tes liens, tu changes l'URL dans ta bio. C'est tout.
+        </p>
+      </details>
+
+      <details class="faq__item">
+        <summary data-i18n="faq.items.4.question">
+          Mes données sont stockées où ?
+        </summary>
+        <p data-i18n="faq.items.4.answer">
+          Sur des serveurs en Suisse.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq__item {
+    overflow: hidden;
+  }
+
+  .faq__item p {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Close other items when one opens (optional accordion behavior) */
+</style>
+
+<script>
+  // Optional: Accordion behavior - close others when one opens
+  const faqItems = document.querySelectorAll('.faq__item');
+
+  faqItems.forEach(item => {
+    item.addEventListener('toggle', () => {
+      if (item.open) {
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item && otherItem.open) {
+            otherItem.open = false;
+          }
+        });
+      }
+    });
+  });
+</script>

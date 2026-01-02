@@ -1,0 +1,70 @@
+---
+interface Props {
+  adminUrl: string;
+}
+
+const { adminUrl } = Astro.props;
+---
+
+<section id="pricing" class="landing-section pricing">
+  <div class="landing-container">
+    <div class="pricing__header" data-animate>
+      <h2 class="pricing__title" data-i18n="pricing.title">
+        Gratuit pour la plupart.
+      </h2>
+      <p class="pricing__subtitle" data-i18n="pricing.subtitle">
+        Pro pour ceux qui veulent plus.
+      </p>
+    </div>
+
+    <div class="pricing__cards">
+      <!-- Free Plan -->
+      <div class="pricing-card" data-animate>
+        <div class="pricing-card__left">
+          <div class="pricing-card__name" data-i18n="pricing.free.name">Free</div>
+          <div class="pricing-card__price">
+            <span class="pricing-card__amount" data-i18n="pricing.free.price">0.-</span>
+          </div>
+          <p class="pricing-card__note">Gratuit pour toujours</p>
+          <a href={adminUrl} class="btn btn--secondary pricing-card__cta" data-i18n="pricing.free.cta">
+            Commencer gratuitement
+          </a>
+        </div>
+        <div class="pricing-card__right">
+          <ul class="pricing-card__features">
+            <li data-i18n="pricing.free.features.0">6 liens</li>
+            <li data-i18n="pricing.free.features.1">Couleurs custom</li>
+            <li data-i18n="pricing.free.features.2">QR code brandé</li>
+            <li data-i18n="pricing.free.features.3">Bouton contact</li>
+            <li data-i18n="pricing.free.features.4">Support email</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Pro Plan -->
+      <div class="pricing-card pricing-card--featured" data-animate>
+        <div class="pricing-card__left">
+          <div class="pricing-card__name" data-i18n="pricing.pro.name">Pro</div>
+          <div class="pricing-card__price">
+            <span class="pricing-card__amount" data-i18n="pricing.pro.price">5.-</span>
+            <span class="pricing-card__period" data-i18n="pricing.pro.period">CHF/mois</span>
+          </div>
+          <p class="pricing-card__note" data-i18n="pricing.pro.includes">Tout ce qui est Free +</p>
+          <a href={`${adminUrl}?plan=pro`} class="btn btn--primary pricing-card__cta" data-i18n="pricing.pro.cta">
+            Passer Pro
+          </a>
+        </div>
+        <div class="pricing-card__right">
+          <ul class="pricing-card__features">
+            <li data-i18n="pricing.pro.features.0">Liens illimités</li>
+            <li data-i18n="pricing.pro.features.1">Thèmes & fonts custom</li>
+            <li data-i18n="pricing.pro.features.2">Layouts exclusifs</li>
+            <li data-i18n="pricing.pro.features.3">Analytics complets</li>
+            <li data-i18n="pricing.pro.features.4">Sans badge jLinks</li>
+            <li data-i18n="pricing.pro.features.5">Support prioritaire</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

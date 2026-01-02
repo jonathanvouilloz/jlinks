@@ -1,0 +1,152 @@
+---
+interface Props {
+  adminUrl: string;
+}
+
+const { adminUrl } = Astro.props;
+---
+
+<section class="landing-section hero">
+  <div class="landing-container">
+    <div class="hero__content" data-animate>
+      <h1 class="hero__title" data-i18n="hero.title">
+        Ton style. Tes liens. <span class="highlight">Ta page.</span>
+      </h1>
+      <p class="hero__subtitle" data-i18n="hero.subtitle">
+        Crée ta page de liens personnalisée.<br/>Gratuite. En 2 minutes.
+      </p>
+      <div class="hero__cta-wrapper">
+        <a href={adminUrl} class="btn btn--primary btn--large" data-i18n="hero.cta">
+          Créer ma page gratuitement
+        </a>
+        <span class="hero__cta-note" data-i18n="hero.note">Pas de carte requise</span>
+      </div>
+    </div>
+    <div class="hero__mockup" data-animate data-animate-delay="1">
+      <div class="hero__phone">
+        <div class="hero__phone-frame">
+          <div class="hero__phone-notch"></div>
+          <div class="hero__phone-screen">
+            <div class="hero__phone-content">
+              <div class="mock-avatar"></div>
+              <div class="mock-name"></div>
+              <div class="mock-bio"></div>
+              <div class="mock-links">
+                <div class="mock-link"></div>
+                <div class="mock-link"></div>
+                <div class="mock-link"></div>
+                <div class="mock-link"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero__phone {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .hero__phone-frame {
+    position: relative;
+    background: #1a1a1a;
+    border-radius: 36px;
+    padding: 12px;
+    box-shadow:
+      0 25px 50px -12px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  }
+
+  .hero__phone-notch {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 24px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    z-index: 10;
+  }
+
+  .hero__phone-screen {
+    background: linear-gradient(180deg, #fafafa 0%, #f1f5f9 100%);
+    border-radius: 28px;
+    padding: 48px 20px 32px;
+    min-height: 480px;
+  }
+
+  .hero__phone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .mock-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00D9A3 0%, #00b88a 100%);
+  }
+
+  .mock-name {
+    width: 100px;
+    height: 16px;
+    background: #0f172a;
+    border-radius: 4px;
+  }
+
+  .mock-bio {
+    width: 140px;
+    height: 10px;
+    background: #94a3b8;
+    border-radius: 4px;
+  }
+
+  .mock-links {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .mock-link {
+    width: 100%;
+    height: 48px;
+    background: #00D9A3;
+    border-radius: 10px;
+    opacity: 0.9;
+  }
+
+  .mock-link:nth-child(2) {
+    opacity: 0.75;
+  }
+
+  .mock-link:nth-child(3) {
+    opacity: 0.6;
+  }
+
+  .mock-link:nth-child(4) {
+    opacity: 0.45;
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      padding-top: clamp(4rem, 10vw, 8rem);
+    }
+
+    .hero__phone {
+      max-width: 320px;
+    }
+
+    .hero__phone-screen {
+      min-height: 540px;
+    }
+  }
+</style>

@@ -1,36 +1,83 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+// jLinks Landing Page
+import Header from '../components/landing/Header.astro';
+import Hero from '../components/landing/Hero.astro';
+import ComparisonTable from '../components/landing/ComparisonTable.astro';
+import Features from '../components/landing/Features.astro';
+import ThemeDemo from '../components/landing/ThemeDemo.astro';
+import Pricing from '../components/landing/Pricing.astro';
+import Testimonials from '../components/landing/Testimonials.astro';
+import FAQ from '../components/landing/FAQ.astro';
+import FinalCTA from '../components/landing/FinalCTA.astro';
+import LandingFooter from '../components/landing/LandingFooter.astro';
+
+import '../styles/landing.css';
 
 const adminUrl = import.meta.env.DEV ? 'http://localhost:5173' : 'https://admin.links.jonlabs.ch';
+const siteUrl = import.meta.env.SITE_URL || 'https://links.jonlabs.ch';
 ---
 
-<BaseLayout title="jLinks" description="Create your personalized link page">
-  <main class="container" style="justify-content: center; align-items: center; text-align: center;">
-    <div>
-      <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">jLinks</h1>
-      <p style="color: #64748b; margin-bottom: 2rem;">
-        Create your personalized link page
-      </p>
-      <a
-        href={adminUrl}
-        style="
-          display: inline-block;
-          background: #00D9A3;
-          color: white;
-          padding: 0.75rem 2rem;
-          border-radius: 0.5rem;
-          font-weight: 500;
-          transition: background 0.15s ease;
-        "
-      >
-        Get Started
-      </a>
-    </div>
-  </main>
-</BaseLayout>
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="jLinks - Créez votre page de liens personnalisée. Gratuite. Sans superflu. Alternative à Linktree avec QR code brandé et bouton contact inclus." />
 
-<style>
-  a:hover {
-    background: #00a87d !important;
-  }
-</style>
+    <title>jLinks - Linktree, en plus simple</title>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={siteUrl} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Additional fonts for theme demo -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&family=Barlow:wght@400;500&family=Nunito:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="jLinks - Linktree, en plus simple" />
+    <meta property="og:description" content="Créez votre page de liens personnalisée. Gratuite. Sans superflu." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:locale" content="fr_CH" />
+    <meta property="og:site_name" content="jLinks" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="jLinks - Linktree, en plus simple" />
+    <meta name="twitter:description" content="Créez votre page de liens personnalisée. Gratuite. Sans superflu." />
+  </head>
+
+  <body class="landing-page">
+    <Header adminUrl={adminUrl} />
+
+    <main>
+      <Hero adminUrl={adminUrl} />
+      <ComparisonTable />
+      <Features />
+      <ThemeDemo adminUrl={adminUrl} />
+      <Pricing adminUrl={adminUrl} />
+      <Testimonials />
+      <FAQ />
+      <FinalCTA adminUrl={adminUrl} />
+    </main>
+
+    <LandingFooter />
+
+    <script>
+      import '../scripts/landing.ts';
+    </script>
+  </body>
+</html>
