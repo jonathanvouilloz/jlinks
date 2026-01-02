@@ -24,6 +24,9 @@
   let layoutType = $state<LayoutType>('list');
   let buttonStyle = $state<ButtonStyle>('rounded');
 
+  // Detect Premium layout to disable irrelevant settings
+  const isPremiumLayout = $derived(layoutType === 'premium');
+
   // Saving state
   let savingAppearance = $state(false);
 
@@ -89,7 +92,7 @@
     <div class="apparence-content">
       <div class="apparence-grid">
         <!-- Appearance Section -->
-        <Card>
+        <Card class={isPremiumLayout ? 'disabled' : ''}>
           {#snippet header()}
             <h2>Fond</h2>
           {/snippet}
@@ -123,7 +126,7 @@
         </Card>
 
         <!-- Colors & Buttons Section -->
-        <Card>
+        <Card class={isPremiumLayout ? 'disabled' : ''}>
           {#snippet header()}
             <h2>Boutons</h2>
           {/snippet}
@@ -344,5 +347,28 @@
     font-size: var(--text-xs);
     color: var(--color-text-muted);
     margin: calc(-1 * var(--space-2)) 0 0;
+  }
+
+  /* Disabled state for Premium layout */
+  :global(.card.disabled) {
+    opacity: 0.5;
+    pointer-events: none;
+    position: relative;
+  }
+
+  :global(.card.disabled)::after {
+    content: 'Non disponible avec Premium';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--color-surface);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    box-shadow: var(--shadow-md);
+    pointer-events: none;
   }
 </style>

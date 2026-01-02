@@ -9,6 +9,20 @@
 
   let { client, links }: Props = $props();
 
+  // Debounced preview HTML for smoother updates
+  let debouncedHtml = $state('');
+  let debounceTimer: ReturnType<typeof setTimeout>;
+
+  $effect(() => {
+    const html = generatePreviewHtml(client, links);
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      debouncedHtml = html;
+    }, 150);
+
+    return () => clearTimeout(debounceTimer);
+  });
+
   // Calculate text color based on background luminance
   function getTextColorForBackground(bgColor: string): { text: string; muted: string } {
     // Default to light text for gradients/images
@@ -75,9 +89,6 @@
     };
     return icons[iconName] || icons['link'];
   }
-
-  // Generate preview HTML
-  const previewHtml = $derived(generatePreviewHtml(client, links));
 
   function generatePreviewHtml(client: Client | null, links: Link[]): string {
     if (!client) {
@@ -175,6 +186,10 @@
             min-height: 100vh;
             ${bgStyle}
             padding: 40px 20px;
+            transition: background 0.2s ease;
+          }
+          .profile-name, .profile-bio, .link-btn, .vcard-button, .footer {
+            transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
           }
           .container {
             max-width: 480px;
@@ -338,6 +353,9 @@
             display: flex;
             justify-content: center;
             padding: 24px 12px;
+          }
+          .profile-name, .profile-bio, .premium-link-card, .premium-link-icon, .footer {
+            transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
           }
           .premium-glass {
             max-width: 100%;
@@ -544,6 +562,10 @@
             min-height: 100vh;
             ${pageBgStyle}
             padding: 40px 20px;
+            transition: background 0.2s ease;
+          }
+          .profile-name, .profile-bio, .link-card, .vcard-button, .footer {
+            transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
           }
           .container { max-width: 480px; margin: 0 auto; }
           .profile { text-align: center; margin-bottom: 32px; }
@@ -693,6 +715,10 @@
             min-height: 100vh;
             ${pageBgStyle}
             padding: 40px 20px;
+            transition: background 0.2s ease;
+          }
+          .profile-name, .profile-bio, .link-grid-item, .vcard-button, .footer {
+            transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
           }
           .container { max-width: 480px; margin: 0 auto; }
           .profile { text-align: center; margin-bottom: 32px; }
@@ -724,7 +750,6 @@
             text-align: center;
             text-decoration: none;
             padding: 1rem;
-            transition: transform 0.15s ease;
           }
           .link-grid-item:hover {
             transform: scale(1.05);
@@ -802,7 +827,7 @@
   </div>
   <div class="preview-frame">
     <iframe
-      srcdoc={previewHtml}
+      srcdoc={debouncedHtml}
       title="Preview"
       sandbox="allow-scripts"
     ></iframe>
@@ -848,7 +873,7 @@
     display: flex;
     justify-content: center;
     padding: var(--space-4);
-    background: #1e293b;
+    background: #f1f5f9;
     min-height: 500px;
   }
 
@@ -859,6 +884,6 @@
     border: none;
     border-radius: 20px;
     background: white;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05);
   }
 </style>
