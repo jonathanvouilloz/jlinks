@@ -219,7 +219,19 @@ body.landing-page {
 
 .lang-toggle:hover {
   border-color: var(--color-text-secondary);
-  color: var(--color-text);
+}
+
+.lang-toggle__option {
+  transition: color var(--transition-fast);
+}
+
+.lang-toggle__option.is-active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.lang-toggle__separator {
+  color: var(--color-border);
 }
 
 /* Hide login link on mobile */

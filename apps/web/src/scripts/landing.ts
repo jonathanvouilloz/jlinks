@@ -38,11 +38,16 @@ function setLanguage(lang: Lang): void {
   // Store preference
   localStorage.setItem('jlinks-lang', lang);
 
-  // Update language toggle button text
-  const langToggle = document.querySelector('[data-i18n-lang]');
-  if (langToggle) {
-    langToggle.textContent = lang.toUpperCase();
-  }
+  // Update language toggle active state
+  const langOptions = document.querySelectorAll('.lang-toggle__option');
+  langOptions.forEach((option) => {
+    const optionLang = option.getAttribute('data-lang');
+    if (optionLang === lang) {
+      option.classList.add('is-active');
+    } else {
+      option.classList.remove('is-active');
+    }
+  });
 
   // Update all translatable elements
   const elements = document.querySelectorAll('[data-i18n]');
