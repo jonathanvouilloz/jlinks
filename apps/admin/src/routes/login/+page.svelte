@@ -65,6 +65,10 @@
         <Button type="submit" variant="primary" {loading} disabled={loading} class="login-button">
           Se connecter
         </Button>
+
+        <a href="/forgot-password" class="forgot-password-link">
+          Mot de passe oublié ?
+        </a>
       </form>
     </Card>
 
@@ -141,5 +145,17 @@
 
   .login-footer a:hover {
     text-decoration: underline;
+  }
+
+  .forgot-password-link {
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .forgot-password-link:hover {
+    color: var(--color-primary);
   }
 </style>

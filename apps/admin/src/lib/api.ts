@@ -103,6 +103,27 @@ export const auth = {
       body: JSON.stringify({ currentPassword, newPassword }),
     });
   },
+
+  async forgotPassword(email: string): Promise<{ success: boolean }> {
+    return request('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  },
+
+  async resetPassword(token: string, newPassword: string): Promise<{ success: boolean }> {
+    return request('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ token, newPassword }),
+    });
+  },
+
+  async deleteAccount(password: string): Promise<{ success: boolean }> {
+    return request('/auth/account', {
+      method: 'DELETE',
+      body: JSON.stringify({ password }),
+    });
+  },
 };
 
 // Client API (current user's client)

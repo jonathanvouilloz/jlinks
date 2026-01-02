@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
-  import { Link, Palette, FileText, Users, LogOut } from 'lucide-svelte';
+  import { Link, Palette, FileText, Users, LogOut, Settings } from 'lucide-svelte';
   import { authStore } from '$lib/stores';
 
   // Check if current path matches
@@ -40,6 +40,12 @@
         <a href="/contenu" class="nav-link" class:active={isActive('/contenu')} aria-current={isActive('/contenu') ? 'page' : undefined}>
           <FileText size={20} aria-hidden="true" />
           <span>Contenu</span>
+        </a>
+      </li>
+      <li>
+        <a href="/parametres" class="nav-link" class:active={isActive('/parametres')} aria-current={isActive('/parametres') ? 'page' : undefined}>
+          <Settings size={20} aria-hidden="true" />
+          <span>Paramètres</span>
         </a>
       </li>
     </ul>
