@@ -1,5 +1,5 @@
 ---
-import { FONT_PRESETS } from '@jlinks/shared/font-presets';
+import { FONT_PRESETS } from '@noko/shared/font-presets';
 
 interface Props {
   adminUrl: string;
@@ -109,7 +109,7 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--demo-primary, #00D9A3) 0%, var(--demo-primary-dark, #00b88a) 100%);
+    background: linear-gradient(135deg, var(--demo-primary, #FF6B5B) 0%, var(--demo-primary-dark, #E85A4F) 100%);
   }
 
   .demo__name {
@@ -139,7 +139,7 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
     display: block;
     width: 100%;
     padding: 14px 16px;
-    background: var(--demo-primary, #00D9A3);
+    background: var(--demo-primary, #FF6B5B);
     color: white;
     font-family: var(--demo-font-body, 'Inter', sans-serif);
     font-size: 0.9375rem;
@@ -158,8 +158,8 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
   /* Theme configurations - applied via JS */
   .demo__phone-screen[data-theme="modern-pro"] {
     --demo-bg: #fafafa;
-    --demo-primary: #00D9A3;
-    --demo-primary-dark: #00b88a;
+    --demo-primary: #FF6B5B;
+    --demo-primary-dark: #E85A4F;
     --demo-text: #0f172a;
     --demo-text-secondary: #64748b;
     --demo-font-title: 'Manrope', sans-serif;

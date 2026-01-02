@@ -1,5 +1,5 @@
-// Font preset definitions for jLinks
-// See docs/jlinks-font-presets.md for detailed documentation
+// Font preset definitions for Noko
+// See docs/noko-font-presets.md for detailed documentation
 
 export const FONT_PRESETS = {
   'modern-pro': {

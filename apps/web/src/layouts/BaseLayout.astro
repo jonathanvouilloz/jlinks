@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { FONT_PRESETS, isValidFontPresetId } from '@jlinks/shared/font-presets';
+import { FONT_PRESETS, isValidFontPresetId } from '@noko/shared/font-presets';
 
 interface Props {
   title: string;
@@ -17,7 +17,7 @@ interface Props {
 
 const {
   title,
-  description = 'Link page powered by jLinks',
+  description = 'Link page powered by Noko',
   fontPreset,
   fontTitle = 'Inter',
   fontText = 'Inter',
@@ -58,7 +58,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:site_name" content="jLinks" />
+    <meta property="og:site_name" content="Noko" />
     {ogImage && <meta property="og:image" content={ogImage} />}
 
     <!-- Twitter Card -->

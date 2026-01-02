@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-jLinks is a customizable link page solution (Linktree-style) for Jon Labs clients. Each client gets a public page at `links.jonlabs.ch/[slug]` with an admin interface to manage their links.
+Noko is a customizable link page solution (Linktree-style) by Jon Labs. Each user gets a public page at `nokolink.com/[slug]` with an admin interface to manage their links.
 
 ## Tech Stack
 
@@ -54,7 +54,7 @@ cd apps/admin && bun run check
 ## Architecture
 
 ```
-jlinks/
+noko/
 ├── apps/
 │   ├── api/           # Elysia backend (Bun)
 │   │   ├── src/
@@ -81,7 +81,7 @@ jlinks/
 │           └── components/
 │
 └── packages/
-    └── shared/        # Shared code (@jlinks/shared)
+    └── shared/        # Shared code (@noko/shared)
         └── src/
             ├── types.ts
             ├── plans.ts
@@ -94,10 +94,10 @@ jlinks/
 ### Importing Shared Code
 
 ```typescript
-import type { Client, Link } from '@jlinks/shared/types';
-import { PLANS } from '@jlinks/shared/plans';
-import { SOCIAL_PRESETS } from '@jlinks/shared/social-presets';
-import { generateVCard } from '@jlinks/shared/vcard';
+import type { Client, Link } from '@noko/shared/types';
+import { PLANS } from '@noko/shared/plans';
+import { SOCIAL_PRESETS } from '@noko/shared/social-presets';
+import { generateVCard } from '@noko/shared/vcard';
 ```
 
 ### Importing UI Components (admin)
@@ -134,7 +134,7 @@ await db.update(clients).set({ name }).where(eq(clients.id, id));
 ## Design System
 
 Design tokens are centralized in `apps/admin/src/styles/variables.css`:
-- Colors: `--color-primary` (#00D9A3), `--color-text`, `--color-bg`, etc.
+- Colors: `--color-primary` (#FF6B5B Coral), `--color-text`, `--color-bg`, etc.
 - Spacing: `--space-xs` through `--space-2xl` (4px increments)
 - Typography: Inter font, sizes via `--text-*` tokens
 - Border radius: `--radius-sm` through `--radius-full`

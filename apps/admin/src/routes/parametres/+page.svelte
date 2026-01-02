@@ -76,7 +76,7 @@
 </script>
 
 <svelte:head>
-  <title>Paramètres | jLinks Admin</title>
+  <title>Paramètres | Noko Admin</title>
 </svelte:head>
 
 <div class="page">

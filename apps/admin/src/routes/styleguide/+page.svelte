@@ -11,12 +11,12 @@
 </script>
 
 <svelte:head>
-  <title>Styleguide | jLinks</title>
+  <title>Styleguide | Noko</title>
 </svelte:head>
 
 <div class="styleguide">
   <header class="styleguide-header">
-    <h1>jLinks Styleguide</h1>
+    <h1>Noko Styleguide</h1>
     <p class="text-secondary">Component library and design tokens</p>
   </header>
 
@@ -30,12 +30,12 @@
         <div class="color-swatch">
           <div class="swatch" style="background: var(--color-primary)"></div>
           <span>Primary</span>
-          <code>#00D9A3</code>
+          <code>#FF6B5B</code>
         </div>
         <div class="color-swatch">
           <div class="swatch" style="background: var(--color-primary-hover)"></div>
           <span>Primary Hover</span>
-          <code>#00A87D</code>
+          <code>#E85A4F</code>
         </div>
         <div class="color-swatch">
           <div class="swatch" style="background: var(--color-primary-light)"></div>

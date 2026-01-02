@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { LayoutType } from '@jlinks/shared/types';
+  import type { LayoutType } from '@noko/shared/types';
   import { List, LayoutGrid, Grid3X3, Sparkles } from 'lucide-svelte';
 
   interface Props {

@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia';
 import { db, users, sessions, clients } from '../db';
 import { eq, and, gt } from 'drizzle-orm';
-import type { User, Client } from '@jlinks/shared';
+import type { User, Client } from '@noko/shared';
 
 export interface AuthContext {
   user: User | null;

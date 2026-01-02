@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Link } from '@jlinks/shared/types';
+  import type { Link } from '@noko/shared/types';
   import { dndzone } from 'svelte-dnd-action';
   import { flip } from 'svelte/animate';
   import LinkCard from './LinkCard.svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { FONT_PRESETS, type FontPreset } from '@jlinks/shared/font-presets';
+  import { FONT_PRESETS, type FontPreset } from '@noko/shared/font-presets';
 
   interface Props {
     value: string | null;

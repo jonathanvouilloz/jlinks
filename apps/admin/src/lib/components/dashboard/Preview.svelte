@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Client, Link, SocialPresetKey } from '@jlinks/shared/types';
-  import { SOCIAL_PRESETS } from '@jlinks/shared/social-presets';
+  import type { Client, Link, SocialPresetKey } from '@noko/shared/types';
+  import { SOCIAL_PRESETS } from '@noko/shared/social-presets';
 
   interface Props {
     client: Client | null;
@@ -119,7 +119,7 @@
     const activeLinks = links.filter(l => l.is_active);
     const fontTitle = client.font_title || 'Inter';
     const fontText = client.font_text || 'Inter';
-    const primaryColor = client.primary_color || '#00d9a3';
+    const primaryColor = client.primary_color || '#FF6B5B';
 
     // Route to layout-specific generators
     switch (client.layout_type) {
@@ -294,7 +294,7 @@
           ` : ''}
 
           <div class="footer">
-            <a href="https://jonlabs.ch">Créé avec jLinks</a>
+            <a href="https://jonlabs.ch">Créé avec Noko</a>
           </div>
         </div>
       </body>
@@ -503,7 +503,7 @@
             </div>
           ` : ''}
           <div class="footer">
-            <a href="https://jonlabs.ch">Créé avec jLinks</a>
+            <a href="https://jonlabs.ch">Créé avec Noko</a>
           </div>
         </div>
       </body>
@@ -657,7 +657,7 @@
             </a>
           ` : ''}
           <div class="footer">
-            <a href="https://jonlabs.ch">Créé avec jLinks</a>
+            <a href="https://jonlabs.ch">Créé avec Noko</a>
           </div>
         </div>
       </body>
@@ -811,7 +811,7 @@
             </a>
           ` : ''}
           <div class="footer">
-            <a href="https://jonlabs.ch">Créé avec jLinks</a>
+            <a href="https://jonlabs.ch">Créé avec Noko</a>
           </div>
         </div>
       </body>

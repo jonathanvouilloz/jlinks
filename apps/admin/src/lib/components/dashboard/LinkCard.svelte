@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Link, SocialPresetKey } from '@jlinks/shared/types';
-  import { SOCIAL_PRESETS } from '@jlinks/shared/social-presets';
+  import type { Link, SocialPresetKey } from '@noko/shared/types';
+  import { SOCIAL_PRESETS } from '@noko/shared/social-presets';
   import { Toggle, Button } from '$lib/components/ui';
   import { GripVertical, Pencil, Trash2, ExternalLink } from 'lucide-svelte';
   import * as Icons from 'lucide-svelte';

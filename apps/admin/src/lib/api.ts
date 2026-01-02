@@ -13,7 +13,7 @@ import type {
   LayoutType,
   ButtonStyle,
   PlanType
-} from '@jlinks/shared/types';
+} from '@noko/shared/types';
 
 // API Error class
 export class ApiError extends Error {

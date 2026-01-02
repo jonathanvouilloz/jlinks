@@ -1,7 +1,7 @@
 import { Elysia, t } from 'elysia';
 import { db, clients } from '../db';
 import { eq, and } from 'drizzle-orm';
-import { generateVCard } from '@jlinks/shared';
+import { generateVCard } from '@noko/shared';
 
 const SITE_URL = process.env.SITE_URL || 'https://links.jonlabs.ch';
 

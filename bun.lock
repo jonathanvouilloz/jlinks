@@ -12,10 +12,10 @@
       },
     },
     "apps/admin": {
-      "name": "@jlinks/admin",
+      "name": "@noko/admin",
       "version": "1.0.0",
       "dependencies": {
-        "@jlinks/shared": "workspace:*",
+        "@noko/shared": "workspace:*",
         "lucide-svelte": "^0.468.0",
         "svelte-dnd-action": "^0.9.69",
       },
@@ -31,11 +31,11 @@
       },
     },
     "apps/api": {
-      "name": "@jlinks/api",
+      "name": "@noko/api",
       "version": "1.0.0",
       "dependencies": {
         "@elysiajs/cors": "^1.1.0",
-        "@jlinks/shared": "workspace:*",
+        "@noko/shared": "workspace:*",
         "better-auth": "^1.4.10",
         "drizzle-orm": "^0.36.0",
         "elysia": "^1.1.0",
@@ -50,16 +50,16 @@
       },
     },
     "apps/web": {
-      "name": "@jlinks/web",
+      "name": "@noko/web",
       "version": "1.0.0",
       "dependencies": {
-        "@jlinks/shared": "workspace:*",
+        "@noko/shared": "workspace:*",
         "astro": "^5.0.0",
         "lucide-astro": "^0.468.0",
       },
     },
     "packages/shared": {
-      "name": "@jlinks/shared",
+      "name": "@noko/shared",
       "version": "1.0.0",
       "devDependencies": {
         "typescript": "^5.3.3",
@@ -213,14 +213,6 @@
 
     "@isaacs/fs-minipass": ["@isaacs/fs-minipass@4.0.1", "", { "dependencies": { "minipass": "^7.0.4" } }, "sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w=="],
 
-    "@jlinks/admin": ["@jlinks/admin@workspace:apps/admin"],
-
-    "@jlinks/api": ["@jlinks/api@workspace:apps/api"],
-
-    "@jlinks/shared": ["@jlinks/shared@workspace:packages/shared"],
-
-    "@jlinks/web": ["@jlinks/web@workspace:apps/web"],
-
     "@jridgewell/gen-mapping": ["@jridgewell/gen-mapping@0.3.13", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.0", "@jridgewell/trace-mapping": "^0.3.24" } }, "sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA=="],
 
     "@jridgewell/remapping": ["@jridgewell/remapping@2.3.5", "", { "dependencies": { "@jridgewell/gen-mapping": "^0.3.5", "@jridgewell/trace-mapping": "^0.3.24" } }, "sha512-LI9u/+laYG4Ds1TDKSJW2YPrIlcVYOwi2fUC6xB43lueCjgxV4lffOCZCtYFiH6TNOX+tQKXx97T4IKHbhyHEQ=="],
@@ -236,6 +228,14 @@
     "@noble/ciphers": ["@noble/ciphers@2.1.1", "", {}, "sha512-bysYuiVfhxNJuldNXlFEitTVdNnYUc+XNJZd7Qm2a5j1vZHgY+fazadNFWFaMK/2vye0JVlxV3gHmC0WDfAOQw=="],
 
     "@noble/hashes": ["@noble/hashes@2.0.1", "", {}, "sha512-XlOlEbQcE9fmuXxrVTXCTlG2nlRXa9Rj3rr5Ue/+tX+nmkgbX720YHh0VR3hBF9xDvwnb8D2shVGOwNx+ulArw=="],
+
+    "@noko/admin": ["@noko/admin@workspace:apps/admin"],
+
+    "@noko/api": ["@noko/api@workspace:apps/api"],
+
+    "@noko/shared": ["@noko/shared@workspace:packages/shared"],
+
+    "@noko/web": ["@noko/web@workspace:apps/web"],
 
     "@oslojs/encoding": ["@oslojs/encoding@1.1.0", "", {}, "sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ=="],
 

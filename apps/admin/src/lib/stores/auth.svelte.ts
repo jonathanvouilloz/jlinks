@@ -1,6 +1,6 @@
 // Authentication store using Svelte 5 runes
 
-import type { User, Client } from '@jlinks/shared/types';
+import type { User, Client } from '@noko/shared/types';
 import { api, ApiError } from '$lib/api';
 import { toastStore } from './toast.svelte';
 

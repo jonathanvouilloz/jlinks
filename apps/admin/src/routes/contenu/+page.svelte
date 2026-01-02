@@ -97,7 +97,7 @@
 </script>
 
 <svelte:head>
-  <title>Contenu | jLinks Admin</title>
+  <title>Contenu | Noko Admin</title>
 </svelte:head>
 
 <div class="contenu-page">

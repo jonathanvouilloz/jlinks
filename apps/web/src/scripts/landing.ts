@@ -1,5 +1,5 @@
 /**
- * jLinks Landing Page - Client-side Interactivity
+ * Noko Landing Page - Client-side Interactivity
  * - Language toggle (FR/EN)
  * - Scroll animations (Intersection Observer)
  */
@@ -36,7 +36,7 @@ function setLanguage(lang: Lang): void {
   document.documentElement.lang = lang;
 
   // Store preference
-  localStorage.setItem('jlinks-lang', lang);
+  localStorage.setItem('noko-lang', lang);
 
   // Update language toggle active state
   const langOptions = document.querySelectorAll('.lang-toggle__option');
@@ -87,7 +87,7 @@ function initLanguageToggle(): void {
 
 function initLanguage(): void {
   // Check saved preference
-  const savedLang = localStorage.getItem('jlinks-lang') as Lang | null;
+  const savedLang = localStorage.getItem('noko-lang') as Lang | null;
 
   if (savedLang && (savedLang === 'fr' || savedLang === 'en')) {
     setLanguage(savedLang);

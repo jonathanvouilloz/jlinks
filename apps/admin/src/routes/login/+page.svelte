@@ -28,13 +28,13 @@
 </script>
 
 <svelte:head>
-  <title>Connexion - jLinks</title>
+  <title>Connexion - Noko</title>
 </svelte:head>
 
 <div class="login-page">
   <div class="login-container">
     <div class="login-header">
-      <h1 class="login-logo">jLinks</h1>
+      <h1 class="login-logo">Noko</h1>
       <p class="login-subtitle">Connectez-vous à votre espace</p>
     </div>
 

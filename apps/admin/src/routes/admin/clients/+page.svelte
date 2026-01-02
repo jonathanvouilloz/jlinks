@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Client, PlanType } from '@jlinks/shared/types';
+  import type { Client, PlanType } from '@noko/shared/types';
   import { onMount } from 'svelte';
   import { Card, Button, Badge, Input, Modal } from '$lib/components/ui';
   import { Plus, Pencil, Trash2, ExternalLink, CheckCircle, Clock } from 'lucide-svelte';
@@ -153,7 +153,7 @@
 </script>
 
 <svelte:head>
-  <title>Gestion des clients | jLinks Admin</title>
+  <title>Gestion des clients | Noko Admin</title>
 </svelte:head>
 
 <div class="admin-page">

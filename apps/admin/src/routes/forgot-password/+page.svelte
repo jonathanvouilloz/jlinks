@@ -26,13 +26,13 @@
 </script>
 
 <svelte:head>
-  <title>Mot de passe oublié | jLinks</title>
+  <title>Mot de passe oublié | Noko</title>
 </svelte:head>
 
 <div class="container">
   <div class="form-wrapper">
     <div class="logo">
-      <span class="logo-text">jLinks</span>
+      <span class="logo-text">Noko</span>
     </div>
 
     {#if sent}

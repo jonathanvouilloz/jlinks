@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { BackgroundType, ButtonStyle, LayoutType } from '@jlinks/shared/types';
+  import type { BackgroundType, ButtonStyle, LayoutType } from '@noko/shared/types';
   import { Card, Button, Input } from '$lib/components/ui';
   import { ButtonStyleSelector, ColorPicker, FontPresetSelector, FontSelector, LayoutSelector, OpacitySlider } from '$lib/components/settings';
   import { Preview } from '$lib/components/dashboard';
@@ -9,7 +9,7 @@
   const client = $derived(authStore.client);
 
   // Appearance fields
-  let primaryColor = $state('#00d9a3');
+  let primaryColor = $state('#FF6B5B');
   let buttonOpacity = $state(100);
   let backgroundType = $state<BackgroundType>('solid');
   let backgroundValue = $state('#ffffff');
@@ -51,7 +51,7 @@
   // Initialize form values from client
   $effect(() => {
     if (client) {
-      primaryColor = client.primary_color || '#00d9a3';
+      primaryColor = client.primary_color || '#FF6B5B';
       buttonOpacity = client.button_opacity ?? 100;
       backgroundType = client.background_type || 'solid';
       backgroundValue = client.background_value || '#ffffff';
@@ -84,7 +84,7 @@
 </script>
 
 <svelte:head>
-  <title>Apparence | jLinks Admin</title>
+  <title>Apparence | Noko Admin</title>
 </svelte:head>
 
 <div class="apparence-page">

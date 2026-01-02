@@ -25,7 +25,7 @@ async function seed() {
     .values({
       slug: 'demo',
       name: 'Demo Client',
-      primary_color: '#00D9A3',
+      primary_color: '#FF6B5B',
       secondary_color: '#FFFFFF',
       background_type: 'solid',
       background_value: '#FAFAFA',

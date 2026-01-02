@@ -41,13 +41,13 @@
 </script>
 
 <svelte:head>
-  <title>Réinitialiser le mot de passe | jLinks</title>
+  <title>Réinitialiser le mot de passe | Noko</title>
 </svelte:head>
 
 <div class="container">
   <div class="form-wrapper">
     <div class="logo">
-      <span class="logo-text">jLinks</span>
+      <span class="logo-text">Noko</span>
     </div>
 
     {#if !token}

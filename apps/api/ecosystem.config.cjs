@@ -1,19 +1,19 @@
 /**
- * PM2 Ecosystem Configuration for jLinks API
+ * PM2 Ecosystem Configuration for Noko API
  *
  * Usage:
  *   pm2 start ecosystem.config.cjs
- *   pm2 restart jlinks-api
- *   pm2 logs jlinks-api
+ *   pm2 restart noko-api
+ *   pm2 logs noko-api
  */
 
 module.exports = {
   apps: [
     {
-      name: 'jlinks-api',
+      name: 'noko-api',
       script: 'src/index.ts',
       interpreter: 'bun',
-      cwd: '/opt/jlinks/apps/api',
+      cwd: '/opt/noko/apps/api',
 
       // Environment
       env: {
@@ -31,8 +31,8 @@ module.exports = {
 
       // Logging
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
-      error_file: '/var/log/jlinks/error.log',
-      out_file: '/var/log/jlinks/out.log',
+      error_file: '/var/log/noko/error.log',
+      out_file: '/var/log/noko/out.log',
       merge_logs: true,
 
       // Graceful shutdown

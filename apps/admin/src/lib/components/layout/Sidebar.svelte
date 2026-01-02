@@ -18,7 +18,7 @@
 <aside class="sidebar">
   <div class="sidebar-header">
     <a href="/" class="logo">
-      <img src="/jLinks.webp" alt="jLinks" class="logo-image" />
+      <img src="/noko.webp" alt="Noko" class="logo-image" />
     </a>
   </div>
 

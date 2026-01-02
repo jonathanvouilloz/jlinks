@@ -1,6 +1,6 @@
 // Client data store using Svelte 5 runes
 
-import type { Client, BackgroundType, LayoutType, ButtonStyle } from '@jlinks/shared/types';
+import type { Client, BackgroundType, LayoutType, ButtonStyle } from '@noko/shared/types';
 import { api, ApiError } from '$lib/api';
 import { toastStore } from './toast.svelte';
 import { authStore } from './auth.svelte';

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Link, CreateLinkInput, SocialPresetKey } from '@jlinks/shared/types';
-  import { SOCIAL_PRESETS, getSocialPresetKeys, detectSocialPreset } from '@jlinks/shared/social-presets';
+  import type { Link, CreateLinkInput, SocialPresetKey } from '@noko/shared/types';
+  import { SOCIAL_PRESETS, getSocialPresetKeys, detectSocialPreset } from '@noko/shared/social-presets';
   import { Modal, Input, Button, Toggle } from '$lib/components/ui';
   import { authStore } from '$lib/stores';
   import * as Icons from 'lucide-svelte';
@@ -25,7 +25,7 @@
   let saving = $state(false);
 
   // Get theme color from client
-  const themeColor = $derived(authStore.client?.primary_color || '#00d9a3');
+  const themeColor = $derived(authStore.client?.primary_color || '#FF6B5B');
 
   // Preview colors (computed)
   const previewBgColor = $derived(

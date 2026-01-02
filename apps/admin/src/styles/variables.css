@@ -1,5 +1,5 @@
 /* ============================================
-   jLinks Design System - CSS Variables
+   Noko Design System - CSS Variables
    Single source of truth for all design tokens
    ============================================ */
 
@@ -7,17 +7,17 @@
   /* ============================================
      COLORS - Background
      ============================================ */
-  --color-bg: #fafafa;
+  --color-bg: #FFFAF9;
   --color-surface: #ffffff;
   --color-border: #e5e5e5;
   --color-border-hover: #d4d4d4;
 
   /* ============================================
-     COLORS - Primary (Turquoise Jon Labs)
+     COLORS - Primary (Coral Noko)
      ============================================ */
-  --color-primary: #00d9a3;
-  --color-primary-hover: #00a87d;
-  --color-primary-light: #e6fbf5;
+  --color-primary: #FF6B5B;
+  --color-primary-hover: #E85A4F;
+  --color-primary-light: #FFF0EE;
 
   /* ============================================
      COLORS - Text
@@ -46,7 +46,7 @@
      ============================================ */
   --color-sidebar-bg: #ffffff;
   --color-sidebar-hover: #f5f5f5;
-  --color-sidebar-active: #e6fbf5;
+  --color-sidebar-active: #FFF0EE;
 
   /* ============================================
      TYPOGRAPHY

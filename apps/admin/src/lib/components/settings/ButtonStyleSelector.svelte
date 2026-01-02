@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ButtonStyle } from '@jlinks/shared/types';
+  import type { ButtonStyle } from '@noko/shared/types';
 
   interface Props {
     value: ButtonStyle;

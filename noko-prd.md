@@ -1,15 +1,15 @@
-# jLinks — Product Requirements Document (PRD)
+# Noko — Product Requirements Document (PRD)
 
 ## 📋 Vue d'ensemble
 
-**Nom du produit :** jLinks  
+**Nom du produit :** Noko
 **Propriétaire :** Jon Labs (Jonathan Vouilloz)  
 **Version :** 1.0 MVP  
 **Date :** Décembre 2024
 
 ### Description
 
-jLinks est une solution de page de liens personnalisée (style Linktree) proposée en bonus aux clients de Jon Labs. Chaque client dispose d'une page publique (`links.jonlabs.ch/[slug]`) entièrement personnalisable, avec une interface d'administration simple pour gérer ses liens.
+Noko est une solution de page de liens personnalisée (style Linktree) proposée en bonus aux clients de Jon Labs. Chaque client dispose d'une page publique (`nokolink.com/[slug]`) entièrement personnalisable, avec une interface d'administration simple pour gérer ses liens.
 
 ### Objectifs
 
@@ -47,7 +47,7 @@ Freemium simple : offre gratuite généreuse pour acquisition, plan Pro pour dé
 | **Fonts custom** | ❌ (Inter par défaut) | ✅ Google Fonts |
 | **Arrière-plan** | Couleur solide | Couleur, dégradé, image |
 | **Analytics** | ❌ | ✅ Vues + clics |
-| **Badge "jLinks"** | ✅ Affiché | ❌ Retiré |
+| **Badge "Noko"** | ✅ Affiché | ❌ Retiré |
 | **Support** | Community | Prioritaire |
 
 ### Évolutions futures (post-MVP)
@@ -69,7 +69,7 @@ Chaque client a accès à un QR code personnalisé aux couleurs de sa page, tél
 **Emplacement UI :** Section dédiée dans le dashboard ou Settings
 
 **Fonctionnalités :**
-- Génération auto à partir de l'URL publique (`links.jonlabs.ch/slug`)
+- Génération auto à partir de l'URL publique (`nokolink.com/slug`)
 - Couleurs basées sur `primary_color` du client
 - Téléchargement PNG (pour print) et SVG (pour web/vectoriel)
 - Preview en temps réel
@@ -86,7 +86,7 @@ export const qrcodeRoutes = new Elysia({ prefix: '/qrcode' })
     if (!user) return error(401, 'Unauthorized');
     
     const client = await getClientById(user.clientId);
-    const url = `https://links.jonlabs.ch/${client.slug}`;
+    const url = `https://nokolink.com/${client.slug}`;
     
     const options = {
       color: {
@@ -165,7 +165,7 @@ Option permettant aux visiteurs de sauvegarder les coordonnées du client direct
 - Nom complet
 - Email
 - Téléphone
-- Site web (URL de la page jLinks ou custom)
+- Site web (URL de la page Noko ou custom)
 - Entreprise (optionnel)
 
 **Dans la DB :**
@@ -229,7 +229,7 @@ export const vcardRoutes = new Elysia({ prefix: '/vcard' })
       email: client.vcard_email,
       phone: client.vcard_phone,
       company: client.vcard_company,
-      website: client.vcard_website || `https://links.jonlabs.ch/${client.slug}`,
+      website: client.vcard_website || `https://nokolink.com/${client.slug}`,
     });
     
     return new Response(vcard, {
@@ -257,7 +257,7 @@ export const vcardRoutes = new Elysia({ prefix: '/vcard' })
 )}
 ```
 
-**Style du bouton :** Discret, en bas de page, avant le footer "Créé avec jLinks". Style outlined/ghost pour ne pas concurrencer les liens principaux.
+**Style du bouton :** Discret, en bas de page, avant le footer "Créé avec Noko". Style outlined/ghost pour ne pas concurrencer les liens principaux.
 
 **UI Admin Settings :**
 
@@ -380,8 +380,8 @@ Quand le système de plans sera actif, voici comment afficher les limites :
 │                         VERCEL (gratuit)                        │
 │  CDN mondial, déploiement automatique via GitHub                │
 ├─────────────────────────────────────────────────────────────────┤
-│  • Admin SvelteKit      → admin.links.jonlabs.ch               │
-│  • Pages publiques Astro → links.jonlabs.ch/[slug]             │
+│  • Admin SvelteKit      → admin.nokolink.com               │
+│  • Pages publiques Astro → nokolink.com/[slug]             │
 │  • Rebuild auto via webhook depuis l'API                        │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -391,7 +391,7 @@ Quand le système de plans sera actif, voici comment afficher les limites :
 │                      VPS JON LABS                               │
 │  Serveur existant (n8n, etc.)                                   │
 ├─────────────────────────────────────────────────────────────────┤
-│  • API Elysia           → api.links.jonlabs.ch                 │
+│  • API Elysia           → api.nokolink.com                 │
 │  • SQLite database      → /data/jlinks.db                      │
 │  • Uploads (images)     → /data/jlinks/uploads/                │
 │  • Process manager      → PM2 ou Docker                        │
@@ -428,7 +428,7 @@ Nouvelles pages statiques en ligne (~30-60 sec)
                     │                           │
                     ▼                           ▼
 ┌──────────────────────────────┐  ┌──────────────────────────────┐
-│   admin.links.jonlabs.ch     │  │    links.jonlabs.ch/[slug]   │
+│   admin.nokolink.com     │  │    nokolink.com/[slug]   │
 │        (SvelteKit)           │  │         (Astro static)       │
 │                              │  │                              │
 │  • Login/Auth                │  │  • Pages publiques           │
@@ -441,7 +441,7 @@ Nouvelles pages statiques en ligne (~30-60 sec)
                     ▼                           │
 ┌──────────────────────────────────────────────────────────────────┐
 │                        API (Elysia)                              │
-│                    api.links.jonlabs.ch                          │
+│                    api.nokolink.com                          │
 ├──────────────────────────────────────────────────────────────────┤
 │  • Auth (Better Auth)                                            │
 │  • CRUD Clients                                                  │
@@ -944,7 +944,7 @@ export const SOCIAL_PRESETS = {
 ### Base URL
 
 ```
-https://api.links.jonlabs.ch
+https://api.nokolink.com
 ```
 
 ### Authentication (Better Auth)
@@ -1077,7 +1077,7 @@ GET    /public/clients/:slug      # Get client + links by slug (published only)
 ### Flow 1 : Super-admin crée un nouveau client
 
 ```
-1. Super-admin se connecte à admin.links.jonlabs.ch
+1. Super-admin se connecte à admin.nokolink.com
 2. Accède à la section "Gestion clients"
 3. Clique "Nouveau client"
 4. Remplit : nom, slug, email du client
@@ -1089,7 +1089,7 @@ GET    /public/clients/:slug      # Get client + links by slug (published only)
 
 ```
 1. Client reçoit ses credentials
-2. Se connecte à admin.links.jonlabs.ch/login
+2. Se connecte à admin.nokolink.com/login
 3. Est redirigé vers son dashboard
 4. Voit le preview vide de sa page
 5. Clique "Ajouter un lien"
@@ -1115,7 +1115,7 @@ GET    /public/clients/:slug      # Get client + links by slug (published only)
 
 ```
 1. Visiteur clique sur un lien (bio Instagram, QR code, etc.)
-2. Arrive sur links.jonlabs.ch/cafe-du-coin
+2. Arrive sur nokolink.com/cafe-du-coin
 3. Voit la page personnalisée du client
 4. Clique sur un lien → Redirigé + click comptabilisé
 ```
@@ -1312,7 +1312,7 @@ const { client, links } = Astro.props;
     </div>
     
     <footer>
-      <a href="https://jonlabs.ch">Créé avec jLinks</a>
+      <a href="https://jonlabs.ch">Créé avec Noko</a>
     </footer>
   </main>
 </body>
@@ -1590,7 +1590,7 @@ VERCEL_DEPLOY_HOOK=https://api.vercel.com/v1/integrations/deploy/prj_xxxxx/yyyy
 - [ ] Google Fonts dynamiques
 - [ ] Meta tags SEO
 - [ ] Bouton vCard "Ajouter aux contacts" (si activé)
-- [ ] Footer "Créé avec jLinks"
+- [ ] Footer "Créé avec Noko"
 - [ ] Responsive design (mobile-first)
 
 **Critères de validation :**
@@ -1751,10 +1751,10 @@ DATABASE_URL=file:/data/jlinks/jlinks.db
 
 # Auth
 BETTER_AUTH_SECRET=your-secret-key-min-32-chars
-BETTER_AUTH_URL=https://api.links.jonlabs.ch
+BETTER_AUTH_URL=https://api.nokolink.com
 
 # CORS
-ALLOWED_ORIGINS=https://admin.links.jonlabs.ch,https://links.jonlabs.ch
+ALLOWED_ORIGINS=https://admin.nokolink.com,https://nokolink.com
 
 # Vercel Deploy Hook
 VERCEL_DEPLOY_HOOK=https://api.vercel.com/v1/integrations/deploy/prj_xxxxx/yyyy
@@ -1768,16 +1768,16 @@ UPLOAD_MAX_SIZE=5242880  # 5MB
 
 ```bash
 # apps/admin/.env
-PUBLIC_API_URL=https://api.links.jonlabs.ch
-PUBLIC_APP_URL=https://admin.links.jonlabs.ch
+PUBLIC_API_URL=https://api.nokolink.com
+PUBLIC_APP_URL=https://admin.nokolink.com
 ```
 
 ### Pages publiques Astro (Vercel)
 
 ```bash
 # apps/web/.env
-API_URL=https://api.links.jonlabs.ch
-SITE_URL=https://links.jonlabs.ch
+API_URL=https://api.nokolink.com
+SITE_URL=https://nokolink.com
 ```
 
 ---
@@ -1827,16 +1827,16 @@ pm2 save
 
 server {
     listen 80;
-    server_name api.links.jonlabs.ch;
+    server_name api.nokolink.com;
     return 301 https://$server_name$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name api.links.jonlabs.ch;
+    server_name api.nokolink.com;
 
-    ssl_certificate /etc/letsencrypt/live/api.links.jonlabs.ch/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/api.links.jonlabs.ch/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/api.nokolink.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.nokolink.com/privkey.pem;
 
     # Uploads statiques
     location /uploads/ {
@@ -1867,7 +1867,7 @@ server {
 sudo apt install certbot python3-certbot-nginx
 
 # Générer certificat
-sudo certbot --nginx -d api.links.jonlabs.ch
+sudo certbot --nginx -d api.nokolink.com
 
 # Auto-renouvellement (déjà configuré par certbot)
 ```

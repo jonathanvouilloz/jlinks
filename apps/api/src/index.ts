@@ -57,7 +57,7 @@ const app = new Elysia()
   .listen(PORT);
 
 console.log(`
-  🚀 jLinks API is running!
+  Noko API is running!
 
   Local:   http://localhost:${PORT}
   Health:  http://localhost:${PORT}/health

@@ -1,6 +1,6 @@
 // Links store using Svelte 5 runes
 
-import type { Link, CreateLinkInput, UpdateLinkInput } from '@jlinks/shared/types';
+import type { Link, CreateLinkInput, UpdateLinkInput } from '@noko/shared/types';
 import { api, ApiError } from '$lib/api';
 import { toastStore } from './toast.svelte';
 

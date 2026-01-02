@@ -1,6 +1,6 @@
 <script lang="ts">
   import { PUBLIC_SITE_URL } from '$env/static/public';
-  import type { Link, CreateLinkInput, UpdateLinkInput } from '@jlinks/shared/types';
+  import type { Link, CreateLinkInput, UpdateLinkInput } from '@noko/shared/types';
   import { Button, Card, Modal } from '$lib/components/ui';
   import { LinksList, LinkForm, Preview } from '$lib/components/dashboard';
   import { Plus, AlertCircle, ExternalLink, Copy, Check } from 'lucide-svelte';
@@ -83,7 +83,7 @@
 </script>
 
 <svelte:head>
-  <title>Liens | jLinks Admin</title>
+  <title>Liens | Noko Admin</title>
 </svelte:head>
 
 <div class="dashboard">

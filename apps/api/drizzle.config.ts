@@ -5,6 +5,6 @@ export default defineConfig({
   out: './drizzle',
   dialect: 'sqlite',
   dbCredentials: {
-    url: process.env.DATABASE_URL || './data/jlinks.db',
+    url: process.env.DATABASE_URL || './data/noko.db',
   },
 });

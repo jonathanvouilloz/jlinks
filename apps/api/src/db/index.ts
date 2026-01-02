@@ -3,7 +3,7 @@ import { drizzle } from 'drizzle-orm/bun-sqlite';
 import * as schema from './schema';
 
 // Get database path from environment or use default
-const DATABASE_URL = process.env.DATABASE_URL || './data/jlinks.db';
+const DATABASE_URL = process.env.DATABASE_URL || './data/noko.db';
 
 // Extract file path from URL (remove 'file:' prefix if present)
 const dbPath = DATABASE_URL.replace(/^file:/, '');

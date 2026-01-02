@@ -1,6 +1,6 @@
-# jLinks
+# Noko
 
-A customizable link page solution (Linktree-style) built with modern web technologies.
+A customizable link page solution (Linktree-style) built by Jon Labs with modern web technologies.
 
 ## Tech Stack
 
@@ -16,7 +16,7 @@ A customizable link page solution (Linktree-style) built with modern web technol
 ## Project Structure
 
 ```
-jlinks/
+noko/
 ├── apps/
 │   ├── api/              # Elysia backend API (port 3000)
 │   ├── admin/            # SvelteKit admin dashboard (port 5173)
@@ -68,7 +68,7 @@ bun --version
 ### 1. Clone & Install Dependencies
 
 ```bash
-cd /path/to/jlinks
+cd /path/to/noko
 bun install
 ```
 
@@ -242,7 +242,7 @@ Visit **http://localhost:5173/styleguide** to see:
 
 ## Database
 
-SQLite database stored at `apps/api/data/jlinks.db`
+SQLite database stored at `apps/api/data/noko.db`
 
 ### Tables
 
@@ -294,7 +294,7 @@ Add Bun to PATH (see Prerequisites section).
 
 ```bash
 # Reset database
-rm -rf apps/api/data/jlinks.db
+rm -rf apps/api/data/noko.db
 bun run db:migrate
 bun run db:seed
 ```

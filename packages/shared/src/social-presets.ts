@@ -16,7 +16,7 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
     icon: 'palette',
     iconSource: 'lucide',
     label: 'Thème',
-    bgColor: '#00d9a3', // Default, will be overridden dynamically with client.primary_color
+    bgColor: '#FF6B5B', // Default, will be overridden dynamically with client.primary_color
     textColor: '#ffffff',
   },
   instagram: {

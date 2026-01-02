@@ -32,7 +32,7 @@
     if (path === '/apparence') return 'Apparence';
     if (path === '/contenu') return 'Contenu';
     if (path === '/admin/clients') return 'Gestion des clients';
-    return 'jLinks';
+    return 'Noko';
   }
 
   // Reactive page title

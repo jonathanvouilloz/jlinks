@@ -1,4 +1,4 @@
-// jLinks Landing Page - FR/EN Translations
+// Noko Landing Page - FR/EN Translations
 
 export const translations = {
   fr: {
@@ -37,7 +37,7 @@ export const translations = {
       },
       linktreeFree: 'Linktree Free',
       linktreePro: 'Linktree Pro',
-      jlinks: 'jLinks',
+      jlinks: 'Noko',
       footer:
         'Le QR code brandé et les thèmes pro ? Chez Linktree, c\'est $9/mois. Chez nous, c\'est gratuit.',
       basic: 'Basique',
@@ -46,7 +46,7 @@ export const translations = {
 
     // Features
     features: {
-      title: 'Ce que jLinks offre.',
+      title: 'Ce que Noko offre.',
       qr: {
         title: 'QR Code à tes couleurs',
         description:
@@ -100,12 +100,12 @@ export const translations = {
           'Thèmes & fonts custom',
           'Layouts exclusifs',
           'Analytics complets',
-          'Sans badge jLinks',
+          'Sans badge Noko',
           'Support prioritaire',
         ],
         cta: 'Passer Pro',
       },
-      footer: 'Linktree Pro = $9/mois. jLinks Pro = 5.- CHF.',
+      footer: 'Linktree Pro = $9/mois. Noko Pro = 5.- CHF.',
     },
 
     // Testimonials
@@ -151,7 +151,7 @@ export const translations = {
         {
           question: 'Pourquoi c\'est gratuit ?',
           answer:
-            'jLinks est un projet de Jon Labs, un studio web basé à Genève. On l\'a créé pour nos clients, puis on s\'est dit que ça pourrait servir à tout le monde.',
+            'Noko est un projet de Jon Labs, un studio web basé à Genève. On l\'a créé pour nos clients, puis on s\'est dit que ça pourrait servir à tout le monde.',
         },
         {
           question: 'C\'est quoi la différence avec Linktree ?',
@@ -224,7 +224,7 @@ export const translations = {
       },
       linktreeFree: 'Linktree Free',
       linktreePro: 'Linktree Pro',
-      jlinks: 'jLinks',
+      jlinks: 'Noko',
       footer:
         'Branded QR code and pro themes? At Linktree, it\'s $9/month. Here, it\'s free.',
       basic: 'Basic',
@@ -233,7 +233,7 @@ export const translations = {
 
     // Features
     features: {
-      title: 'What jLinks offers.',
+      title: 'What Noko offers.',
       qr: {
         title: 'QR Code in your colors',
         description:
@@ -287,12 +287,12 @@ export const translations = {
           'Custom themes & fonts',
           'Exclusive layouts',
           'Full analytics',
-          'No jLinks badge',
+          'No Noko badge',
           'Priority support',
         ],
         cta: 'Go Pro',
       },
-      footer: 'Linktree Pro = $9/month. jLinks Pro = $5.',
+      footer: 'Linktree Pro = $9/month. Noko Pro = $5.',
     },
 
     // Testimonials
@@ -338,7 +338,7 @@ export const translations = {
         {
           question: 'Why is it free?',
           answer:
-            'jLinks is a project by Jon Labs, a web studio based in Geneva. We built it for our clients, then figured it could help everyone.',
+            'Noko is a project by Jon Labs, a web studio based in Geneva. We built it for our clients, then figured it could help everyone.',
         },
         {
           question: 'What\'s the difference with Linktree?',
