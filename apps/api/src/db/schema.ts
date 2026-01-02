@@ -98,27 +98,72 @@ export const links = sqliteTable('links', {
 });
 
 // ============================================
-// USERS TABLE
+// USERS TABLE (Better Auth compatible)
 // ============================================
 export const users = sqliteTable('users', {
   id: text('id').primaryKey(),
   email: text('email').unique().notNull(),
-  password_hash: text('password_hash').notNull(),
+  password_hash: text('password_hash'),
+  name: text('name'), // Better Auth field
+  emailVerified: integer('email_verified', { mode: 'boolean' }).default(false), // Better Auth field
+  image: text('image'), // Better Auth field
   client_id: text('client_id').references(() => clients.id, { onDelete: 'set null' }),
   role: text('role').default('client'), // 'client' | 'super_admin'
+  password_needs_upgrade: integer('password_needs_upgrade', { mode: 'boolean' }).default(false), // For SHA-256 migration
   created_at: text('created_at').default(sql`CURRENT_TIMESTAMP`),
+  updated_at: text('updated_at').default(sql`CURRENT_TIMESTAMP`), // Better Auth field
 });
 
 // ============================================
-// SESSIONS TABLE (for Better Auth)
+// SESSIONS TABLE (Better Auth compatible)
 // ============================================
 export const sessions = sqliteTable('sessions', {
   id: text('id').primaryKey(),
   user_id: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
+  token: text('token').unique(), // Better Auth session token
+  expires_at: text('expires_at').notNull(),
+  ip_address: text('ip_address'), // Better Auth - for rate limiting
+  user_agent: text('user_agent'), // Better Auth - device tracking
+  created_at: text('created_at').default(sql`CURRENT_TIMESTAMP`),
+  updated_at: text('updated_at').default(sql`CURRENT_TIMESTAMP`), // Better Auth field
+});
+
+// ============================================
+// ACCOUNTS TABLE (Better Auth - required for auth providers)
+// ============================================
+export const accounts = sqliteTable('accounts', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  user_id: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  provider: text('provider').notNull(), // 'credential' for email/password
+  provider_account_id: text('provider_account_id').notNull(),
+  access_token: text('access_token'),
+  refresh_token: text('refresh_token'),
+  expires_at: integer('expires_at'),
+  token_type: text('token_type'),
+  scope: text('scope'),
+  id_token: text('id_token'),
+  created_at: text('created_at').default(sql`CURRENT_TIMESTAMP`),
+  updated_at: text('updated_at').default(sql`CURRENT_TIMESTAMP`),
+});
+
+// ============================================
+// VERIFICATIONS TABLE (Better Auth - for password reset, email verification)
+// ============================================
+export const verifications = sqliteTable('verifications', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  identifier: text('identifier').notNull(),
+  value: text('value').notNull(),
   expires_at: text('expires_at').notNull(),
   created_at: text('created_at').default(sql`CURRENT_TIMESTAMP`),
+  updated_at: text('updated_at').default(sql`CURRENT_TIMESTAMP`),
 });
 
 // ============================================
@@ -175,6 +220,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     references: [clients.id],
   }),
   sessions: many(sessions),
+  accounts: many(accounts),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -195,5 +241,12 @@ export const pageViewsRelations = relations(page_views, ({ one }) => ({
   client: one(clients, {
     fields: [page_views.client_id],
     references: [clients.id],
+  }),
+}));
+
+export const accountsRelations = relations(accounts, ({ one }) => ({
+  user: one(users, {
+    fields: [accounts.user_id],
+    references: [users.id],
   }),
 }));

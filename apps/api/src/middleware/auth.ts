@@ -35,11 +35,13 @@ export const authMiddleware = new Elysia({ name: 'auth' })
 
     try {
       // Get session and check if it's valid
+      // Support both session.id and session.token lookup for better-auth compatibility
       const now = new Date().toISOString();
+      const { or } = await import('drizzle-orm');
 
       const session = await db.query.sessions.findFirst({
         where: and(
-          eq(sessions.id, sessionId),
+          or(eq(sessions.id, sessionId), eq(sessions.token, sessionId)),
           gt(sessions.expires_at, now)
         ),
         with: {

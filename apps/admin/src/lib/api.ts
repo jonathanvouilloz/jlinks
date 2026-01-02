@@ -48,6 +48,17 @@ async function request<T>(
   console.log('[API] Response status:', response.status);
 
   if (!response.ok) {
+    // Handle rate limiting (429)
+    if (response.status === 429) {
+      const retryAfter = response.headers.get('X-Retry-After') || response.headers.get('Retry-After');
+      const seconds = retryAfter ? parseInt(retryAfter, 10) : 60;
+      throw new ApiError(
+        429,
+        `Trop de tentatives. Réessayez dans ${seconds} secondes.`,
+        'RATE_LIMITED'
+      );
+    }
+
     let message = 'An error occurred';
     try {
       const errorData = await response.json();

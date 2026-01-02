@@ -13,6 +13,7 @@ async function seed() {
       email: 'admin@jonlabs.ch',
       password_hash: adminPassword,
       role: 'super_admin',
+      password_needs_upgrade: false, // New passwords use scrypt
     })
     .returning();
 
@@ -52,6 +53,7 @@ async function seed() {
       password_hash: demoPassword,
       client_id: demoClient.id,
       role: 'client',
+      password_needs_upgrade: false, // New passwords use scrypt
     })
     .returning();
 
