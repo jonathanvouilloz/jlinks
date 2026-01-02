@@ -4,11 +4,58 @@ import { eq, and, gt } from 'drizzle-orm';
 import { hashPassword, verifyPassword as verifyPwd } from '../lib/auth';
 import { sendPasswordResetEmail } from '../lib/email';
 
+// Simple in-memory rate limiter
+type RateLimitEntry = { count: number; resetAt: number };
+const rateLimitStore = new Map<string, RateLimitEntry>();
+
+function checkRateLimit(
+  key: string,
+  max: number,
+  durationMs: number
+): { allowed: boolean; retryAfter?: number } {
+  const now = Date.now();
+  const entry = rateLimitStore.get(key);
+
+  // Clean up expired entries periodically
+  if (rateLimitStore.size > 10000) {
+    for (const [k, v] of rateLimitStore) {
+      if (v.resetAt < now) rateLimitStore.delete(k);
+    }
+  }
+
+  if (!entry || entry.resetAt < now) {
+    // New window
+    rateLimitStore.set(key, { count: 1, resetAt: now + durationMs });
+    return { allowed: true };
+  }
+
+  if (entry.count >= max) {
+    return { allowed: false, retryAfter: Math.ceil((entry.resetAt - now) / 1000) };
+  }
+
+  entry.count++;
+  return { allowed: true };
+}
+
+// Helper to get client IP (handles proxies)
+function getClientIP(request: Request): string {
+  return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+}
+
 export const authRoutes = new Elysia({ prefix: '/auth' })
-  // Sign in with email/password
+  // Sign in with email/password - Rate limited: 5 req / 15 min
   .post(
     '/sign-in',
-    async ({ body, request, cookie, error }) => {
+    async ({ body, request, cookie, set }) => {
+      // Rate limit check
+      const ip = getClientIP(request);
+      const rateCheck = checkRateLimit(`sign-in:${ip}`, 5, 15 * 60 * 1000);
+      if (!rateCheck.allowed) {
+        set.status = 429;
+        set.headers['Retry-After'] = String(rateCheck.retryAfter);
+        return { error: `Trop de tentatives. Réessayez dans ${rateCheck.retryAfter} secondes.` };
+      }
+
       const { email, password } = body;
 
       // Find user
@@ -18,7 +65,8 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
       });
 
       if (!dbUser) {
-        return error(401, 'Invalid email or password');
+        set.status = 401;
+        return { error: 'Invalid email or password' };
       }
 
       // Verify password (supports both legacy SHA-256 and new scrypt)
@@ -29,7 +77,8 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
       );
 
       if (!isValid) {
-        return error(401, 'Invalid email or password');
+        set.status = 401;
+        return { error: 'Invalid email or password' };
       }
 
       // If password was SHA-256, upgrade to scrypt
@@ -55,7 +104,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
         user_id: dbUser.id,
         token: sessionId,
         expires_at: expiresAt.toISOString(),
-        ip_address: request.headers.get('x-forwarded-for') || 'unknown',
+        ip_address: ip,
         user_agent: request.headers.get('user-agent') || 'unknown',
       });
 
@@ -138,11 +187,12 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
   // Change password
   .post(
     '/change-password',
-    async ({ body, cookie, error }) => {
+    async ({ body, cookie, set }) => {
       const sessionId = cookie.session.value;
 
       if (!sessionId) {
-        return error(401, 'Unauthorized');
+        set.status = 401;
+        return { error: 'Unauthorized' };
       }
 
       // Find session and user
@@ -152,7 +202,8 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
       });
 
       if (!session || new Date(session.expires_at) < new Date()) {
-        return error(401, 'Unauthorized');
+        set.status = 401;
+        return { error: 'Unauthorized' };
       }
 
       const { currentPassword, newPassword } = body;
@@ -166,7 +217,8 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
       );
 
       if (!isValid) {
-        return error(401, 'Current password is incorrect');
+        set.status = 401;
+        return { error: 'Current password is incorrect' };
       }
 
       // Hash new password with scrypt
@@ -191,10 +243,19 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
     }
   )
 
-  // Forgot password - request reset email
+  // Forgot password - Rate limited: 3 req / hour
   .post(
     '/forgot-password',
-    async ({ body }) => {
+    async ({ body, request, set }) => {
+      // Rate limit check
+      const ip = getClientIP(request);
+      const rateCheck = checkRateLimit(`forgot:${ip}`, 3, 60 * 60 * 1000);
+      if (!rateCheck.allowed) {
+        set.status = 429;
+        set.headers['Retry-After'] = String(rateCheck.retryAfter);
+        return { error: `Trop de demandes. Réessayez dans ${Math.ceil(rateCheck.retryAfter! / 60)} minutes.` };
+      }
+
       const { email } = body;
 
       // Find user (don't reveal if email exists)
@@ -237,10 +298,19 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
     }
   )
 
-  // Reset password with token
+  // Reset password - Rate limited: 5 req / hour
   .post(
     '/reset-password',
-    async ({ body, error }) => {
+    async ({ body, request, set }) => {
+      // Rate limit check
+      const ip = getClientIP(request);
+      const rateCheck = checkRateLimit(`reset:${ip}`, 5, 60 * 60 * 1000);
+      if (!rateCheck.allowed) {
+        set.status = 429;
+        set.headers['Retry-After'] = String(rateCheck.retryAfter);
+        return { error: `Trop de tentatives. Réessayez dans ${Math.ceil(rateCheck.retryAfter! / 60)} minutes.` };
+      }
+
       const { token, newPassword } = body;
 
       // Find valid verification token
@@ -253,7 +323,8 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
       });
 
       if (!verification) {
-        return error(400, 'Invalid or expired reset token');
+        set.status = 400;
+        return { error: 'Invalid or expired reset token' };
       }
 
       // Find user by email
@@ -262,7 +333,8 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
       });
 
       if (!user) {
-        return error(400, 'User not found');
+        set.status = 400;
+        return { error: 'User not found' };
       }
 
       // Update password
@@ -292,14 +364,24 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
     }
   )
 
-  // Delete account
+  // Delete account - Rate limited: 3 req / hour
   .delete(
     '/account',
-    async ({ body, cookie, error }) => {
+    async ({ body, request, cookie, set }) => {
+      // Rate limit check
+      const ip = getClientIP(request);
+      const rateCheck = checkRateLimit(`delete:${ip}`, 3, 60 * 60 * 1000);
+      if (!rateCheck.allowed) {
+        set.status = 429;
+        set.headers['Retry-After'] = String(rateCheck.retryAfter);
+        return { error: `Trop de tentatives. Réessayez dans ${Math.ceil(rateCheck.retryAfter! / 60)} minutes.` };
+      }
+
       const sessionId = cookie.session.value;
 
       if (!sessionId) {
-        return error(401, 'Unauthorized');
+        set.status = 401;
+        return { error: 'Unauthorized' };
       }
 
       // Find session and user
@@ -309,7 +391,8 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
       });
 
       if (!session || new Date(session.expires_at) < new Date()) {
-        return error(401, 'Unauthorized');
+        set.status = 401;
+        return { error: 'Unauthorized' };
       }
 
       const { password } = body;
@@ -323,7 +406,8 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
       );
 
       if (!isValid) {
-        return error(401, 'Invalid password');
+        set.status = 401;
+        return { error: 'Invalid password' };
       }
 
       // Delete in order: sessions -> user -> client (cascade deletes links)
