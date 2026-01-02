@@ -93,6 +93,7 @@ const iconRadius = getIconRadius(buttonStyle);
               : iconBgColor;
 
             const iconName = link.icon || preset?.icon || 'link';
+            const iconSource = preset?.iconSource || 'lucide';
 
             return (
               <a
@@ -103,7 +104,7 @@ const iconRadius = getIconRadius(buttonStyle);
                 rel="noopener noreferrer"
               >
                 <span class="premium-link-icon" style={`background: ${iconBgStyle}; border-radius: ${iconRadius};`}>
-                  <Icon name={iconName} size={22} />
+                  <Icon name={iconName} size={22} source={iconSource} />
                 </span>
                 <div class="premium-link-content">
                   <span class="premium-link-title">{link.title}</span>

@@ -104,6 +104,7 @@ const outerBackgroundColor = isImageBg
           const bgStyle = buttonOpacity < 100 && bgColor.startsWith('#') ? hexToRgba(bgColor, buttonOpacity) : bgColor;
           const textColor = preset?.textColor || link.custom_text_color || '#FFFFFF';
           const iconName = link.icon || preset?.icon || 'link';
+          const iconSource = preset?.iconSource || (useTheme ? SOCIAL_PRESETS.theme.iconSource : 'lucide');
 
           const itemStyle = isOutline
             ? `background: transparent; border: 2px solid ${bgColor}; color: ${bgColor}; border-radius: ${gridRadius};`
@@ -119,7 +120,7 @@ const outerBackgroundColor = isImageBg
               title={link.title}
             >
               <span class="link-grid-icon">
-                <Icon name={iconName} size={28} />
+                <Icon name={iconName} size={28} source={iconSource} />
               </span>
               <span class="link-grid-title">{link.title}</span>
             </a>

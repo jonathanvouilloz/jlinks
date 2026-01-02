@@ -4,6 +4,7 @@
   import { Toggle, Button } from '$lib/components/ui';
   import { GripVertical, Pencil, Trash2, ExternalLink } from 'lucide-svelte';
   import * as Icons from 'lucide-svelte';
+  import SimpleIcon from '$lib/components/icons/SimpleIcon.svelte';
 
   interface Props {
     link: Link;
@@ -14,8 +15,8 @@
 
   let { link, onEdit, onDelete, onToggle }: Props = $props();
 
-  // Get icon component by name
-  function getIconComponent(iconName: string | null) {
+  // Get icon component by name (for Lucide icons)
+  function getLucideIconComponent(iconName: string | null) {
     if (!iconName) return null;
     const pascalName = iconName.charAt(0).toUpperCase() + iconName.slice(1).replace(/-([a-z])/g, (_, c) => c.toUpperCase());
     return (Icons as Record<string, any>)[pascalName] || null;
@@ -24,9 +25,10 @@
   // Get preset info
   const preset = $derived(link.social_preset ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey] : null);
 
-  // Get display icon
+  // Get display icon info
   const iconName = $derived(preset?.icon || link.icon || 'link');
-  const IconComponent = $derived(getIconComponent(iconName));
+  const iconSource = $derived(preset?.iconSource || 'lucide');
+  const LucideIconComponent = $derived(iconSource === 'lucide' ? getLucideIconComponent(iconName) : null);
 
   // Get display colors
   const bgColor = $derived(preset?.bgColor || link.custom_bg_color || 'var(--color-primary)');
@@ -39,8 +41,10 @@
   </div>
 
   <div class="link-preview" style="background: {bgColor}; color: {textColor};">
-    {#if IconComponent}
-      <svelte:component this={IconComponent} size={16} />
+    {#if iconSource === 'simple-icons'}
+      <SimpleIcon name={iconName as 'instagram' | 'youtube' | 'x' | 'facebook' | 'github' | 'tiktok' | 'whatsapp'} size={16} />
+    {:else if LucideIconComponent}
+      <svelte:component this={LucideIconComponent} size={16} />
     {/if}
   </div>
 

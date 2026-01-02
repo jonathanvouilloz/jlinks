@@ -21,6 +21,7 @@ const preset = socialPreset ? SOCIAL_PRESETS[socialPreset as SocialPresetKey] : 
 const finalBgColor = preset?.bgColor || bgColor;
 const finalTextColor = preset?.textColor || textColor;
 const iconName = icon || preset?.icon || 'link';
+const iconSource = preset?.iconSource || 'lucide';
 
 // Convert hex to rgba with opacity
 function hexToRgba(hex: string, alpha: number): string {
@@ -64,7 +65,7 @@ const styleString = isOutline
   rel="noopener noreferrer"
   style={styleString}
 >
-  <Icon name={iconName} size={20} />
+  <Icon name={iconName} size={20} source={iconSource} />
   <span>{title}</span>
 </a>
 

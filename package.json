@@ -21,5 +21,8 @@
   },
   "devDependencies": {
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "simple-icons": "^16.3.0"
   }
 }

@@ -1,40 +1,42 @@
 ---
 import {
-  Instagram,
-  Youtube,
   Linkedin,
-  Twitter,
-  Music,
-  Facebook,
-  Github,
   Mail,
-  MessageCircle,
   Globe,
+  Palette,
   Link as LinkIcon,
 } from 'lucide-astro';
+import SimpleIcon from './SimpleIcon.astro';
+import type { IconSource } from '@jlinks/shared/social-presets';
 
 interface Props {
   name: string;
   size?: number;
+  source?: IconSource;
 }
 
-const { name, size = 20 } = Astro.props;
+const { name, size = 20, source = 'lucide' } = Astro.props;
 
-const icons: Record<string, any> = {
-  instagram: Instagram,
-  youtube: Youtube,
+// Simple Icons brand names
+const simpleIconNames = ['instagram', 'youtube', 'x', 'facebook', 'github', 'tiktok', 'whatsapp'];
+
+// Lucide icons for non-brand icons
+const lucideIcons: Record<string, any> = {
   linkedin: Linkedin,
-  twitter: Twitter,
-  music: Music,
-  facebook: Facebook,
-  github: Github,
   mail: Mail,
-  'message-circle': MessageCircle,
   globe: Globe,
+  palette: Palette,
   link: LinkIcon,
 };
 
-const IconComponent = icons[name?.toLowerCase()] || LinkIcon;
+const isSimpleIcon = source === 'simple-icons' && simpleIconNames.includes(name?.toLowerCase());
+const LucideIcon = lucideIcons[name?.toLowerCase()] || LinkIcon;
+
+type SimpleIconName = 'instagram' | 'youtube' | 'x' | 'facebook' | 'github' | 'tiktok' | 'whatsapp';
 ---
 
-<IconComponent size={size} />
+{isSimpleIcon ? (
+  <SimpleIcon name={name as SimpleIconName} size={size} />
+) : (
+  <LucideIcon size={size} />
+)}
