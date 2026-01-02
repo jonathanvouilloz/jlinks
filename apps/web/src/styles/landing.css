@@ -306,7 +306,7 @@ body.landing-page {
   right: 0;
   bottom: 0;
   background-image: url('/bg-link2.webp');
-  background-size: cover;
+  background-size: 75%;
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0.2;
