@@ -73,7 +73,7 @@
     </Card>
 
     <p class="login-footer">
-      Powered by <a href="#" target="_blank" rel="noopener">Jon Labs</a>
+      Powered by <a href="https://nokolink.com" target="_blank" rel="noopener">Noko</a>
     </p>
   </div>
 </div>

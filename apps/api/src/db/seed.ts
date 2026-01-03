@@ -10,7 +10,7 @@ async function seed() {
     .insert(users)
     .values({
       id: crypto.randomUUID(),
-      email: 'admin@jonlabs.ch',
+      email: 'admin@nokolink.com',
       password_hash: adminPassword,
       role: 'super_admin',
       password_needs_upgrade: false, // New passwords use scrypt
@@ -104,7 +104,7 @@ async function seed() {
 
   console.log('\n--- Seed completed! ---\n');
   console.log('You can login with:');
-  console.log('  Super Admin: admin@jonlabs.ch / admin123');
+  console.log('  Super Admin: admin@nokolink.com / admin123');
   console.log('  Demo Client: demo@example.com / demo123');
 }
 

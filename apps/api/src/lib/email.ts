@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 
-const FROM_EMAIL = process.env.EMAIL_FROM || 'Noko <noreply@example.com>';
+const FROM_EMAIL = process.env.EMAIL_FROM || 'Noko <noreply@nokolink.com>';
 const ADMIN_URL = process.env.ADMIN_URL || 'http://localhost:5173';
 
 export async function sendPasswordResetEmail(

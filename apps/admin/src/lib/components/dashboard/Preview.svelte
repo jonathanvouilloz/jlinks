@@ -294,7 +294,7 @@
           ` : ''}
 
           <div class="footer">
-            <a href="#">Créé avec Noko</a>
+            <a href="https://nokolink.com">Créé avec Noko</a>
           </div>
         </div>
       </body>
@@ -503,7 +503,7 @@
             </div>
           ` : ''}
           <div class="footer">
-            <a href="#">Créé avec Noko</a>
+            <a href="https://nokolink.com">Créé avec Noko</a>
           </div>
         </div>
       </body>
@@ -657,7 +657,7 @@
             </a>
           ` : ''}
           <div class="footer">
-            <a href="#">Créé avec Noko</a>
+            <a href="https://nokolink.com">Créé avec Noko</a>
           </div>
         </div>
       </body>
@@ -811,7 +811,7 @@
             </a>
           ` : ''}
           <div class="footer">
-            <a href="#">Créé avec Noko</a>
+            <a href="https://nokolink.com">Créé avec Noko</a>
           </div>
         </div>
       </body>
