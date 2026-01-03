@@ -17,7 +17,7 @@
     "@libsql/client": "^0.15.15",
     "@noko/shared": "workspace:*",
     "better-auth": "^1.4.10",
-    "drizzle-orm": "^0.36.0",
+    "drizzle-orm": "^0.31.1",
     "hono": "^4.11.3",
     "qrcode": "^1.5.4",
     "resend": "^6.6.0",
@@ -26,7 +26,7 @@
   "devDependencies": {
     "@types/bun": "^1.1.0",
     "@types/qrcode": "^1.5.5",
-    "drizzle-kit": "^0.31.8",
+    "drizzle-kit": "^0.31.1",
     "typescript": "^5.3.3"
   }
 }
