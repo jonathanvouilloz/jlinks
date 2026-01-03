@@ -265,8 +265,8 @@ servir à tout le monde.
 ### Design
 
 - [ ] Logo SVG créé
-- [ ] Favicon généré
-- [ ] OG image créée
+- [x] Favicon généré
+- [x] OG image créée
 - [ ] Landing page mise à jour
 - [ ] Style guide complet
 
@@ -274,8 +274,8 @@ servir à tout le monde.
 
 - [ ] Domaine acheté
 - [ ] Variables CSS mises à jour
-- [ ] Assets uploadés
-- [ ] Meta tags mis à jour
+- [x] Assets uploadés
+- [x] Meta tags mis à jour
 
 ### Communication
 

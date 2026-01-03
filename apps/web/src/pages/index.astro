@@ -30,7 +30,8 @@ const siteUrl = import.meta.env.SITE_URL || 'https://links.jonlabs.ch';
     <link rel="canonical" href={siteUrl} />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/images/brand/noko-head.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Preload fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -54,10 +55,16 @@ const siteUrl = import.meta.env.SITE_URL || 'https://links.jonlabs.ch';
     <meta property="og:locale" content="fr_CH" />
     <meta property="og:site_name" content="Noko" />
 
+    <!-- Open Graph Image -->
+    <meta property="og:image" content={`${siteUrl}/images/brand/noko-mascot.png`} />
+    <meta property="og:image:width" content="535" />
+    <meta property="og:image:height" content="535" />
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Noko - Tous tes liens. Un seul endroit." />
     <meta name="twitter:description" content="Créez votre page de liens personnalisée. Gratuite. Sans superflu." />
+    <meta name="twitter:image" content={`${siteUrl}/images/brand/noko-mascot.png`} />
   </head>
 
   <body class="landing-page">
