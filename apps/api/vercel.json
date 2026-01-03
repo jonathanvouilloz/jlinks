@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "bun install --production",
-  "buildCommand": "bun build src/vercel.ts --outfile api/index.js --target node --format esm --external @libsql/client --external drizzle-orm --external elysia --external @elysiajs/cors --external better-auth --external qrcode --external resend && mkdir -p public",
+  "buildCommand": "bun build src/vercel.ts --outfile api/index.js --target node --format esm --external @libsql/client --external drizzle-orm --external elysia --external @elysiajs/cors --external better-auth --external qrcode --external resend && mkdir -p public && echo 'ok' > public/health.txt",
   "outputDirectory": "public",
   "regions": ["fra1"],
   "rewrites": [
