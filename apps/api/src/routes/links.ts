@@ -1,6 +1,6 @@
 import { Elysia, t } from 'elysia';
 import { db, links, clients } from '../db';
-import { eq, and, asc } from 'drizzle-orm';
+import { eq, and, asc, sql } from 'drizzle-orm';
 import { requireClient } from '../middleware/auth';
 
 export const linkRoutes = new Elysia({ prefix: '/links' })
@@ -39,32 +39,35 @@ export const linkRoutes = new Elysia({ prefix: '/links' })
   .post(
     '/',
     async ({ body, client }) => {
-      // Get current max sort_order
-      const existingLinks = await db.query.links.findMany({
-        where: eq(links.client_id, client!.id),
-        orderBy: [asc(links.sort_order)],
+      // Use transaction to atomically get max sort_order and insert
+      const newLink = await db.transaction(async (tx) => {
+        // Get max sort_order atomically
+        const result = await tx
+          .select({ maxOrder: sql<number>`COALESCE(MAX(${links.sort_order}), -1)` })
+          .from(links)
+          .where(eq(links.client_id, client!.id));
+
+        const maxOrder = result[0]?.maxOrder ?? -1;
+
+        // Create link
+        const [created] = await tx
+          .insert(links)
+          .values({
+            client_id: client!.id,
+            title: body.title,
+            url: body.url,
+            description: body.description,
+            icon: body.icon,
+            thumbnail_url: body.thumbnail_url,
+            social_preset: body.social_preset,
+            custom_bg_color: body.custom_bg_color,
+            custom_text_color: body.custom_text_color,
+            sort_order: maxOrder + 1,
+          })
+          .returning();
+
+        return created;
       });
-
-      const maxOrder = existingLinks.length > 0
-        ? Math.max(...existingLinks.map((l) => l.sort_order ?? 0))
-        : -1;
-
-      // Create link
-      const [newLink] = await db
-        .insert(links)
-        .values({
-          client_id: client!.id,
-          title: body.title,
-          url: body.url,
-          description: body.description,
-          icon: body.icon,
-          thumbnail_url: body.thumbnail_url,
-          social_preset: body.social_preset,
-          custom_bg_color: body.custom_bg_color,
-          custom_text_color: body.custom_text_color,
-          sort_order: maxOrder + 1,
-        })
-        .returning();
 
       // Mark client as having draft changes
       await db

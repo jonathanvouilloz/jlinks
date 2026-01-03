@@ -59,16 +59,15 @@ function setLanguage(lang: Lang): void {
 
     const value = getNestedValue(t as TranslationValue, key);
     if (value) {
-      // Handle line breaks in translations
-      if (value.includes('\n')) {
+      // Whitelist of keys that can contain HTML (these are static/controlled)
+      const allowsHtml = key.includes('footer') || key.includes('pricing.footer') || key === 'hero.title';
+
+      if (allowsHtml) {
+        // Only use innerHTML for explicitly whitelisted keys
         el.innerHTML = value.replace(/\n/g, '<br/>');
       } else {
-        // Preserve HTML tags for certain keys
-        if (key.includes('footer') || key.includes('comparison.footer') || key.includes('pricing.footer') || key === 'hero.title') {
-          el.innerHTML = value;
-        } else {
-          el.textContent = value;
-        }
+        // Always use textContent for non-whitelisted keys (safe)
+        el.textContent = value;
       }
     }
   });

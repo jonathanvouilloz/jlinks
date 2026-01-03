@@ -20,13 +20,25 @@ export const qrcodeRoutes = new Elysia({ prefix: '/qrcode' })
       // Build URL with tracking parameter
       const url = `${SITE_URL}/${client!.slug}?src=qr`;
 
+      // Validate and constrain size parameter (prevent DoS)
+      const MIN_SIZE = 64;
+      const MAX_SIZE = 2048;
+      let width = 1024;
+      if (query.size) {
+        const parsed = parseInt(query.size, 10);
+        if (isNaN(parsed) || parsed < MIN_SIZE || parsed > MAX_SIZE) {
+          return error(400, `Size must be between ${MIN_SIZE} and ${MAX_SIZE}`);
+        }
+        width = parsed;
+      }
+
       // QR code options with client's primary color
       const options: QRCode.QRCodeToBufferOptions | QRCode.QRCodeToStringOptions = {
         color: {
           dark: client!.primary_color || '#000000',
           light: '#FFFFFF',
         },
-        width: query.size ? parseInt(query.size) : 1024,
+        width,
         margin: 2,
       };
 

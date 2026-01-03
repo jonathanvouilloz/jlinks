@@ -315,8 +315,14 @@ export const clientRoutes = new Elysia({ prefix: '/clients' })
         },
         {
           body: t.Object({
-            logo_url: t.Optional(t.String()),
-            profile_image_url: t.Optional(t.String()),
+            logo_url: t.Optional(t.Union([
+              t.String({ pattern: '^https?://.+' }),
+              t.Literal(''),
+            ])),
+            profile_image_url: t.Optional(t.Union([
+              t.String({ pattern: '^https?://.+' }),
+              t.Literal(''),
+            ])),
           }),
         }
       )

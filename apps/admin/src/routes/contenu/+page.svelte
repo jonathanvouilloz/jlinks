@@ -64,35 +64,44 @@
   // Save handlers
   async function saveProfile() {
     savingProfile = true;
-    await clientStore.updateProfile({
-      name,
-      bio: bio || undefined,
-      meta_title: metaTitle || undefined,
-      meta_description: metaDescription || undefined,
-    });
-    savingProfile = false;
+    try {
+      await clientStore.updateProfile({
+        name,
+        bio: bio || undefined,
+        meta_title: metaTitle || undefined,
+        meta_description: metaDescription || undefined,
+      });
+    } finally {
+      savingProfile = false;
+    }
   }
 
   async function saveBranding() {
     savingBranding = true;
-    await clientStore.updateBranding({
-      logo_url: logoUrl || undefined,
-      profile_image_url: profileImageUrl || undefined,
-    });
-    savingBranding = false;
+    try {
+      await clientStore.updateBranding({
+        logo_url: logoUrl || undefined,
+        profile_image_url: profileImageUrl || undefined,
+      });
+    } finally {
+      savingBranding = false;
+    }
   }
 
   async function saveVCard() {
     savingVCard = true;
-    await clientStore.updateVCard({
-      vcard_enabled: vcardEnabled,
-      vcard_name: vcardName || undefined,
-      vcard_email: vcardEmail || undefined,
-      vcard_phone: vcardPhone || undefined,
-      vcard_company: vcardCompany || undefined,
-      vcard_website: vcardWebsite || undefined,
-    });
-    savingVCard = false;
+    try {
+      await clientStore.updateVCard({
+        vcard_enabled: vcardEnabled,
+        vcard_name: vcardName || undefined,
+        vcard_email: vcardEmail || undefined,
+        vcard_phone: vcardPhone || undefined,
+        vcard_company: vcardCompany || undefined,
+        vcard_website: vcardWebsite || undefined,
+      });
+    } finally {
+      savingVCard = false;
+    }
   }
 </script>
 

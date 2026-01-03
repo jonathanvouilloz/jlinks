@@ -37,7 +37,7 @@ export const PLANS: Record<PlanType, Plan> = {
     features: {
       customColors: true,
       customFonts: true,
-      layouts: ['list', 'cards', 'grid'],
+      layouts: ['list', 'cards', 'grid', 'premium'],
       backgroundTypes: ['solid', 'gradient', 'image'],
       analytics: true,
       removeBranding: true,
