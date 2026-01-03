@@ -18,7 +18,7 @@
 <aside class="sidebar">
   <div class="sidebar-header">
     <a href="/" class="logo">
-      <img src="/noko.webp" alt="Noko" class="logo-image" />
+      <img src="/noko-logo-text.png" alt="Noko" class="logo-image" />
     </a>
   </div>
 
@@ -106,7 +106,7 @@
   }
 
   .logo-image {
-    height: 32px;
+    height: 40px;
     width: auto;
   }
 
