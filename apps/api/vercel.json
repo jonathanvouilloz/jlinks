@@ -3,6 +3,7 @@
   "framework": null,
   "installCommand": "bun install --production",
   "buildCommand": "bun build src/vercel.ts --outfile api/index.js --target node --format esm --external @libsql/client --external drizzle-orm --external elysia --external @elysiajs/cors --external better-auth --external qrcode --external resend",
+  "outputDirectory": "api",
   "regions": ["fra1"],
   "rewrites": [
     { "source": "/(.*)", "destination": "/api" }
