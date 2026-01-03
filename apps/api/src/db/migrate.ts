@@ -1,8 +1,15 @@
-import { migrate } from 'drizzle-orm/bun-sqlite/migrator';
+import { migrate } from 'drizzle-orm/libsql/migrator';
 import { db } from './index';
 
-console.log('Running migrations...');
+async function runMigrations() {
+  console.log('Running migrations...');
 
-migrate(db, { migrationsFolder: './drizzle' });
+  await migrate(db, { migrationsFolder: './drizzle' });
 
-console.log('Migrations completed!');
+  console.log('Migrations completed!');
+}
+
+runMigrations().catch((err) => {
+  console.error('Migration failed:', err);
+  process.exit(1);
+});

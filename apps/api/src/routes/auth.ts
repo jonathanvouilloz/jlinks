@@ -138,7 +138,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
 
   // Sign out
   .post('/sign-out', async ({ cookie }) => {
-    const sessionId = cookie.session.value;
+    const sessionId = cookie.session.value as string | undefined;
 
     if (sessionId) {
       // Delete session from database
@@ -153,7 +153,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
 
   // Get current session
   .get('/session', async ({ cookie }) => {
-    const sessionId = cookie.session.value;
+    const sessionId = cookie.session.value as string | undefined;
 
     if (!sessionId) {
       return { user: null, client: null };
@@ -188,7 +188,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
   .post(
     '/change-password',
     async ({ body, cookie, set }) => {
-      const sessionId = cookie.session.value;
+      const sessionId = cookie.session.value as string | undefined;
 
       if (!sessionId) {
         set.status = 401;
@@ -377,7 +377,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
         return { error: `Trop de tentatives. Réessayez dans ${Math.ceil(rateCheck.retryAfter! / 60)} minutes.` };
       }
 
-      const sessionId = cookie.session.value;
+      const sessionId = cookie.session.value as string | undefined;
 
       if (!sessionId) {
         set.status = 401;

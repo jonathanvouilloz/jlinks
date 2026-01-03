@@ -1,21 +1,23 @@
-import { Database } from 'bun:sqlite';
-import { drizzle } from 'drizzle-orm/bun-sqlite';
+import { createClient } from '@libsql/client';
+import { drizzle } from 'drizzle-orm/libsql';
 import * as schema from './schema';
 
-// Get database path from environment or use default
-const DATABASE_URL = process.env.DATABASE_URL || './data/noko.db';
+// Turso database configuration
+const DATABASE_URL = process.env.DATABASE_URL;
+const TURSO_AUTH_TOKEN = process.env.TURSO_AUTH_TOKEN;
 
-// Extract file path from URL (remove 'file:' prefix if present)
-const dbPath = DATABASE_URL.replace(/^file:/, '');
+if (!DATABASE_URL) {
+  throw new Error('DATABASE_URL environment variable is required');
+}
 
-// Create database connection
-const sqlite = new Database(dbPath, { create: true });
-
-// Enable WAL mode for better concurrent access
-sqlite.exec('PRAGMA journal_mode = WAL;');
+// Create libSQL client for Turso
+const client = createClient({
+  url: DATABASE_URL,
+  authToken: TURSO_AUTH_TOKEN,
+});
 
 // Create Drizzle instance with schema
-export const db = drizzle(sqlite, { schema });
+export const db = drizzle(client, { schema });
 
 // Export schema for use in other files
 export * from './schema';
