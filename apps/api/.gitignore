@@ -1,6 +1,7 @@
 # Build output
 api/
 dist/
+.vercel/output/
 
 # Dependencies
 node_modules/

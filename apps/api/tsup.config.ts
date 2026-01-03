@@ -4,10 +4,13 @@ export default defineConfig({
   entry: { index: 'src/vercel.ts' },
   format: ['esm'],
   target: 'node18',
-  outDir: 'api',
+  outDir: '.vercel/output/functions/api.func',
   clean: true,
   splitting: false,
   sourcemap: false,
+  banner: {
+    js: '// Bundled for Vercel Serverless Functions',
+  },
   // Bundle @noko/shared since it's a workspace package not available on npm
   // Keep other dependencies external (they'll be installed by Vercel)
   noExternal: ['@noko/shared'],
@@ -21,6 +24,7 @@ export default defineConfig({
     '@libsql/client',
     'drizzle-orm',
     'drizzle-orm/libsql',
+    'drizzle-orm/sqlite-core',
     'better-auth',
     'qrcode',
     'resend',
