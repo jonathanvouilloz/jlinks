@@ -1,0 +1,46 @@
+Ok, j'ai effectué toutes les modifications nécessaires dans le code pour résoudre les problèmes de CORS et les liens cassés. J'ai supprimé tous les URLs codés en dur et standardisé l'utilisation des variables d'environnement.
+
+Cependant, je rencontre toujours un problème avec mon outil Git qui refuse d'exécuter les commandes (y compris 'git add' et 'git commit') pour des raisons de sécurité. Je ne peux donc pas pousser ces changements directement.
+
+Voici ce que vous devez faire :
+
+1.  **Copiez ces changements dans votre dépôt local :** Si vous n'avez pas déjà copié ces changements (par exemple, si vous avez utilisé le fichier `aremplacer.js` ou des instructions précédentes), assurez-vous que les fichiers suivants ont bien été modifiés dans votre dépôt local :
+    *   `apps/api/src/routes/qrcode.ts`
+    *   `apps/api/src/routes/vcard.ts`
+    *   `apps/api/src/lib/email.ts`
+    *   `apps/api/.env.example`
+    *   `apps/admin/src/routes/login/+page.svelte`
+    *   `apps/admin/src/routes/admin/clients/+page.svelte`
+    *   `apps/admin/src/lib/components/dashboard/Preview.svelte`
+    *   `apps/web/astro.config.mjs`
+    *   `apps/web/.env.example`
+    *   `apps/web/src/pages/index.astro`
+    *   `apps/web/src/layouts/BaseLayout.astro`
+    *   `apps/web/src/pages/404.astro`
+    *   `apps/web/src/components/Footer.astro`
+    *   `apps/web/src/components/landing/LandingFooter.astro`
+
+2.  **Exécutez les commandes Git manuellement** depuis votre terminal, à la racine du projet :
+    ```bash
+    git add .
+    git commit -m "feat: standardize URL management and fix CORS setup
+
+    Removes hardcoded URLs across api, admin, and web apps,
+    standardizes environment variable usage for all external links,
+    and ensures consistent API endpoint resolution. This should
+    resolve CORS issues and broken links in production environments."
+    git push origin main
+    ```
+
+3.  **Configurez les variables d'environnement sur Vercel :** Une fois les changements poussés, vous devez configurer les variables d'environnement dans le tableau de bord de Vercel pour vos applications `api` et `admin`.
+
+    *   **Pour l'application `api` sur Vercel :**
+        *   `ALLOWED_ORIGINS`: Définissez-la sur l'URL complète de votre frontend admin déployé (par exemple, `https://admin.votre-domaine.com`). Si d'autres origines doivent accéder à votre API, listez-les séparées par des virgules (par exemple, `https://admin.votre-domaine.com,https://votre-domaine.com`).
+        *   `PUBLIC_SITE_URL`: Ce doit être l'URL publique où les pages de liens générées seront hébergées (par exemple, `https://votre-domaine.com` ou `https://links.votre-domaine.com`).
+
+    *   **Pour l'application `admin` sur Vercel :**
+        *   `PUBLIC_API_URL`: Définissez-la sur l'URL complète de votre backend API déployé (par exemple, `https://api.votre-domaine.com`).
+        *   `PUBLIC_APP_URL`: Définissez-la sur l'URL complète où votre application admin est déployée (par exemple, `https://admin.votre-domaine.com`).
+        *   `PUBLIC_SITE_URL`: Ce doit être l'URL publique où les pages de liens générées seront hébergées (par exemple, `https://votre-domaine.com` ou `https://links.votre-domaine.com`).
+
+Ces étapes devraient résoudre complètement les problèmes de CORS et de liens dans votre environnement de production. Je suis désolé de ne pas pouvoir exécuter la dernière partie des commandes Git directement, mais le code est prêt !

@@ -5,7 +5,7 @@ import { eq, and } from 'drizzle-orm';
 import { generateVCard } from '@noko/shared';
 import { slugParamSchema } from '../schemas';
 
-const SITE_URL = process.env.SITE_URL || 'https://links.jonlabs.ch';
+const SITE_URL = process.env.PUBLIC_SITE_URL;
 
 export const vcardRoutes = new Hono()
   // Get vCard for a client (public endpoint)

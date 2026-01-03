@@ -4,7 +4,7 @@ import QRCode from 'qrcode';
 import { requireClient, type AuthVariables } from '../middleware/auth';
 import { qrcodeParamSchema, qrcodeQuerySchema } from '../schemas';
 
-const SITE_URL = process.env.SITE_URL || 'https://links.jonlabs.ch';
+const SITE_URL = process.env.PUBLIC_SITE_URL;
 
 export const qrcodeRoutes = new Hono<{ Variables: AuthVariables }>()
   .use('*', requireClient)

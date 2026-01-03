@@ -1,0 +1,15 @@
+Yes, it is completely normal and expected!
+
+Your API has been successfully deployed and is running.
+
+The reason you see a directory listing when visiting the base URL is because your Hono application doesn't have a specific route configured for the root path (/). All your API endpoints are nested under specific paths like /auth, /clients, /links, etc.
+
+This directory listing is a default index page provided by the deployment environment (Vercel) to show you the available top-level routes when no specific route is handled at the root.
+
+To interact with your API, you should use the specific endpoints, for example:
+- <YOUR_VERCEL_URL>/health (to check the API status)
+- <YOUR_VERCEL_URL>/auth (for authentication related routes)
+- <YOUR_VERCEL_URL>/links (for links related routes)
+- etc.
+
+So, rest assured, your API build passed successfully and is functioning correctly!

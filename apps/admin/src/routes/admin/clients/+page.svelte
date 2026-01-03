@@ -5,6 +5,7 @@
   import { Plus, Pencil, Trash2, ExternalLink, CheckCircle, Clock } from 'lucide-svelte';
   import { api, ApiError } from '$lib/api';
   import { toastStore } from '$lib/stores';
+  import { PUBLIC_SITE_URL } from '$env/static/public';
 
   // State
   let clients = $state<Client[]>([]);
@@ -198,7 +199,7 @@
                 {client.name}
               </td>
               <td class="client-slug">
-                <a href="https://links.jonlabs.ch/{client.slug}" target="_blank" rel="noopener">
+                <a href="{PUBLIC_SITE_URL}/{client.slug}" target="_blank" rel="noopener">
                   /{client.slug}
                   <ExternalLink size={12} />
                 </a>
