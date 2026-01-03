@@ -1,5 +1,6 @@
-import { Elysia } from 'elysia';
-import { cors } from '@elysiajs/cors';
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { authMiddleware, type AuthVariables } from './middleware/auth';
 import { authRoutes } from './routes/auth';
 import { clientRoutes } from './routes/clients';
 import { linkRoutes } from './routes/links';
@@ -13,43 +14,40 @@ const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS?.split(',') || [
   'http://localhost:4321',
 ];
 
-export const app = new Elysia()
-  // CORS configuration
-  .use(
-    cors({
-      origin: ALLOWED_ORIGINS,
-      credentials: true,
-    })
-  )
+// Create app with typed variables
+export const app = new Hono<{ Variables: AuthVariables }>();
 
-  // Health check
-  .get('/health', () => ({ status: 'ok', timestamp: new Date().toISOString() }))
+// CORS configuration
+app.use(
+  '*',
+  cors({
+    origin: ALLOWED_ORIGINS,
+    credentials: true,
+  })
+);
 
-  // API routes
-  .use(authRoutes)
-  .use(clientRoutes)
-  .use(linkRoutes)
-  .use(publishRoutes)
-  .use(publicRoutes)
-  .use(qrcodeRoutes)
-  .use(vcardRoutes)
+// Auth middleware for all routes
+app.use('*', authMiddleware);
 
-  // Error handling
-  .onError(({ code, error, set }) => {
-    console.error(`[${code}]`, error);
+// Health check
+app.get('/health', (c) => c.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
-    if (code === 'NOT_FOUND') {
-      set.status = 404;
-      return { error: 'Not found' };
-    }
+// API routes
+app.route('/auth', authRoutes);
+app.route('/clients', clientRoutes);
+app.route('/links', linkRoutes);
+app.route('/publish', publishRoutes);
+app.route('/public', publicRoutes);
+app.route('/qrcode', qrcodeRoutes);
+app.route('/vcard', vcardRoutes);
 
-    if (code === 'VALIDATION') {
-      set.status = 400;
-      return { error: 'Validation error', details: error.message };
-    }
+// Error handling
+app.onError((err, c) => {
+  console.error(`[ERROR]`, err);
+  return c.json({ error: 'Internal server error' }, 500);
+});
 
-    set.status = 500;
-    return { error: 'Internal server error' };
-  });
+// 404 handler
+app.notFound((c) => c.json({ error: 'Not found' }, 404));
 
 export type App = typeof app;

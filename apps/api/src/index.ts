@@ -3,7 +3,10 @@ import { app } from './app';
 const PORT = process.env.PORT || 3000;
 
 // Start server (for local development with Bun)
-app.listen(PORT);
+export default {
+  port: PORT,
+  fetch: app.fetch,
+};
 
 console.log(`
   Noko API is running!

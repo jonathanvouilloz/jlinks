@@ -1,13 +1,14 @@
-import { Elysia } from 'elysia';
+import { Hono } from 'hono';
 import { db, clients } from '../db';
 import { eq } from 'drizzle-orm';
-import { requireClient } from '../middleware/auth';
+import { requireClient, type AuthVariables } from '../middleware/auth';
 
-export const publishRoutes = new Elysia({ prefix: '/publish' })
-  .use(requireClient)
+export const publishRoutes = new Hono<{ Variables: AuthVariables }>()
+  .use('*', requireClient)
 
   // Trigger Astro rebuild
-  .post('/', async ({ client, error }) => {
+  .post('/', async (c) => {
+    const client = c.get('client');
     const VERCEL_DEPLOY_HOOK = process.env.VERCEL_DEPLOY_HOOK;
 
     if (!VERCEL_DEPLOY_HOOK) {
@@ -23,10 +24,10 @@ export const publishRoutes = new Elysia({ prefix: '/publish' })
         })
         .where(eq(clients.id, client!.id));
 
-      return {
+      return c.json({
         status: 'done',
         message: 'Changes saved (development mode - no rebuild triggered)',
-      };
+      });
     }
 
     try {
@@ -50,25 +51,27 @@ export const publishRoutes = new Elysia({ prefix: '/publish' })
         })
         .where(eq(clients.id, client!.id));
 
-      return {
+      return c.json({
         status: 'building',
         message: 'Publication en cours... (~30-60 secondes)',
-      };
+      });
     } catch (e) {
       console.error('Publish error:', e);
-      return error(500, 'Publication failed');
+      return c.json({ error: 'Publication failed' }, 500);
     }
   })
 
   // Get publish status
-  .get('/status', async ({ client }) => {
+  .get('/status', async (c) => {
+    const client = c.get('client');
+
     const currentClient = await db.query.clients.findFirst({
       where: eq(clients.id, client!.id),
     });
 
-    return {
+    return c.json({
       hasDraftChanges: currentClient?.has_draft_changes ?? false,
       isPublished: currentClient?.is_published ?? false,
       lastPublishedAt: currentClient?.published_at ?? null,
-    };
+    });
   });

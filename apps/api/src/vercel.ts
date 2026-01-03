@@ -1,5 +1,5 @@
 // Vercel serverless function entry point
 import { app } from './app';
+import { handle } from 'hono/vercel';
 
-// Export the fetch handler for Vercel
-export default app.fetch;
+export default handle(app);
