@@ -50,7 +50,7 @@ export const qrcodeRoutes = new Hono<{ Variables: AuthVariables }>()
         type: 'png',
       } as QRCode.QRCodeToBufferOptions);
 
-      return new Response(buffer.buffer, {
+      return new Response(new Uint8Array(buffer), {
         headers: {
           'Content-Type': 'image/png',
           'Content-Disposition': `attachment; filename="${client!.slug}-qrcode.png"`,
