@@ -9,10 +9,9 @@ import { publicRoutes } from './routes/public';
 import { qrcodeRoutes } from './routes/qrcode';
 import { vcardRoutes } from './routes/vcard';
 
-const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS?.split(',') || [
-  'http://localhost:5173',
-  'http://localhost:4321',
-];
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim())
+  : ['http://localhost:5173', 'http://localhost:4321'];
 
 // Create app with typed variables
 export const app = new Hono<{ Variables: AuthVariables }>();

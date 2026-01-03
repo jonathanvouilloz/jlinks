@@ -16,6 +16,11 @@ export type AuthVariables = {
  * Extracts session from cookie and validates it
  */
 export const authMiddleware: MiddlewareHandler = async (c, next) => {
+  // Skip auth for OPTIONS requests (CORS preflight)
+  if (c.req.method === 'OPTIONS') {
+    return next();
+  }
+
   // Try to get session from cookie
   let sessionId = getCookie(c, 'session');
 

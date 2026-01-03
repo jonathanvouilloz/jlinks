@@ -1,0 +1,32 @@
+CORS Fix for 'admin.nokolink.com' accessing 'api.nokolink.com'
+
+I have identified and fixed two critical issues causing the CORS (500) error:
+
+1.  **Strict Origin Matching:** The API was splitting `ALLOWED_ORIGINS` by comma but not trimming whitespace. If your environment variable was set like `url1, url2` (with a space), the second URL would fail to match, causing CORS rejection. I have added robust whitespace trimming.
+
+2.  **OPTIONS Preflight Crash:** The authentication middleware was running for `OPTIONS` requests (CORS preflight checks). Since preflight requests don't carry credentials in the same way, this could cause the middleware to fail (returning 500) before CORS headers were applied. I have modified the middleware to skip authentication for `OPTIONS` requests.
+
+**Action Required:**
+
+1.  **Commit and Push the Fixes:**
+    Run the following commands in your terminal to deploy the code fixes:
+
+    ```bash
+    git add apps/api/src/app.ts apps/api/src/middleware/auth.ts
+    git commit -m "fix: CORS origin parsing and skip auth for OPTIONS requests"
+    git push origin main
+    ```
+
+2.  **Verify Environment Variables (Server-Side):**
+    Ensure your `api` application (on Vercel or VPS) has the `ALLOWED_ORIGINS` variable set correctly.
+    
+    Example Value:
+    ```text
+    https://admin.nokolink.com,https://nokolink.com
+    ```
+    (Note: My code fix now handles spaces after commas, but it's good practice to keep it clean).
+
+3.  **Redeploy/Restart API:**
+    After pushing, make sure the API service is redeployed or restarted to pick up the code changes.
+
+Once these steps are complete, the login on `admin.nokolink.com` should work correctly.
