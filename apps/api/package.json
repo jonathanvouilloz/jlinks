@@ -6,6 +6,7 @@
     "dev": "bun run --watch src/index.ts",
     "start": "bun run src/index.ts",
     "build": "bun build src/index.ts --outdir dist --target bun",
+    "build:vercel": "tsup",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "bun run src/db/migrate.ts",
     "db:studio": "drizzle-kit studio",
@@ -27,6 +28,7 @@
     "@types/bun": "^1.1.0",
     "@types/qrcode": "^1.5.5",
     "drizzle-kit": "^0.31.1",
+    "tsup": "^8.0.0",
     "typescript": "^5.3.3"
   }
 }

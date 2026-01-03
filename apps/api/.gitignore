@@ -1,0 +1,14 @@
+# Build output
+api/
+dist/
+
+# Dependencies
+node_modules/
+
+# Environment
+.env.local
+.env.production
+
+# Drizzle
+*.db
+*.db-journal
