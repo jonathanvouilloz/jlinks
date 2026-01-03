@@ -4,6 +4,13 @@ import { eq, and, gt } from 'drizzle-orm';
 import { hashPassword, verifyPassword as verifyPwd } from '../lib/auth';
 import { sendPasswordResetEmail } from '../lib/email';
 
+// Request body types (explicit for Vercel TypeScript compatibility)
+interface SignInBody { email: string; password: string }
+interface ChangePasswordBody { currentPassword: string; newPassword: string }
+interface ForgotPasswordBody { email: string }
+interface ResetPasswordBody { token: string; newPassword: string }
+interface DeleteAccountBody { password: string }
+
 // Simple in-memory rate limiter
 type RateLimitEntry = { count: number; resetAt: number };
 const rateLimitStore = new Map<string, RateLimitEntry>();
@@ -56,7 +63,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
         return { error: `Trop de tentatives. Réessayez dans ${rateCheck.retryAfter} secondes.` };
       }
 
-      const { email, password } = body;
+      const { email, password } = body as SignInBody;
 
       // Find user
       const dbUser = await db.query.users.findFirst({
@@ -90,7 +97,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
             password_hash: newHash,
             password_needs_upgrade: false,
             updated_at: new Date().toISOString(),
-          })
+          } as any)
           .where(eq(users.id, dbUser.id));
       }
 
@@ -106,7 +113,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
         expires_at: expiresAt.toISOString(),
         ip_address: ip,
         user_agent: request.headers.get('user-agent') || 'unknown',
-      });
+      } as any);
 
       // Set session cookie
       cookie.session.set({
@@ -206,7 +213,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
         return { error: 'Unauthorized' };
       }
 
-      const { currentPassword, newPassword } = body;
+      const { currentPassword, newPassword } = body as ChangePasswordBody;
       const dbUser = session.user;
 
       // Verify current password
@@ -230,7 +237,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
           password_hash: newHash,
           password_needs_upgrade: false,
           updated_at: new Date().toISOString(),
-        })
+        } as any)
         .where(eq(users.id, dbUser.id));
 
       return { success: true };
@@ -256,7 +263,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
         return { error: `Trop de demandes. Réessayez dans ${Math.ceil(rateCheck.retryAfter! / 60)} minutes.` };
       }
 
-      const { email } = body;
+      const { email } = body as ForgotPasswordBody;
 
       // Find user (don't reveal if email exists)
       const user = await db.query.users.findFirst({
@@ -280,7 +287,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
           identifier: email.toLowerCase(),
           value: token,
           expires_at: expiresAt.toISOString(),
-        });
+        } as any);
 
         // Send email (async, don't block response)
         sendPasswordResetEmail(email.toLowerCase(), token).catch((err) =>
@@ -311,7 +318,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
         return { error: `Trop de tentatives. Réessayez dans ${Math.ceil(rateCheck.retryAfter! / 60)} minutes.` };
       }
 
-      const { token, newPassword } = body;
+      const { token, newPassword } = body as ResetPasswordBody;
 
       // Find valid verification token
       const now = new Date().toISOString();
@@ -345,7 +352,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
           password_hash: newHash,
           password_needs_upgrade: false,
           updated_at: new Date().toISOString(),
-        })
+        } as any)
         .where(eq(users.id, user.id));
 
       // Delete the used token
@@ -395,7 +402,7 @@ export const authRoutes = new Elysia({ prefix: '/auth' })
         return { error: 'Unauthorized' };
       }
 
-      const { password } = body;
+      const { password } = body as DeleteAccountBody;
       const dbUser = session.user;
 
       // Verify password

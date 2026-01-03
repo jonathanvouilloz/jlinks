@@ -1,6 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "bun install",
+  "framework": null,
+  "installCommand": "bun install --production",
   "buildCommand": "bun build src/vercel.ts --outfile api/index.js --target node --format esm --external @libsql/client --external drizzle-orm --external elysia --external @elysiajs/cors --external better-auth --external qrcode --external resend",
   "regions": ["fra1"],
   "rewrites": [
