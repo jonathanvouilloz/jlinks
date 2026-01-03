@@ -91,7 +91,7 @@ export const clientRoutes = new Hono<{ Variables: AuthVariables }>()
           password_hash: passwordHash,
           client_id: newClient.id,
           role: 'client',
-        })
+        } as any)
         .returning();
 
       return {
@@ -136,7 +136,7 @@ export const clientRoutes = new Hono<{ Variables: AuthVariables }>()
         ...body,
         slug: body.slug?.toLowerCase(),
         updated_at: new Date().toISOString(),
-      })
+      } as any)
       .where(eq(clients.id, id))
       .returning();
 
@@ -184,7 +184,7 @@ export const clientRoutes = new Hono<{ Variables: AuthVariables }>()
         meta_description: body.meta_description,
         has_draft_changes: true,
         updated_at: new Date().toISOString(),
-      })
+      } as any)
       .where(eq(clients.id, client!.id))
       .returning();
 
@@ -202,7 +202,7 @@ export const clientRoutes = new Hono<{ Variables: AuthVariables }>()
         ...body,
         has_draft_changes: true,
         updated_at: new Date().toISOString(),
-      })
+      } as any)
       .where(eq(clients.id, client!.id))
       .returning();
 
@@ -225,7 +225,7 @@ export const clientRoutes = new Hono<{ Variables: AuthVariables }>()
         vcard_website: body.vcard_website,
         has_draft_changes: true,
         updated_at: new Date().toISOString(),
-      })
+      } as any)
       .where(eq(clients.id, client!.id))
       .returning();
 
@@ -244,7 +244,7 @@ export const clientRoutes = new Hono<{ Variables: AuthVariables }>()
         profile_image_url: body.profile_image_url,
         has_draft_changes: true,
         updated_at: new Date().toISOString(),
-      })
+      } as any)
       .where(eq(clients.id, client!.id))
       .returning();
 
