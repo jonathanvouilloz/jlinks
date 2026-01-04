@@ -65,9 +65,8 @@
         <a href="/" class="logo">
           <img src="/logonono.webp" alt="Nokolink" class="logo-img" />
         </a>
-        <a href="/register" class="signup-link">
-          <UserPlus size={16} />
-          <span>Inscription</span>
+        <a href="/register" class="login-link">
+          <span>Pas encore de compte ? S'inscrire</span>
         </a>
       </header>
 
@@ -259,9 +258,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 2.5rem 4rem;
-    max-width: 520px;
-    margin: 0 auto;
+    padding: 2.5rem 5rem;
     width: 100%;
   }
 
@@ -284,24 +281,16 @@
     width: auto;
   }
 
-  .signup-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
+  .login-link {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--color-text-secondary);
     text-decoration: none;
     transition: all var(--transition-fast);
-    border: 1px solid transparent;
   }
 
-  .signup-link:hover {
+  .login-link:hover {
     color: var(--color-primary);
-    background: var(--color-primary-light);
-    border-color: rgba(255, 107, 91, 0.2);
   }
 
   /* Form Content - Vertically Centered */
@@ -314,6 +303,7 @@
 
   .form-content-inner {
     width: 100%;
+    max-width: 400px;
   }
 
   .form-title {
@@ -397,6 +387,9 @@
   /* Form Footer */
   .form-footer {
     padding-top: 2rem;
+    max-width: 400px;
+    margin: 0 auto;
+    width: 100%;
   }
 
   .form-footer p {
