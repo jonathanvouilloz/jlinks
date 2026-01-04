@@ -111,24 +111,35 @@
     socialLinks = socialLinks.filter(l => l.id !== id);
   }
 
-  function handleSocialLinkUrlChange(id: string, url: string) {
+  function handleSocialLinkUrlChange(id: string, value: string) {
     const index = socialLinks.findIndex(l => l.id === id);
     if (index === -1) return;
 
-    const link = socialLinks[index];
-    const detected = detectSocialPreset(url);
-    
-    if (detected && !link.socialPreset) {
-      // Auto-assign preset and title if not set
-      socialLinks[index] = {
-        ...link,
-        url,
-        socialPreset: detected,
-        title: link.title || SOCIAL_PRESETS[detected].label
-      };
+    let newValue = value;
+    const currentLink = socialLinks[index];
+
+    // If preset is active, try to strip base URL if user pasted full URL
+    if (currentLink.socialPreset) {
+      const preset = SOCIAL_PRESETS[currentLink.socialPreset];
+      if (preset.baseUrl && value.startsWith(preset.baseUrl)) {
+        newValue = value.slice(preset.baseUrl.length);
+      }
     } else {
-      socialLinks[index].url = url;
+      // Custom mode: try to detect preset
+      const detected = detectSocialPreset(value);
+      if (detected) {
+        // Switch to preset mode
+        socialLinks[index].socialPreset = detected;
+        socialLinks[index].title = SOCIAL_PRESETS[detected].label;
+        // Strip base URL for the new value if possible
+        const preset = SOCIAL_PRESETS[detected];
+        if (preset.baseUrl && value.startsWith(preset.baseUrl)) {
+          newValue = value.slice(preset.baseUrl.length);
+        }
+      }
     }
+
+    socialLinks[index].url = newValue;
   }
 
   async function handleSubmit() {
@@ -341,36 +352,59 @@
                 <div class="social-links-list">
                   {#each socialLinks as link (link.id)}
                     <div class="social-link-item">
-                      <div class="link-inputs">
-                        <div class="link-header">
-                          <div class="link-icon">
-                            {#if link.socialPreset}
-                              {#if SOCIAL_PRESETS[link.socialPreset].iconSource === 'lucide'}
-                                <LinkIcon size={14} />
-                              {:else}
-                                <SimpleIcon name={SOCIAL_PRESETS[link.socialPreset].icon as any} size={14} />
-                              {/if}
+                      <div class="link-inputs-row">
+                        <!-- Icon -->
+                        <div class="link-icon">
+                          {#if link.socialPreset}
+                            {#if SOCIAL_PRESETS[link.socialPreset].iconSource === 'lucide'}
+                              {@const Icon = getLucideIconComponent(SOCIAL_PRESETS[link.socialPreset].icon)}
+                              {#if Icon}<svelte:component this={Icon} size={20} />{/if}
                             {:else}
-                              <LinkIcon size={14} />
+                              <SimpleIcon name={SOCIAL_PRESETS[link.socialPreset].icon as any} size={20} />
                             {/if}
-                          </div>
-                          <input
-                            type="text"
-                            bind:value={link.title}
-                            placeholder="Titre"
-                            class="link-title-input"
-                          />
-                          <button type="button" class="remove-link-btn" onclick={() => removeSocialLink(link.id)}>
-                            <Trash2 size={14} />
-                          </button>
+                          {:else}
+                            <LinkIcon size={20} />
+                          {/if}
                         </div>
-                        <input
-                          type="text"
-                          value={link.url}
-                          oninput={(e) => handleSocialLinkUrlChange(link.id, e.currentTarget.value)}
-                          placeholder={link.socialPreset && SOCIAL_PRESETS[link.socialPreset].urlPattern ? 'votre-nom' : 'https://...'}
-                          class="link-url-input"
-                        />
+
+                        <!-- Input Area -->
+                        <div class="link-input-wrapper">
+                          {#if link.socialPreset && SOCIAL_PRESETS[link.socialPreset].baseUrl}
+                            <!-- Split Input for Presets -->
+                            <div class="split-input">
+                              <span class="url-prefix">{SOCIAL_PRESETS[link.socialPreset].baseUrl}</span>
+                              <input
+                                type="text"
+                                value={link.url}
+                                oninput={(e) => handleSocialLinkUrlChange(link.id, e.currentTarget.value)}
+                                placeholder="votre-nom"
+                                class="url-suffix-input"
+                              />
+                            </div>
+                          {:else}
+                            <!-- Full Input for Custom -->
+                            <div class="custom-input-group">
+                              <input
+                                type="text"
+                                bind:value={link.title}
+                                placeholder="Titre (ex: Mon Site)"
+                                class="custom-title-input"
+                              />
+                              <input
+                                type="url"
+                                value={link.url}
+                                oninput={(e) => handleSocialLinkUrlChange(link.id, e.currentTarget.value)}
+                                placeholder="https://..."
+                                class="custom-url-input"
+                              />
+                            </div>
+                          {/if}
+                        </div>
+
+                        <!-- Delete -->
+                        <button type="button" class="remove-link-btn" onclick={() => removeSocialLink(link.id)} aria-label="Supprimer">
+                          <Trash2 size={20} />
+                        </button>
                       </div>
                     </div>
                   {/each}
@@ -695,51 +729,104 @@
     margin-bottom: 2rem;
   }
   .social-link-item {
-    background: #f9fafb;
+    background: #ffffff;
     border-radius: 12px;
-    padding: 1rem;
-    border: 1px solid #e5e5e5;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   }
-  .link-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+  .link-inputs-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
   .link-icon {
-    width: 24px;
-    height: 24px;
-    background: #e5e5e5;
-    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    background: #f3f4f6;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #666;
+    flex-shrink: 0;
   }
-  .link-title-input {
+  .link-input-wrapper {
     flex: 1;
-    border: none;
-    background: none;
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: #111;
+    min-width: 0;
   }
-  .link-title-input:focus { outline: none; }
+  
+  /* Split Input Style */
+  .split-input {
+    display: flex;
+    align-items: center;
+    background: #f9fafb;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 0 0.75rem;
+    height: 42px;
+    transition: border-color 0.2s;
+  }
+  .split-input:focus-within {
+    border-color: var(--color-primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(255, 107, 91, 0.1);
+  }
+  .url-prefix {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .url-suffix-input {
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin-left: 2px;
+    flex: 1;
+    min-width: 0;
+    font-size: 0.875rem;
+    color: var(--color-text);
+    outline: none;
+  }
+
+  /* Custom Input Group */
+  .custom-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .custom-title-input, .custom-url-input {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    outline: none;
+    transition: all 0.2s;
+  }
+  .custom-title-input:focus, .custom-url-input:focus {
+    border-color: var(--color-primary);
+  }
+
   .remove-link-btn {
-    background: none;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
     border: none;
     color: #ef4444;
     cursor: pointer;
-    padding: 0.25rem;
-    opacity: 0.6;
+    border-radius: 8px;
+    transition: background 0.2s;
+    opacity: 0.7;
   }
-  .remove-link-btn:hover { opacity: 1; }
-  .link-url-input {
-    width: 100%;
-    border: none;
-    background: white;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    color: #4b5563;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  .remove-link-btn:hover { 
+    opacity: 1; 
+    background: #fef2f2;
   }
-  .link-url-input:focus { outline: 2px solid var(--color-primary, #FF6B5B); }
 
   .buttons-row { display: flex; gap: 1rem; }
 
