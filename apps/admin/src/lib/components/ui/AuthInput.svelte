@@ -1,10 +1,10 @@
 <script lang="ts">
-  import Input from './Input.svelte';
+  import BaseInput from './Input.svelte';
   
   let { class: className = '', value = $bindable(), ...props } = $props();
 </script>
 
-<Input class="auth-input {className}" bind:value {...props} />
+<BaseInput class="auth-input {className}" bind:value {...props} />
 
 <style>
   :global(.auth-input .input) {

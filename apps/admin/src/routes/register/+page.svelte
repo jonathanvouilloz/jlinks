@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { Button, Input, AuthInput } from '$lib/components/ui';
+  import { Button, AuthInput } from '$lib/components/ui';
   import { api } from '$lib/api';
   import { detectSocialPreset, SOCIAL_PRESETS } from '@noko/shared/social-presets';
   import type { SocialPresetKey } from '@noko/shared/types';
