@@ -1,4 +1,6 @@
 ---
+import { Star } from 'lucide-astro';
+
 interface Props {
   adminUrl: string;
 }
@@ -15,18 +17,16 @@ const { adminUrl } = Astro.props;
       <div class="glow glow-2"></div>
       <div class="circle-ring circle-ring-1"></div>
       <div class="circle-ring circle-ring-2"></div>
-      <div class="circle-ring circle-ring-3"></div>
-      <div class="circle-ring circle-ring-4"></div>
     </div>
   </div>
 
   <div class="container hero-content-wrapper">
-    <div class="hero-content">
-      <p class="hero-eyebrow">The personalized link platform</p>
+    <div class="hero-content text-center">
       <h1 class="hero-tagline">
         All your links<br />
         <span class="highlight">in one place</span>
       </h1>
+      
       <p class="hero-description">
         Create your personalized page in seconds. Share your social networks, music, videos and more with a single link.
       </p>
@@ -38,6 +38,26 @@ const { adminUrl } = Astro.props;
         <a href="#demo" class="btn btn-secondary btn-lg">
           See demo
         </a>
+      </div>
+
+      <!-- Social Proof -->
+      <div class="social-proof">
+        <div class="avatars">
+          <div class="avatar" style="background-color: #FF6B5B;">J</div>
+          <div class="avatar" style="background-color: #10b981;">S</div>
+          <div class="avatar" style="background-color: #8b5cf6;">M</div>
+          <div class="avatar" style="background-color: #f59e0b;">A</div>
+        </div>
+        <div class="social-text">
+          <div class="stars">
+            <Star size={16} fill="#FCD34D" strokeWidth={0} />
+            <Star size={16} fill="#FCD34D" strokeWidth={0} />
+            <Star size={16} fill="#FCD34D" strokeWidth={0} />
+            <Star size={16} fill="#FCD34D" strokeWidth={0} />
+            <Star size={16} fill="#FCD34D" strokeWidth={0} />
+          </div>
+          <span class="happy-users">100+ happy users</span>
+        </div>
       </div>
     </div>
 
@@ -54,10 +74,12 @@ const { adminUrl } = Astro.props;
     position: relative;
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     background-color: #16162a;
     overflow: hidden;
-    padding-top: 80px; /* Header height */
+    padding-top: 120px;
+    padding-bottom: 80px;
   }
 
   /* Background & Decor */
@@ -82,88 +104,126 @@ const { adminUrl } = Astro.props;
   }
 
   .glow-1 {
-    width: 400px;
-    height: 400px;
+    width: 600px;
+    height: 600px;
     background: var(--color-primary);
-    top: 10%;
-    left: 5%;
-    opacity: 0.15;
+    top: -20%;
+    left: 20%;
+    opacity: 0.1;
   }
 
   .glow-2 {
-    width: 300px;
-    height: 300px;
+    width: 500px;
+    height: 500px;
     background: #8b5cf6;
-    bottom: 20%;
-    right: 15%;
+    bottom: -10%;
+    right: 10%;
     opacity: 0.1;
   }
 
   .circle-ring {
     position: absolute;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.03);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
 
-  .circle-ring-1 { width: 1200px; height: 1200px; }
-  .circle-ring-2 { width: 900px; height: 900px; }
-  .circle-ring-3 { width: 600px; height: 600px; }
-  .circle-ring-4 { width: 300px; height: 300px; }
+  .circle-ring-1 { width: 1400px; height: 1400px; }
+  .circle-ring-2 { width: 1000px; height: 1000px; }
 
   /* Content */
   .hero-content-wrapper {
     position: relative;
     z-index: 1;
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 4rem;
     width: 100%;
   }
 
   .hero-content {
-    max-width: 600px;
-  }
-
-  .hero-eyebrow {
-    font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .hero-tagline {
-    font-size: clamp(3rem, 5vw, 4.5rem);
-    font-weight: 700;
+    font-size: clamp(3.5rem, 6vw, 5rem);
+    font-weight: 800;
     color: #ffffff;
     line-height: 1.1;
     margin-bottom: 1.5rem;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
   }
 
   .hero-description {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     color: rgba(255, 255, 255, 0.7);
     line-height: 1.6;
     margin-bottom: 2.5rem;
-    max-width: 480px;
+    max-width: 600px;
   }
 
   .hero-actions {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 3rem;
   }
 
   .btn-lg {
-    padding: 1rem 2rem;
+    padding: 1rem 2.5rem;
     font-size: 1.125rem;
-    min-width: 160px;
+    min-width: 180px;
+  }
+
+  /* Social Proof */
+  .social-proof {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .avatars {
+    display: flex;
+    padding-left: 10px; /* Offset for overlap */
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #1a1a2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: -10px;
+  }
+
+  .social-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .stars {
+    display: flex;
+    gap: 2px;
+  }
+
+  .happy-users {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
   }
 
   /* Visual/Mascot */
@@ -171,55 +231,37 @@ const { adminUrl } = Astro.props;
     position: relative;
     display: flex;
     justify-content: center;
+    width: 100%;
+    max-width: 900px;
   }
 
   .mascot-wrapper {
     position: relative;
     width: 100%;
-    max-width: 500px;
+    display: flex;
+    justify-content: center;
   }
 
   .mascot-img {
     width: 100%;
+    max-width: 600px;
     height: auto;
-    filter: drop-shadow(0 0 60px rgba(255, 107, 91, 0.2));
+    filter: drop-shadow(0 0 60px rgba(255, 107, 91, 0.15));
     animation: float-mascot 8s ease-in-out infinite;
-    transform: rotate(-5deg);
   }
 
   @keyframes float-mascot {
-    0%, 100% { transform: translateY(0) rotate(-5deg); }
-    50% { transform: translateY(-30px) rotate(0deg); }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
   }
 
-  @media (max-width: 968px) {
+  @media (max-width: 768px) {
     .hero {
-      min-height: auto;
-      padding: 140px 0 80px;
-      text-align: center;
+      padding-top: 100px;
     }
 
-    .hero-content-wrapper {
-      grid-template-columns: 1fr;
-      gap: 3rem;
-    }
-
-    .hero-content {
-      margin: 0 auto;
-    }
-
-    .hero-description {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .hero-actions {
-      justify-content: center;
-    }
-
-    .mascot-wrapper {
-      max-width: 300px;
-      margin: 0 auto;
+    .hero-tagline {
+      font-size: 2.5rem;
     }
   }
 </style>
