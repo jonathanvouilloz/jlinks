@@ -377,7 +377,7 @@
                 </div>
 
                 <div class="buttons-row">
-                  <BackAuthButton onclick={prevStep} disabled={loading} aria-label="Retour">
+                  <BackAuthButton onclick={prevStep} disabled={loading} aria-label="Retour" style="margin-top: 0.5rem;">
                     <ArrowLeft size={24} />
                   </BackAuthButton>
                   
@@ -392,14 +392,14 @@
                         }} 
                         {loading} 
                         disabled={loading}
-                        style="margin-top: 0; background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border); box-shadow: none;"
+                        style="background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border); box-shadow: none;"
                       >
                         Passer cette étape
                       </AuthButton>
                     </div>
                   {:else}
                     <div style="flex: 1">
-                      <AuthButton type="button" onclick={handleSubmit} {loading} disabled={loading} style="margin-top: 0; background: var(--color-primary-light); color: var(--color-primary); border: 1px solid transparent; box-shadow: none;">
+                      <AuthButton type="button" onclick={handleSubmit} {loading} disabled={loading}>
                         Créer mon compte
                       </AuthButton>
                     </div>
