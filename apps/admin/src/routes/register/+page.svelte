@@ -8,9 +8,17 @@
     UserPlus, ArrowRight, ArrowLeft, Trash2, Check, X, 
     Link as LinkIcon, Palette, Mail, Globe, Plus, Linkedin
   } from 'lucide-svelte';
+  import * as Icons from 'lucide-svelte';
   import SimpleIcon from '$lib/components/icons/SimpleIcon.svelte';
   import { z } from 'zod';
   import { registerSchema } from '$lib/schemas';
+
+  // Helper to get Lucide icon component dynamically
+  function getLucideIconComponent(iconName: string) {
+    if (!iconName) return null;
+    const pascalName = iconName.charAt(0).toUpperCase() + iconName.slice(1).replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+    return (Icons as Record<string, any>)[pascalName] || null;
+  }
 
   // State
   let step = $state(1);
@@ -286,32 +294,33 @@
                 <!-- Presets Grid -->
                 {#if socialLinks.length < 5}
                   <div class="presets-grid">
-                    {#each PRESETS_TO_SHOW as preset}
+                    {#each PRESETS_TO_SHOW as presetKey}
+                      {@const preset = SOCIAL_PRESETS[presetKey]}
                       <button 
                         type="button" 
                         class="preset-btn"
-                        onclick={() => addSocialLink(preset)}
-                        aria-label="Ajouter {SOCIAL_PRESETS[preset].label}"
+                        onclick={() => addSocialLink(presetKey)}
+                        aria-label="Ajouter {preset.label}"
+                        title={preset.label}
                       >
-                        <div class="preset-icon" style:background={SOCIAL_PRESETS[preset].bgColor}>
-                          {#if SOCIAL_PRESETS[preset].iconSource === 'lucide'}
-                            <!-- Lucide icons rendering logic if needed, but here we can't dynamic component easily without map -->
-                            <!-- Simplifying for MVP: just use SimpleIcon for all or manual switch -->
-                            {#if preset === 'linkedin'}<Linkedin size={16} color="white" />
-                            {:else if preset === 'email'}<Mail size={16} color="white" />
-                            {:else}<Globe size={16} color="white" />{/if}
+                        <div class="preset-icon" style:background={preset.bgColor} style:color={preset.textColor}>
+                          {#if preset.iconSource === 'lucide'}
+                            {@const IconComponent = getLucideIconComponent(preset.icon)}
+                            {#if IconComponent}
+                              <svelte:component this={IconComponent} size={28} />
+                            {:else}
+                              <LinkIcon size={28} />
+                            {/if}
                           {:else}
-                            <SimpleIcon name={SOCIAL_PRESETS[preset].icon as any} size={16} />
+                            <SimpleIcon name={preset.icon as any} size={24} />
                           {/if}
                         </div>
-                        <span class="preset-label">{SOCIAL_PRESETS[preset].label}</span>
                       </button>
                     {/each}
-                    <button type="button" class="preset-btn add-custom" onclick={() => addSocialLink()}>
+                    <button type="button" class="preset-btn add-custom" onclick={() => addSocialLink()} title="Lien personnalisé">
                       <div class="preset-icon custom">
-                        <Plus size={16} />
+                        <Plus size={28} />
                       </div>
-                      <span class="preset-label">Autre</span>
                     </button>
                   </div>
                 {/if}
@@ -344,10 +353,10 @@
                           </button>
                         </div>
                         <input
-                          type="url"
+                          type="text"
                           value={link.url}
                           oninput={(e) => handleSocialLinkUrlChange(link.id, e.currentTarget.value)}
-                          placeholder="https://..."
+                          placeholder={link.socialPreset && SOCIAL_PRESETS[link.socialPreset].urlPattern ? 'votre-nom' : 'https://...'}
                           class="link-url-input"
                         />
                       </div>
@@ -356,22 +365,21 @@
                 </div>
 
                 <div class="buttons-row">
-                  <Button type="button" variant="secondary" onclick={prevStep} disabled={loading}>
-                    <ArrowLeft size={18} />
-                    <span>Retour</span>
+                  <Button type="button" variant="secondary" onclick={prevStep} disabled={loading} class="back-btn" aria-label="Retour">
+                    <ArrowLeft size={20} />
                   </Button>
                   
                   {#if socialLinks.length === 0}
                     <div style="flex: 1">
-                      <AuthButton type="button" onclick={handleSubmit} {loading} disabled={loading}>
+                      <Button type="button" variant="secondary" onclick={handleSubmit} {loading} disabled={loading} style="width: 100%">
                         Passer cette étape
-                      </AuthButton>
+                      </Button>
                     </div>
                   {:else}
                     <div style="flex: 1">
-                      <AuthButton type="button" onclick={handleSubmit} {loading} disabled={loading}>
+                      <Button type="button" variant="primary" onclick={handleSubmit} {loading} disabled={loading} style="width: 100%; background: var(--color-primary-light); color: var(--color-primary); border: 1px solid transparent;">
                         Créer mon compte
-                      </AuthButton>
+                      </Button>
                     </div>
                   {/if}
                 </div>
@@ -628,10 +636,11 @@
 
   /* Presets Grid */
   .presets-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
     margin-bottom: 2rem;
+    justify-content: center;
   }
   .preset-btn {
     display: flex;
@@ -642,20 +651,20 @@
     border: none;
     cursor: pointer;
     padding: 0;
+    transition: transform 0.2s;
   }
+  .preset-btn:hover { transform: scale(1.05); }
   .preset-icon {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
-  .preset-icon.custom { background: #f3f4f6; color: #666; }
-  .preset-btn:hover .preset-icon { transform: scale(1.1); }
-  .preset-label { font-size: 0.75rem; color: #666; }
-
+  .preset-icon.custom { background: #f3f4f6; color: #666; border: 1px dashed #d1d5db; }
+  
   /* Social Links List */
   .social-links-list {
     display: flex;
