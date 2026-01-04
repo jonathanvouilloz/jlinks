@@ -10,7 +10,10 @@ const { adminUrl } = Astro.props;
   <div class="container header-inner">
     <!-- Logo -->
     <a href="/" class="logo">
-      <img src="/logonono.webp" alt="Nokolink" class="logo-img" />
+      <!-- White text logo for dark background -->
+      <img src="/white-logo.webp" alt="Nokolink" class="logo-img logo-white" />
+      <!-- Dark text logo for light background -->
+      <img src="/black-logo.webp" alt="Nokolink" class="logo-img logo-dark" />
     </a>
 
     <!-- Nav -->
@@ -56,6 +59,9 @@ const { adminUrl } = Astro.props;
     display: flex;
     align-items: center;
     transition: opacity 0.2s;
+    position: relative;
+    height: 32px;
+    width: 140px; /* Adjust width to fit logo */
   }
 
   .logo:hover {
@@ -65,9 +71,18 @@ const { adminUrl } = Astro.props;
   .logo-img {
     height: 32px;
     width: auto;
-    /* User confirms logo is orange/white by default, so it works on dark BG */
-    filter: none;
-    transition: filter 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .logo-white {
+    opacity: 1;
+  }
+
+  .logo-dark {
+    opacity: 0;
   }
 
   .nav-links {
@@ -95,17 +110,20 @@ const { adminUrl } = Astro.props;
   }
 
   /* Scrolled state (on light content) */
+  .header.scrolled .logo-white {
+    opacity: 0;
+  }
+
+  .header.scrolled .logo-dark {
+    opacity: 1;
+  }
+
   .header.scrolled .nav-links a {
     color: var(--color-text-secondary);
   }
 
   .header.scrolled .nav-links a:hover {
     color: var(--color-primary);
-  }
-
-  /* Restore original logo colors on light background */
-  .header.scrolled .logo-img {
-    filter: none;
   }
 
   .header.scrolled .btn-ghost {
