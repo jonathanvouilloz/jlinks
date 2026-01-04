@@ -13,7 +13,7 @@ const { adminUrl } = Astro.props;
   
   <div class="container text-center">
     <div class="cta-card">
-      <h2 class="section-title text-white">Your link page, hassle-free.</h2>
+      <h2 class="section-title text-dark">Your link page, hassle-free.</h2>
       
       <div class="cta-actions">
         <a href={`${adminUrl}/register`} class="btn btn-primary btn-lg bg-white text-primary">
@@ -29,18 +29,19 @@ const { adminUrl } = Astro.props;
 <style>
   .final-cta {
     padding-bottom: 8rem;
+    padding-top: 10rem; /* Increased top padding */
     position: relative;
-    overflow: hidden; /* Prevent horizontal scroll if mascot is huge */
+    overflow: hidden;
   }
 
   .mascot-bg {
     position: absolute;
-    bottom: -450px; /* Lowered significantly to hide the bottom half */
+    bottom: -350px; /* Adjusted to show more of the mascot's top */
     left: 50%;
     transform: translateX(-50%);
-    z-index: 0; /* Sits above page bg but behind card */
+    z-index: 0; /* Behind the card */
     width: 100%;
-    max-width: 1000px; /* Adjusted size for better fit */
+    max-width: 900px; /* Adjusted size */
     pointer-events: none;
     display: flex;
     justify-content: center;
@@ -49,23 +50,23 @@ const { adminUrl } = Astro.props;
   .mascot-bg img {
     width: 100%;
     height: auto;
-    opacity: 0.9; /* Made slightly more visible */
+    opacity: 0.9;
   }
 
   .cta-card {
-    background: rgba(255, 255, 255, 0.05); /* Semi-transparent white */
-    backdrop-filter: blur(20px); /* Frosted glass effect */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-2xl);
     padding: 5rem 2rem;
-    position: relative; /* Ensure card is above the mascot */
+    position: relative;
     z-index: 1;
     overflow: hidden;
     box-shadow: var(--shadow-2xl);
   }
 
-  .text-white { color: white; }
-  
+  .text-dark { color: var(--color-text); } /* New class for dark text */
+
   .bg-white { background-color: white !important; }
   .text-primary { color: var(--color-primary) !important; }
 
