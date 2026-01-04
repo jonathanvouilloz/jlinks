@@ -10,8 +10,7 @@ const { adminUrl } = Astro.props;
   <div class="container header-inner">
     <!-- Logo -->
     <a href="/" class="logo">
-      <img src="/noko.webp" alt="Noko" class="logo-icon" />
-      <span class="logo-text">Noko</span>
+      <img src="/logonono.webp" alt="Nokolink" class="logo-img" />
     </a>
 
     <!-- Nav -->
@@ -56,21 +55,19 @@ const { adminUrl } = Astro.props;
   .logo {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
+    transition: opacity 0.2s;
   }
 
-  .logo-icon {
+  .logo:hover {
+    opacity: 0.9;
+  }
+
+  .logo-img {
     height: 32px;
     width: auto;
-  }
-
-  .logo-text {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: white; /* Default white on dark hero */
-    letter-spacing: -0.03em;
-    transition: color 0.3s ease;
+    /* Default: All white for dark background visibility */
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
   }
 
   /* Scrolled state (on light content) */
@@ -82,8 +79,9 @@ const { adminUrl } = Astro.props;
     color: var(--color-primary);
   }
 
-  .header.scrolled .logo-text {
-    color: var(--color-text); /* Dark text on light header */
+  /* Restore original logo colors on light background */
+  .header.scrolled .logo-img {
+    filter: none;
   }
 
   .header.scrolled .btn-ghost {
