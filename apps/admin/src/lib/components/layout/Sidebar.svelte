@@ -97,16 +97,19 @@
     height: var(--header-height);
     display: flex;
     align-items: center;
-    padding: 0 var(--space-4);
+    justify-content: center;
     border-bottom: 1px solid var(--color-sidebar-border);
   }
 
   .logo {
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .logo-image {
-    height: 40px;
+    height: 32px;
     width: auto;
   }
 
