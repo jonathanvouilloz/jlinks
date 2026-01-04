@@ -12,7 +12,8 @@
 <style>
   :global(.btn.auth-btn) {
     width: 100%;
-    padding: 1rem 1.5rem;
+    height: 56px;
+    padding: 0 1.5rem;
     font-size: 1rem;
     font-weight: 600;
     border-radius: 12px;
