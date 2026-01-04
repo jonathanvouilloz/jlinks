@@ -52,11 +52,15 @@
   <!-- Dark Background Layer -->
   <div class="hero-background">
     <div class="decorative-elements">
+      <div class="mascot-wrapper">
+        <img src="/good.png" alt="" class="mascot-img" />
+      </div>
       <div class="glow glow-1"></div>
       <div class="glow glow-2"></div>
       <div class="circle-ring circle-ring-1"></div>
       <div class="circle-ring circle-ring-2"></div>
       <div class="circle-ring circle-ring-3"></div>
+      <div class="circle-ring circle-ring-4"></div>
     </div>
     <div class="hero-content">
       <p class="hero-eyebrow">Nouveau mot de passe</p>
@@ -171,7 +175,8 @@
     inset: 0;
     background: linear-gradient(135deg, #16162a 0%, #1a1a2e 50%, #252547 100%);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 20vh;
     padding-left: 5%;
     padding-right: 55%;
   }
@@ -182,6 +187,29 @@
     inset: 0;
     overflow: hidden;
     pointer-events: none;
+  }
+
+  .mascot-wrapper {
+    position: absolute;
+    bottom: -250px;
+    right: 38%;
+    width: 850px;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+
+  .mascot-img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 60px rgba(255, 107, 91, 0.2));
+    transform: rotate(-18deg);
+    animation: float-mascot 8s ease-in-out infinite;
+  }
+
+  @keyframes float-mascot {
+    0%, 100% { transform: translateY(0) rotate(-18deg) scale(1); }
+    50% { transform: translateY(-40px) rotate(-12deg) scale(1.03); }
   }
 
   .glow {
@@ -213,24 +241,30 @@
     position: absolute;
     border-radius: 50%;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    top: 50%;
-    left: 22%;
+    top: calc(20vh + 4rem);
+    left: calc(5% + 1.5rem);
     transform: translate(-50%, -50%);
+    z-index: 0;
   }
 
   .circle-ring-1 {
-    width: 500px;
-    height: 500px;
+    width: 800px;
+    height: 800px;
   }
 
   .circle-ring-2 {
-    width: 380px;
-    height: 380px;
+    width: 600px;
+    height: 600px;
   }
 
   .circle-ring-3 {
-    width: 260px;
-    height: 260px;
+    width: 400px;
+    height: 400px;
+  }
+
+  .circle-ring-4 {
+    width: 200px;
+    height: 200px;
   }
 
   /* Hero Content */
