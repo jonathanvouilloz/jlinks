@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { Button, Input } from '$lib/components/ui';
+  import { Button, AuthInput } from '$lib/components/ui';
   import { authStore } from '$lib/stores';
   import { LogIn, UserPlus } from 'lucide-svelte';
 
@@ -86,7 +86,7 @@
             {/if}
 
             <div class="input-group">
-              <Input
+              <AuthInput
                 type="email"
                 bind:value={email}
                 placeholder="votre@email.com"
@@ -96,7 +96,7 @@
             </div>
 
             <div class="input-group">
-              <Input
+              <AuthInput
                 type="password"
                 bind:value={password}
                 placeholder="Mot de passe"
@@ -343,21 +343,6 @@
 
   .input-group :global(.input-wrapper) {
     margin: 0;
-  }
-
-  .input-group :global(.input) {
-    padding: 1rem 1.25rem;
-    font-size: 1rem;
-    border-radius: 12px;
-    border: 1.5px solid var(--color-border);
-    background: #fafafa;
-    transition: all var(--transition-fast);
-  }
-
-  .input-group :global(.input:focus) {
-    background: #ffffff;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(255, 107, 91, 0.1);
   }
 
   .input-group :global(.input::placeholder) {

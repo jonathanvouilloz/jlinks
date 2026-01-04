@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { Button, Input } from '$lib/components/ui';
+  import { Button, Input, AuthInput } from '$lib/components/ui';
   import { api } from '$lib/api';
   import { detectSocialPreset, SOCIAL_PRESETS } from '@noko/shared/social-presets';
   import type { SocialPresetKey } from '@noko/shared/types';
@@ -231,7 +231,7 @@
               <!-- STEP 1: Basic Info -->
               <div class="step-content">
                 <div class="input-group">
-                  <Input
+                  <AuthInput
                     type="email"
                     bind:value={email}
                     placeholder="votre@email.com"
@@ -243,7 +243,7 @@
                 </div>
 
                 <div class="input-group">
-                  <Input
+                  <AuthInput
                     type="password"
                     bind:value={password}
                     placeholder="Minimum 8 caractères"
