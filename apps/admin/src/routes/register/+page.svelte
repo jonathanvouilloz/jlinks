@@ -444,11 +444,11 @@
           </form>
         </div>
       </div>
-
-      <footer class="form-footer">
-        <p>&copy; 2025 Noko. Tous droits réservés.</p>
-      </footer>
     </div>
+
+    <footer class="form-footer">
+      <p>&copy; 2025 Noko. Tous droits réservés.</p>
+    </footer>
   </div>
 </div>
 
@@ -568,7 +568,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 2.5rem 5rem;
+    padding: 2.5rem 5rem 0;
     width: 100%;
   }
 
@@ -883,11 +883,10 @@
     color: white; font-size: 0.75rem; font-weight: 700;
   }
   .form-footer {
-    padding-top: 2rem;
-    max-width: 400px;
-    margin: 0 auto;
+    padding: 2rem 5rem;
     width: 100%;
     text-align: right;
+    margin-top: auto;
   }
   .form-footer p { font-size: 0.75rem; color: #9ca3af; margin: 0; }
 
