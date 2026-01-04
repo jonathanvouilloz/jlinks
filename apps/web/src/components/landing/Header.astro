@@ -70,6 +70,30 @@ const { adminUrl } = Astro.props;
     transition: filter 0.3s ease;
   }
 
+  .nav-links {
+    display: none;
+    gap: 2rem;
+  }
+
+  .nav-links a {
+    color: white;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--color-primary);
+  }
+
+  .btn-ghost {
+    color: white;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
   /* Scrolled state (on light content) */
   .header.scrolled .nav-links a {
     color: var(--color-text-secondary);
@@ -90,11 +114,6 @@ const { adminUrl } = Astro.props;
 
   .header.scrolled .btn-ghost:hover {
     background: rgba(0, 0, 0, 0.05);
-  }
-
-  .nav-links {
-    display: none;
-    gap: 2rem;
   }
 
   .header-actions {
