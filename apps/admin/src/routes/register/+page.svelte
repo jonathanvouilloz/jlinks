@@ -234,7 +234,7 @@
       <!-- Form Content -->
       <div class="form-content">
         <div class="form-content-inner">
-          <div class="stepper-header">
+          <div class="stepper-header" style="max-width: 400px; margin: 0 auto;">
             <h2 class="form-title">
               {step === 1 ? 'Inscription' : 'Ajoutez vos liens'}
             </h2>
@@ -260,7 +260,7 @@
 
             {#if step === 1}
               <!-- STEP 1: Basic Info -->
-              <div class="step-content">
+              <div class="step-content step-1">
                 <div class="input-group">
                   <AuthInput
                     type="email"
@@ -312,7 +312,7 @@
               </div>
             {:else}
               <!-- STEP 2: Social Links -->
-              <div class="step-content">
+              <div class="step-content step-2">
                 
                 <!-- Presets Grid -->
                 {#if socialLinks.length < 5}
@@ -601,7 +601,9 @@
   }
   .form-content-inner {
     width: 100%;
-    max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .form-title {
@@ -616,22 +618,39 @@
     margin: 0 0 2rem;
   }
 
+  .stepper-header {
+    width: 100%;
+    max-width: 400px;
+  }
+
   .register-form {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    align-items: center;
   }
 
   .step-content {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    width: 100%;
+  }
+
+  .step-content.step-1 {
+    max-width: 400px;
+  }
+
+  .step-content.step-2 {
+    width: 100%;
+    max-width: none;
   }
 
   .input-group { position: relative; display: flex; flex-direction: column; gap: 0.5rem; }
 
   /* Slug Input */
-  .slug-input-wrapper { position: relative; }
+  .slug-input-wrapper { position: relative; width: 100%; }
   .slug-input {
     width: 100%;
     padding: 1rem 1.25rem;
@@ -697,6 +716,10 @@
     gap: 1rem;
     margin-bottom: 2rem;
     justify-content: center;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
   }
   .preset-btn {
     display: flex;
@@ -727,6 +750,10 @@
     flex-direction: column;
     gap: 1rem;
     margin-bottom: 2rem;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
   }
   .social-link-item {
     background: #ffffff;
@@ -828,7 +855,14 @@
     background: #fef2f2;
   }
 
-  .buttons-row { display: flex; gap: 1rem; }
+  .buttons-row {
+    display: flex;
+    gap: 1rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
 
   .error-message {
     display: flex;
@@ -850,7 +884,7 @@
   }
   .form-footer {
     padding-top: 2rem;
-    max-width: 540px;
+    max-width: 400px;
     margin: 0 auto;
     width: 100%;
   }
