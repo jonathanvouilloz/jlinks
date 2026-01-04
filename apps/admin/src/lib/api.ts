@@ -1,4 +1,5 @@
-import { PUBLIC_API_URL } from '$env/static/public';
+// import { PUBLIC_API_URL } from '$env/static/public';
+const PUBLIC_API_URL = '/api';
 import type {
   Client,
   Link,
@@ -240,7 +241,7 @@ export const publish = {
     });
   },
 
-  async getStatus(): Promise<PublishStatus & { isPublished: boolean }> {
+  async getStatus(): Promise<PublishStatus> {
     return request('/publish/status');
   },
 };

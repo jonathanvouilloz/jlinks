@@ -1,0 +1,1 @@
+ALTER TABLE `clients` ADD `font_preset` text;

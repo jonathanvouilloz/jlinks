@@ -38,7 +38,7 @@ if (fontPreset && isValidFontPresetId(fontPreset)) {
 }
 
 // SEO URLs
-const siteUrl = import.meta.env.PUBLIC_SITE_URL;
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'http://localhost:4321';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 ---
 

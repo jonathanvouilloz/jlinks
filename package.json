@@ -8,15 +8,14 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:api": "cd apps/api && bun run dev",
     "dev:admin": "cd apps/admin && bun run dev",
     "dev:web": "cd apps/web && bun run dev",
     "build:admin": "cd apps/admin && bun run build",
     "build:web": "cd apps/web && bun run build",
-    "db:generate": "cd apps/api && bunx drizzle-kit generate",
-    "db:migrate": "cd apps/api && bun run src/db/migrate.ts",
-    "db:seed": "cd apps/api && bun run src/db/seed.ts",
-    "db:studio": "cd apps/api && bunx drizzle-kit studio",
+    "db:generate": "cd apps/admin && bunx drizzle-kit generate",
+    "db:migrate": "cd apps/admin && bun run src/lib/server/db/migrate.ts",
+    "db:seed": "cd apps/admin && bun run src/lib/server/db/seed.ts",
+    "db:studio": "cd apps/admin && bunx drizzle-kit studio",
     "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules bun.lockb"
   },
   "devDependencies": {

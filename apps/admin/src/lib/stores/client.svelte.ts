@@ -121,13 +121,9 @@ async function updateVCard(data: {
 async function publish(): Promise<boolean> {
   publishing = true;
   try {
-    const result = await api.publish.trigger();
+    await api.publish.trigger();
     await loadPublishStatus();
-    if (result.status === 'building') {
-      toastStore.info('Publication en cours... (~30-60 secondes)');
-    } else {
-      toastStore.success('Publication réussie');
-    }
+    toastStore.success('Modifications publiées!');
     return true;
   } catch (e) {
     if (e instanceof ApiError) {

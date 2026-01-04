@@ -1,10 +1,13 @@
 ---
+// Disable prerendering for SSR dynamic routes
+export const prerender = false;
+
 import ListLayout from '../layouts/ListLayout.astro';
 import CardsLayout from '../layouts/CardsLayout.astro';
 import GridLayout from '../layouts/GridLayout.astro';
 import PremiumLayout from '../layouts/PremiumLayout.astro';
 
-// Ensure API_URL is configured for production builds
+// Get API URL from environment
 const API_URL = import.meta.env.API_URL;
 if (!API_URL && import.meta.env.PROD) {
   throw new Error(
@@ -12,32 +15,12 @@ if (!API_URL && import.meta.env.PROD) {
       'Please set it in your Vercel project settings.'
   );
 }
-const apiUrl = API_URL || 'http://localhost:3000';
+const apiUrl = API_URL || 'http://localhost:5173/api';
 
-export async function getStaticPaths() {
-  const apiUrl = import.meta.env.API_URL || 'http://localhost:3000';
-  try {
-    const response = await fetch(`${apiUrl}/public/clients`);
-
-    if (!response.ok) {
-      console.error('Failed to fetch clients:', response.statusText);
-      return [];
-    }
-
-    const clients = await response.json();
-
-    return clients.map((client: any) => ({
-      params: { slug: client.slug },
-    }));
-  } catch (error) {
-    console.error('Error fetching clients:', error);
-    return [];
-  }
-}
-
+// SSR mode - get slug from URL params (no getStaticPaths needed)
 const { slug } = Astro.params;
 
-// Fetch client data
+// Fetch client data on every request
 let client = null;
 let links: any[] = [];
 
@@ -53,10 +36,16 @@ try {
   console.error(`Error fetching client ${slug}:`, error);
 }
 
-// 404 if client not found
+// Return proper 404 response for SSR
 if (!client) {
-  return Astro.redirect('/404');
+  return Astro.rewrite('/404');
 }
+
+// Set cache headers for CDN (60s cache, 5min stale-while-revalidate)
+Astro.response.headers.set(
+  'Cache-Control',
+  'public, s-maxage=60, stale-while-revalidate=300'
+);
 
 // Choose layout based on client settings
 const layouts = {

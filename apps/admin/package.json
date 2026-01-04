@@ -10,15 +10,23 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
   },
   "dependencies": {
+    "@libsql/client": "^0.15.15",
     "@noko/shared": "workspace:*",
+    "better-auth": "^1.4.10",
+    "drizzle-orm": "^0.45.1",
     "lucide-svelte": "^0.468.0",
-    "svelte-dnd-action": "^0.9.69"
+    "qrcode": "^1.5.4",
+    "resend": "^6.6.0",
+    "svelte-dnd-action": "^0.9.69",
+    "zod": "^4.3.4"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/adapter-vercel": "^5.0.0",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "@types/qrcode": "^1.5.6",
+    "drizzle-kit": "^0.31.8",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
     "typescript": "^5.3.3",

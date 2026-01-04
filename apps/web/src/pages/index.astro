@@ -14,7 +14,7 @@ import LandingFooter from '../components/landing/LandingFooter.astro';
 import '../styles/landing.css';
 
 const adminUrl = import.meta.env.DEV ? 'http://localhost:5173' : 'https://admin.nokolink.com';
-const siteUrl = import.meta.env.PUBLIC_SITE_URL;
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'http://localhost:4321';
 ---
 
 <!DOCTYPE html>

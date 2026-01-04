@@ -1,5 +1,8 @@
 ---
 import '../styles/global.css';
+
+// Set proper 404 status code for SSR
+Astro.response.status = 404;
 ---
 
 <!doctype html>

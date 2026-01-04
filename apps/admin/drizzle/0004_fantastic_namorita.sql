@@ -1,0 +1,1 @@
+ALTER TABLE `clients` ADD `button_style` text DEFAULT 'rounded';

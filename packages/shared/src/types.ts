@@ -170,6 +170,7 @@ export interface ApiError {
 // Publish types
 export interface PublishStatus {
   hasDraftChanges: boolean;
+  isPublished: boolean;
   lastPublishedAt: string | null;
 }
 
