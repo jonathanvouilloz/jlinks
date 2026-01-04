@@ -49,6 +49,13 @@
   --color-sidebar-active: #FFF0EE;
 
   /* ============================================
+     COLORS - Login Hero
+     ============================================ */
+  --color-dark-bg: #1a1a2e;
+  --color-dark-text: #ffffff;
+  --color-dark-text-muted: rgba(255, 255, 255, 0.7);
+
+  /* ============================================
      TYPOGRAPHY
      ============================================ */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;

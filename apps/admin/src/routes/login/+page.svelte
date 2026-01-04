@@ -1,7 +1,8 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { Button, Input, Card } from '$lib/components/ui';
+  import { Button, Input } from '$lib/components/ui';
   import { authStore } from '$lib/stores';
+  import { LogIn, UserPlus } from 'lucide-svelte';
 
   let email = $state('');
   let password = $state('');
@@ -29,133 +30,454 @@
 
 <svelte:head>
   <title>Connexion - Noko</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </svelte:head>
 
 <div class="login-page">
-  <div class="login-container">
-    <div class="login-header">
-      <h1 class="login-logo">Noko</h1>
-      <p class="login-subtitle">Connectez-vous à votre espace</p>
+  <!-- Dark Background Layer -->
+  <div class="hero-background">
+    <!-- Decorative Elements -->
+    <div class="decorative-elements">
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
+      <div class="circle-ring circle-ring-1"></div>
+      <div class="circle-ring circle-ring-2"></div>
+      <div class="circle-ring circle-ring-3"></div>
     </div>
 
-    <Card>
-      <form onsubmit={handleSubmit} class="login-form">
-        {#if error}
-          <div class="error-message">{error}</div>
-        {/if}
+    <!-- Hero Content -->
+    <div class="hero-content">
+      <p class="hero-eyebrow">La plateforme de liens personnalisee</p>
+      <h1 class="hero-tagline">
+        Tous vos liens<br />
+        <span class="highlight">en un seul endroit</span>
+      </h1>
+    </div>
+  </div>
 
-        <Input
-          label="Email"
-          type="email"
-          bind:value={email}
-          placeholder="votre@email.com"
-          required
-          disabled={loading}
-        />
-
-        <Input
-          label="Mot de passe"
-          type="password"
-          bind:value={password}
-          placeholder="••••••••"
-          required
-          disabled={loading}
-        />
-
-        <Button type="submit" variant="primary" {loading} disabled={loading} class="login-button">
-          Se connecter
-        </Button>
-
-        <a href="/forgot-password" class="forgot-password-link">
-          Mot de passe oublié ?
+  <!-- White Form Panel (Overlapping) -->
+  <div class="form-panel">
+    <div class="form-panel-inner">
+      <!-- Header -->
+      <header class="form-header">
+        <a href="/" class="logo">
+          <img src="/logonono.webp" alt="Nokolink" class="logo-img" />
         </a>
-      </form>
-    </Card>
+        <a href="/register" class="signup-link">
+          <UserPlus size={16} />
+          <span>Inscription</span>
+        </a>
+      </header>
 
-    <p class="login-footer">
-      Powered by <a href="https://nokolink.com" target="_blank" rel="noopener">Noko</a>
-    </p>
+      <!-- Form Content (Centered) -->
+      <div class="form-content">
+        <div class="form-content-inner">
+          <h2 class="form-title">Connexion</h2>
+          <p class="form-subtitle">Accedez a votre espace Noko</p>
+
+          <form onsubmit={handleSubmit} class="login-form">
+            {#if error}
+              <div class="error-message">
+                <span class="error-icon">!</span>
+                {error}
+              </div>
+            {/if}
+
+            <div class="input-group">
+              <Input
+                type="email"
+                bind:value={email}
+                placeholder="votre@email.com"
+                required
+                disabled={loading}
+              />
+            </div>
+
+            <div class="input-group">
+              <Input
+                type="password"
+                bind:value={password}
+                placeholder="Mot de passe"
+                required
+                disabled={loading}
+                showPasswordToggle
+              />
+            </div>
+
+            <div class="form-options">
+              <a href="/forgot-password" class="forgot-link">
+                Mot de passe oublie ?
+              </a>
+            </div>
+
+            <Button type="submit" variant="primary" {loading} disabled={loading} class="submit-btn">
+              <LogIn size={18} />
+              <span>Se connecter</span>
+            </Button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="form-footer">
+        <p>&copy; 2025 Noko. Tous droits reserves.</p>
+      </footer>
+    </div>
   </div>
 </div>
 
 <style>
+  /* Base Layout */
   .login-page {
     min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Plus Jakarta Sans', var(--font-family);
+  }
+
+  /* Hero Background - Full Width */
+  .hero-background {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #16162a 0%, #1a1a2e 50%, #252547 100%);
+    display: flex;
+    align-items: center;
+    padding-left: 5%;
+    padding-right: 55%;
+  }
+
+  /* Decorative Elements */
+  .decorative-elements {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+  }
+
+  .glow-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--color-primary);
+    top: 10%;
+    left: 5%;
+    opacity: 0.15;
+  }
+
+  .glow-2 {
+    width: 300px;
+    height: 300px;
+    background: #8b5cf6;
+    bottom: 20%;
+    left: 25%;
+    opacity: 0.1;
+  }
+
+  .circle-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    top: 50%;
+    left: 22%;
+    transform: translate(-50%, -50%);
+  }
+
+  .circle-ring-1 {
+    width: 500px;
+    height: 500px;
+  }
+
+  .circle-ring-2 {
+    width: 380px;
+    height: 380px;
+  }
+
+  .circle-ring-3 {
+    width: 260px;
+    height: 260px;
+  }
+
+  /* Hero Content */
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1.5rem;
+    font-weight: 500;
+  }
+
+  .hero-tagline {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.1;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-tagline .highlight {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #ff8a7a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Form Panel - Overlapping White Card */
+  .form-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 52%;
+    min-width: 480px;
+    background: #ffffff;
+    border-radius: 64px 0 0 64px;
+    box-shadow:
+      -28px 0 80px rgba(0, 0, 0, 0.2),
+      -10px 0 30px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-panel-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2.5rem 4rem;
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Form Header */
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .logo-img {
+    height: 36px;
+    width: auto;
+  }
+
+  .signup-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    border: 1px solid transparent;
+  }
+
+  .signup-link:hover {
+    color: var(--color-primary);
+    background: var(--color-primary-light);
+    border-color: rgba(255, 107, 91, 0.2);
+  }
+
+  /* Form Content - Vertically Centered */
+  .form-content {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--color-bg);
-    padding: var(--space-4);
   }
 
-  .login-container {
+  .form-content-inner {
     width: 100%;
-    max-width: 400px;
   }
 
-  .login-header {
-    text-align: center;
-    margin-bottom: var(--space-6);
+  .form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
   }
 
-  .login-logo {
-    font-size: var(--text-2xl);
-    font-weight: var(--font-bold);
-    color: var(--color-primary);
-    margin: 0 0 var(--space-2);
-  }
-
-  .login-subtitle {
-    font-size: var(--text-sm);
+  .form-subtitle {
+    font-size: 1rem;
     color: var(--color-text-secondary);
-    margin: 0;
+    margin: 0 0 2rem;
   }
 
+  /* Login Form */
   .login-form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: 1.25rem;
   }
 
-  .error-message {
-    padding: var(--space-3);
-    background: var(--color-error-light);
-    border: 1px solid var(--color-error);
-    border-radius: var(--radius-md);
-    color: var(--color-error-dark);
-    font-size: var(--text-sm);
+  .input-group {
+    position: relative;
   }
 
-  .login-form :global(.login-button) {
-    width: 100%;
-    margin-top: var(--space-2);
+  .input-group :global(.input-wrapper) {
+    margin: 0;
   }
 
-  .login-footer {
-    text-align: center;
-    margin-top: var(--space-6);
-    font-size: var(--text-xs);
+  .input-group :global(.input) {
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: 1.5px solid var(--color-border);
+    background: #fafafa;
+    transition: all var(--transition-fast);
+  }
+
+  .input-group :global(.input:focus) {
+    background: #ffffff;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(255, 107, 91, 0.1);
+  }
+
+  .input-group :global(.input::placeholder) {
     color: var(--color-text-muted);
   }
 
-  .login-footer a {
-    color: var(--color-primary);
-    text-decoration: none;
+  .error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    color: #b91c1c;
+    font-size: 0.875rem;
+    font-weight: 500;
   }
 
-  .login-footer a:hover {
+  .error-icon {
+    width: 20px;
+    height: 20px;
+    background: #ef4444;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .form-options {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .forgot-link {
+    font-size: 0.875rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+  }
+
+  .forgot-link:hover {
+    color: var(--color-primary-hover);
     text-decoration: underline;
   }
 
-  .forgot-password-link {
-    text-align: center;
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-    text-decoration: none;
-    transition: color 0.2s;
+  /* Submit Button */
+  .login-form :global(.submit-btn) {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, #ff8a7a 100%);
+    box-shadow: 0 4px 14px rgba(255, 107, 91, 0.35);
+    transition: all var(--transition-fast);
+    margin-top: 0.5rem;
   }
 
-  .forgot-password-link:hover {
-    color: var(--color-primary);
+  .login-form :global(.submit-btn:hover:not(:disabled)) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 107, 91, 0.4);
+  }
+
+  .login-form :global(.submit-btn:active:not(:disabled)) {
+    transform: translateY(0);
+  }
+
+  /* Form Footer */
+  .form-footer {
+    padding-top: 2rem;
+  }
+
+  .form-footer p {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .hero-background {
+      padding-right: 50%;
+    }
+
+    .form-panel {
+      width: 55%;
+      min-width: 420px;
+    }
+
+    .form-panel-inner {
+      padding: 2rem 3rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-background {
+      display: none;
+    }
+
+    .form-panel {
+      position: relative;
+      width: 100%;
+      min-width: unset;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .form-panel-inner {
+      padding: 2rem 1.5rem;
+      max-width: 400px;
+    }
+
+    .form-title {
+      font-size: 1.75rem;
+    }
   }
 </style>

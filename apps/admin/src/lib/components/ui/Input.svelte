@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Eye, EyeOff } from 'lucide-svelte';
+
   interface Props {
     type?: 'text' | 'email' | 'password' | 'url' | 'tel' | 'number';
     value?: string;
@@ -11,6 +13,7 @@
     name?: string;
     id?: string;
     class?: string;
+    showPasswordToggle?: boolean;
     oninput?: (e: Event) => void;
     onchange?: (e: Event) => void;
   }
@@ -27,11 +30,17 @@
     name = '',
     id = '',
     class: className = '',
+    showPasswordToggle = false,
     oninput,
     onchange,
   }: Props = $props();
 
   const inputId = id || name || crypto.randomUUID();
+  let showPassword = $state(false);
+
+  const actualType = $derived(
+    type === 'password' && showPasswordToggle && showPassword ? 'text' : type
+  );
 </script>
 
 <div class="input-wrapper {className}">
@@ -42,19 +51,36 @@
     </label>
   {/if}
 
-  <input
-    {type}
-    id={inputId}
-    {name}
-    bind:value
-    {placeholder}
-    {disabled}
-    {required}
-    class="input"
-    class:error
-    {oninput}
-    {onchange}
-  />
+  <div class="input-container" class:has-toggle={type === 'password' && showPasswordToggle}>
+    <input
+      type={actualType}
+      id={inputId}
+      {name}
+      bind:value
+      {placeholder}
+      {disabled}
+      {required}
+      class="input"
+      class:error
+      {oninput}
+      {onchange}
+    />
+    {#if type === 'password' && showPasswordToggle}
+      <button
+        type="button"
+        class="password-toggle"
+        onclick={() => (showPassword = !showPassword)}
+        tabindex="-1"
+        aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+      >
+        {#if showPassword}
+          <EyeOff size={18} />
+        {:else}
+          <Eye size={18} />
+        {/if}
+      </button>
+    {/if}
+  </div>
 
   {#if error}
     <p class="error-text">{error}</p>
@@ -68,6 +94,36 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
+  }
+
+  .input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .input-container.has-toggle .input {
+    padding-right: 44px;
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast);
+  }
+
+  .password-toggle:hover {
+    color: var(--color-text-secondary);
   }
 
   .label {
