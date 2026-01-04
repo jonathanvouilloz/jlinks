@@ -601,7 +601,7 @@
   }
   .form-content-inner {
     width: 100%;
-    max-width: 400px;
+    max-width: 540px;
   }
 
   .form-title {
@@ -850,7 +850,7 @@
   }
   .form-footer {
     padding-top: 2rem;
-    max-width: 400px;
+    max-width: 540px;
     margin: 0 auto;
     width: 100%;
   }
