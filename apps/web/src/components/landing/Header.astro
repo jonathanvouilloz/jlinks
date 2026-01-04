@@ -65,13 +65,8 @@ const { adminUrl } = Astro.props;
   .logo-img {
     height: 32px;
     width: auto;
-    /* 
-      Magic filter to handle "Black Text + Coral Icon" on Dark BG:
-      1. invert(1): Black Text -> White. Coral -> Cyan (Dark).
-      2. hue-rotate(180deg): Cyan -> Red/Orange.
-      3. brightness: Adjust to match original intensity.
-    */
-    filter: invert(1) hue-rotate(180deg) brightness(1.5);
+    /* User confirms logo is orange/white by default, so it works on dark BG */
+    filter: none;
     transition: filter 0.3s ease;
   }
 
