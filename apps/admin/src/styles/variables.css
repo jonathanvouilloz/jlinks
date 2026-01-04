@@ -42,11 +42,15 @@
   --color-error-dark: #991b1b;
 
   /* ============================================
-     COLORS - Sidebar
+     COLORS - Sidebar (Dark Mode)
      ============================================ */
-  --color-sidebar-bg: #ffffff;
-  --color-sidebar-hover: #f5f5f5;
-  --color-sidebar-active: #FFF0EE;
+  --color-sidebar-bg: #1a1a2e;
+  --color-sidebar-hover: rgba(255, 255, 255, 0.08);
+  --color-sidebar-active: rgba(255, 107, 91, 0.15);
+  --color-sidebar-text: #ffffff;
+  --color-sidebar-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-sidebar-text-muted: rgba(255, 255, 255, 0.5);
+  --color-sidebar-border: rgba(255, 255, 255, 0.1);
 
   /* ============================================
      COLORS - Login Hero

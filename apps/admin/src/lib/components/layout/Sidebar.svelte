@@ -18,7 +18,7 @@
 <aside class="sidebar">
   <div class="sidebar-header">
     <a href="/" class="logo">
-      <img src="/logonono.webp" alt="Nokolink" class="logo-image" />
+      <img src="/white-logo.webp" alt="Nokolink" class="logo-image" />
     </a>
   </div>
 
@@ -87,7 +87,7 @@
     width: var(--sidebar-width);
     height: 100vh;
     background: var(--color-sidebar-bg);
-    border-right: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-sidebar-border);
     display: flex;
     flex-direction: column;
     z-index: var(--z-sticky);
@@ -98,7 +98,7 @@
     display: flex;
     align-items: center;
     padding: 0 var(--space-4);
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-sidebar-border);
   }
 
   .logo {
@@ -127,7 +127,7 @@
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-3) var(--space-4);
-    color: var(--color-text-secondary);
+    color: var(--color-sidebar-text-secondary);
     text-decoration: none;
     font-size: var(--text-sm);
     font-weight: var(--font-medium);
@@ -136,7 +136,7 @@
 
   .nav-link:hover {
     background: var(--color-sidebar-hover);
-    color: var(--color-text);
+    color: var(--color-sidebar-text);
   }
 
   .nav-link.active {
@@ -147,7 +147,7 @@
   .nav-section {
     margin-top: var(--space-4);
     padding-top: var(--space-4);
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid var(--color-sidebar-border);
   }
 
   .nav-section-title {
@@ -155,14 +155,14 @@
     padding: 0 var(--space-4) var(--space-2);
     font-size: var(--text-xs);
     font-weight: var(--font-semibold);
-    color: var(--color-text-muted);
+    color: var(--color-sidebar-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
   .sidebar-footer {
     padding: var(--space-4);
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid var(--color-sidebar-border);
   }
 
   .user-info {
@@ -175,7 +175,7 @@
   .user-email {
     font-size: var(--text-sm);
     font-weight: var(--font-medium);
-    color: var(--color-text);
+    color: var(--color-sidebar-text);
     word-break: break-all;
   }
 
@@ -192,9 +192,9 @@
     width: 100%;
     padding: var(--space-2) var(--space-3);
     background: transparent;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-sidebar-border);
     border-radius: var(--radius-md);
-    color: var(--color-text-secondary);
+    color: var(--color-sidebar-text-secondary);
     font-size: var(--text-sm);
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -202,7 +202,7 @@
 
   .logout-btn:hover {
     background: var(--color-sidebar-hover);
-    border-color: var(--color-border-hover);
-    color: var(--color-text);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--color-sidebar-text);
   }
 </style>
