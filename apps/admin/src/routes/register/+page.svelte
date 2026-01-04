@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { Button, AuthInput } from '$lib/components/ui';
+  import { Button, AuthButton, AuthInput } from '$lib/components/ui';
   import { api } from '$lib/api';
   import { detectSocialPreset, SOCIAL_PRESETS } from '@noko/shared/social-presets';
   import type { SocialPresetKey } from '@noko/shared/types';
@@ -238,7 +238,6 @@
                     required
                     error={errors.email}
                     disabled={loading}
-                    label="Email"
                   />
                 </div>
 
@@ -246,24 +245,22 @@
                   <AuthInput
                     type="password"
                     bind:value={password}
-                    placeholder="Minimum 8 caractères"
+                    placeholder="Mot de passe (min. 8 caractères)"
                     required
                     error={errors.password}
                     disabled={loading}
                     showPasswordToggle
-                    label="Mot de passe"
                   />
                 </div>
 
                 <div class="input-group slug-group">
-                  <label for="slug" class="input-label">Votre URL : nokolink.com/</label>
                   <div class="slug-input-wrapper">
                     <input
                       id="slug"
                       type="text"
                       value={slug}
                       oninput={handleSlugInput}
-                      placeholder="votre-nom"
+                      placeholder="nokolink.com/votre-nom"
                       class="input slug-input {errors.slug ? 'error' : ''}"
                       required
                       disabled={loading}
@@ -277,10 +274,10 @@
                   {/if}
                 </div>
 
-                <Button type="submit" variant="primary" class="submit-btn">
+                <AuthButton type="submit">
                   <span>Continuer</span>
                   <ArrowRight size={18} />
-                </Button>
+                </AuthButton>
               </div>
             {:else}
               <!-- STEP 2: Social Links -->
@@ -366,15 +363,15 @@
                   
                   {#if socialLinks.length === 0}
                     <div style="flex: 1">
-                      <Button type="button" variant="secondary" onclick={handleSubmit} {loading} disabled={loading} style="width: 100%">
+                      <AuthButton type="button" onclick={handleSubmit} {loading} disabled={loading}>
                         Passer cette étape
-                      </Button>
+                      </AuthButton>
                     </div>
                   {:else}
                     <div style="flex: 1">
-                      <Button type="button" variant="primary" onclick={handleSubmit} {loading} disabled={loading} style="width: 100%">
+                      <AuthButton type="button" onclick={handleSubmit} {loading} disabled={loading}>
                         Créer mon compte
-                      </Button>
+                      </AuthButton>
                     </div>
                   {/if}
                 </div>
@@ -557,7 +554,6 @@
   }
 
   .input-group { position: relative; display: flex; flex-direction: column; gap: 0.5rem; }
-  .input-label { font-size: 0.875rem; font-weight: 500; color: var(--color-text, #111); }
 
   /* Slug Input */
   .slug-input-wrapper { position: relative; }

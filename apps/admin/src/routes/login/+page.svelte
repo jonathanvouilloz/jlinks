@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { Button, AuthInput } from '$lib/components/ui';
+  import { Button, AuthButton, AuthInput } from '$lib/components/ui';
   import { authStore } from '$lib/stores';
   import { LogIn, UserPlus } from 'lucide-svelte';
 
@@ -112,10 +112,10 @@
               </a>
             </div>
 
-            <Button type="submit" variant="primary" {loading} disabled={loading} class="submit-btn">
+            <AuthButton type="submit" {loading} disabled={loading}>
               <LogIn size={18} />
               <span>Se connecter</span>
-            </Button>
+            </AuthButton>
           </form>
         </div>
       </div>
@@ -392,28 +392,6 @@
   .forgot-link:hover {
     color: var(--color-primary-hover);
     text-decoration: underline;
-  }
-
-  /* Submit Button */
-  .login-form :global(.submit-btn) {
-    width: 100%;
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--color-primary) 0%, #ff8a7a 100%);
-    box-shadow: 0 4px 14px rgba(255, 107, 91, 0.35);
-    transition: all var(--transition-fast);
-    margin-top: 0.5rem;
-  }
-
-  .login-form :global(.submit-btn:hover:not(:disabled)) {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(255, 107, 91, 0.4);
-  }
-
-  .login-form :global(.submit-btn:active:not(:disabled)) {
-    transform: translateY(0);
   }
 
   /* Form Footer */
