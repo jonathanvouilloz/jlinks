@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { Button, AuthButton, AuthInput } from '$lib/components/ui';
+  import { Button, AuthButton, BackAuthButton, AuthInput } from '$lib/components/ui';
   import { api } from '$lib/api';
   import { detectSocialPreset, SOCIAL_PRESETS } from '@noko/shared/social-presets';
   import type { SocialPresetKey } from '@noko/shared/types';
@@ -377,21 +377,31 @@
                 </div>
 
                 <div class="buttons-row">
-                  <Button type="button" variant="secondary" onclick={prevStep} disabled={loading} class="back-btn" aria-label="Retour">
-                    <ArrowLeft size={20} />
-                  </Button>
+                  <BackAuthButton onclick={prevStep} disabled={loading} aria-label="Retour">
+                    <ArrowLeft size={24} />
+                  </BackAuthButton>
                   
                   {#if socialLinks.length === 0}
                     <div style="flex: 1">
-                      <Button type="button" variant="secondary" onclick={handleSubmit} {loading} disabled={loading} style="width: 100%">
+                      <AuthButton 
+                        type="button" 
+                        onclick={() => {
+                          if(confirm('Voulez-vous vraiment créer votre compte sans ajouter de liens pour le moment ?')) {
+                            handleSubmit();
+                          }
+                        }} 
+                        {loading} 
+                        disabled={loading}
+                        style="margin-top: 0; background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border); box-shadow: none;"
+                      >
                         Passer cette étape
-                      </Button>
+                      </AuthButton>
                     </div>
                   {:else}
                     <div style="flex: 1">
-                      <Button type="button" variant="primary" onclick={handleSubmit} {loading} disabled={loading} style="width: 100%; background: var(--color-primary-light); color: var(--color-primary); border: 1px solid transparent;">
+                      <AuthButton type="button" onclick={handleSubmit} {loading} disabled={loading} style="margin-top: 0; background: var(--color-primary-light); color: var(--color-primary); border: 1px solid transparent; box-shadow: none;">
                         Créer mon compte
-                      </Button>
+                      </AuthButton>
                     </div>
                   {/if}
                 </div>
