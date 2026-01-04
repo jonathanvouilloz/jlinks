@@ -14,7 +14,7 @@ const features = [
 
 <section class="section comparison">
   <div class="container">
-    <div class="text-center mb-20">
+    <div class="text-center mb-16">
       <h2 class="section-title">What you pay for elsewhere is free here.</h2>
     </div>
 
@@ -23,11 +23,11 @@ const features = [
         <!-- Header row -->
         <div class="cell header"></div>
         <div class="cell header">Others Free</div>
-        <div class="cell header">
+        <div class="cell header header-row">
           Others Pro
           <span class="price-tag">$9+</span>
         </div>
-        <div class="cell header highlight">
+        <div class="cell header noko-header">
           Noko
         </div>
 
@@ -47,11 +47,11 @@ const features = [
               {feature.linktreePro === true && <span class="check">✓</span>}
               {feature.linktreePro === false && <span class="cross">✕</span>}
             </div>
-            <div class="cell highlight-bg">
-              {feature.jlinks === true && <span class="check">✓</span>}
-              {feature.jlinks === false && <span class="cross">✕</span>}
-              {feature.jlinks === '10' && <span class="check">✓ (10)</span>}
-              {feature.jlinks === 'pro' && <span class="text-sm text-primary font-bold">Pro</span>}
+            <div class="cell noko-col">
+              {feature.jlinks === true && <span class="check-white">✓</span>}
+              {feature.jlinks === false && <span class="cross-white">✕</span>}
+              {feature.jlinks === '10' && <span class="check-white">✓ (10)</span>}
+              {feature.jlinks === 'pro' && <span class="text-sm font-bold text-white">Pro</span>}
             </div>
           </>
         ))}
@@ -66,8 +66,8 @@ const features = [
         <div class="cell">
           <span class="price">$9<span class="period">/mo</span></span>
         </div>
-        <div class="cell highlight-bg">
-          <span class="price highlight">0</span>
+        <div class="cell noko-col noko-footer">
+          <span class="price text-white">0</span>
         </div>
       </div>
     </div>
@@ -116,6 +116,13 @@ const features = [
     gap: 0.5rem;
   }
 
+  .cell.header.header-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
   .cell.feature-label {
     justify-content: flex-start;
     text-align: left;
@@ -123,13 +130,20 @@ const features = [
     color: var(--color-text-secondary);
   }
 
-  .cell.highlight, .cell.highlight-bg {
-    background: var(--color-primary-light);
+  /* Noko Column Styles */
+  .cell.noko-col, .cell.noko-header {
+    background: var(--color-primary);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.1);
   }
   
-  .cell.highlight {
-    color: var(--color-primary);
+  .cell.noko-header {
     font-size: 1.25rem;
+    font-weight: 800;
+  }
+  
+  .cell.noko-footer {
+    border-bottom-right-radius: var(--radius-xl);
   }
 
   .price-tag {
@@ -143,6 +157,11 @@ const features = [
   .check { color: var(--color-success); font-weight: bold; }
   .cross { color: var(--color-text-muted); }
   .partial { color: var(--color-warning); font-weight: bold; }
+
+  /* White variations for Noko column */
+  .check-white { color: white; font-weight: bold; }
+  .cross-white { color: rgba(255, 255, 255, 0.4); }
+  .text-white { color: white !important; }
 
   .price {
     font-weight: 700;
