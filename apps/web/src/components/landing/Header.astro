@@ -6,34 +6,87 @@ interface Props {
 const { adminUrl } = Astro.props;
 ---
 
-<header class="landing-header">
-  <div class="landing-header__inner">
-    <!-- Gauche: Logo -->
-    <a href="/" class="landing-logo">
-      <img src="/images/brand/noko-logo-text.png" alt="Noko" height="48" />
+<header class="header">
+  <div class="container header-inner">
+    <!-- Logo -->
+    <a href="/" class="logo">
+      <img src="/logonono.webp" alt="Nokolink" class="logo-img" />
     </a>
 
-    <!-- Centre: Navigation sections -->
-    <nav class="landing-nav__sections">
-      <a href="#features" data-i18n="header.nav.features">Fonctionnalités</a>
-      <a href="#pricing" data-i18n="header.nav.pricing">Tarifs</a>
-      <a href="#faq" data-i18n="header.nav.faq">FAQ</a>
+    <!-- Nav -->
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
     </nav>
 
-    <!-- Droite: CTA + Langue -->
-    <div class="landing-nav__actions">
-      <a href={adminUrl} class="btn btn--primary btn--small" data-i18n="header.cta">
-        Créer ma page
-      </a>
-      <button class="lang-toggle" id="lang-toggle" aria-label="Toggle language">
-        <span class="lang-toggle__option is-active" data-lang="fr">FR</span>
-        <span class="lang-toggle__separator">/</span>
-        <span class="lang-toggle__option" data-lang="en">EN</span>
-      </button>
+    <!-- Actions -->
+    <div class="header-actions">
+      <a href={`${adminUrl}/login`} class="btn btn-outline btn-sm">Log in</a>
+      <a href={`${adminUrl}/register`} class="btn btn-primary btn-sm">Get Started</a>
     </div>
   </div>
 </header>
 
-<script>
-  // Language toggle is handled by landing.ts
-</script>
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1rem 0;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-img {
+    height: 32px;
+    width: auto;
+  }
+
+  .nav-links {
+    display: none;
+    gap: 2rem;
+  }
+
+  .nav-links a {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--color-primary);
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 768px) {
+    .nav-links {
+      display: flex;
+    }
+  }
+</style>

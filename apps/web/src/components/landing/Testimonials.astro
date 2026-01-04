@@ -1,91 +1,146 @@
 ---
-// Testimonials carousel section
-import { ChevronLeft, ChevronRight, BadgeCheck } from 'lucide-astro';
+// Testimonials section
+import { Quote } from 'lucide-astro';
 ---
 
-<section class="landing-section landing-section--alt testimonials">
-  <div class="landing-container">
-    <h2 class="testimonials__title" data-animate data-i18n="testimonials.title">
-      Ils ont fait le switch.
-    </h2>
-
-    <div class="carousel" data-testimonials-carousel>
-      <div class="carousel__track" data-carousel-track>
-        <!-- Testimonial 1 -->
-        <blockquote class="carousel__card" data-carousel-card>
-          <div class="carousel__card-inner">
-            <span class="carousel__quote-mark">"</span>
-            <p class="carousel__quote" data-i18n="testimonials.items.0.quote">
-              J'avais Linktree. Maintenant j'ai les mêmes features, plus le QR code brandé, gratuitement.
-            </p>
-            <div class="carousel__author">
-              <div class="carousel__avatar carousel__avatar--1" data-i18n="testimonials.items.0.initials">ML</div>
-              <div class="carousel__author-info">
-                <span class="carousel__author-name" data-i18n="testimonials.items.0.name">Marie L.</span>
-                <span class="carousel__author-role" data-i18n="testimonials.items.0.role">Freelance</span>
-              </div>
-              <div class="carousel__badge-separator"></div>
-              <div class="carousel__badge">
-                <BadgeCheck class="carousel__badge-icon" size={18} />
-                <span data-i18n="testimonials.proBadge">Pro User</span>
-              </div>
-            </div>
-          </div>
-        </blockquote>
-
-        <!-- Testimonial 2 -->
-        <blockquote class="carousel__card" data-carousel-card>
-          <div class="carousel__card-inner">
-            <span class="carousel__quote-mark">"</span>
-            <p class="carousel__quote" data-i18n="testimonials.items.1.quote">
-              Le bouton pour s'ajouter aux contacts, mes clients adorent. C'est tout bête mais personne d'autre ne le fait.
-            </p>
-            <div class="carousel__author">
-              <div class="carousel__avatar carousel__avatar--2" data-i18n="testimonials.items.1.initials">TR</div>
-              <div class="carousel__author-info">
-                <span class="carousel__author-name" data-i18n="testimonials.items.1.name">Thomas R.</span>
-                <span class="carousel__author-role" data-i18n="testimonials.items.1.role">Coach</span>
-              </div>
-            </div>
-          </div>
-        </blockquote>
-
-        <!-- Testimonial 3 -->
-        <blockquote class="carousel__card" data-carousel-card>
-          <div class="carousel__card-inner">
-            <span class="carousel__quote-mark">"</span>
-            <p class="carousel__quote" data-i18n="testimonials.items.2.quote">
-              Simple, rapide, joli. Exactement ce qu'il me fallait.
-            </p>
-            <div class="carousel__author">
-              <div class="carousel__avatar carousel__avatar--3" data-i18n="testimonials.items.2.initials">SM</div>
-              <div class="carousel__author-info">
-                <span class="carousel__author-name" data-i18n="testimonials.items.2.name">Sophie M.</span>
-                <span class="carousel__author-role" data-i18n="testimonials.items.2.role">Photographe</span>
-              </div>
-            </div>
-          </div>
-        </blockquote>
-      </div>
+<section class="section testimonials">
+  <div class="container">
+    <div class="text-center mb-16">
+      <h2 class="section-title">They made the switch.</h2>
     </div>
 
-    <div class="carousel__nav">
-      <button
-        class="carousel__btn carousel__btn--prev"
-        data-carousel-prev
-        aria-label="Témoignage précédent"
-        data-i18n-aria="testimonials.prevSlide"
-      >
-        <ChevronLeft size={20} />
-      </button>
-      <button
-        class="carousel__btn carousel__btn--next"
-        data-carousel-next
-        aria-label="Témoignage suivant"
-        data-i18n-aria="testimonials.nextSlide"
-      >
-        <ChevronRight size={20} />
-      </button>
+    <div class="testimonials-grid">
+      <!-- Testimonial 1 -->
+      <blockquote class="testimonial-card">
+        <div class="quote-icon">
+          <Quote size={24} fill="currentColor" />
+        </div>
+        <p class="testimonial-text">
+          I had Linktree. Now I have the same features, plus the branded QR code, for free.
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar avatar-1">ML</div>
+          <div class="author-info">
+            <cite class="author-name">Marie L.</cite>
+            <span class="author-role">Freelance</span>
+          </div>
+        </div>
+      </blockquote>
+
+      <!-- Testimonial 2 -->
+      <blockquote class="testimonial-card">
+        <div class="quote-icon">
+          <Quote size={24} fill="currentColor" />
+        </div>
+        <p class="testimonial-text">
+          The "Add to Contacts" button, my clients love it. It's simple but no one else does it.
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar avatar-2">TR</div>
+          <div class="author-info">
+            <cite class="author-name">Thomas R.</cite>
+            <span class="author-role">Coach</span>
+          </div>
+        </div>
+      </blockquote>
+
+      <!-- Testimonial 3 -->
+      <blockquote class="testimonial-card">
+        <div class="quote-icon">
+          <Quote size={24} fill="currentColor" />
+        </div>
+        <p class="testimonial-text">
+          Simple, fast, beautiful. Exactly what I needed.
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar avatar-3">SM</div>
+          <div class="author-info">
+            <cite class="author-name">Sophie M.</cite>
+            <span class="author-role">Photographer</span>
+          </div>
+        </div>
+      </blockquote>
     </div>
   </div>
 </section>
+
+<style>
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .testimonial-card {
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    padding: 2.5rem;
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  .testimonial-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+
+  .quote-icon {
+    color: var(--color-primary-light);
+    margin-bottom: 1.5rem;
+  }
+  
+  .quote-icon :global(svg) {
+    color: var(--color-primary);
+    opacity: 0.2;
+    width: 48px;
+    height: 48px;
+  }
+
+  .testimonial-text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+    font-weight: 500;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    font-size: 1rem;
+  }
+
+  .avatar-1 { background: #FF6B5B; }
+  .avatar-2 { background: #8b5cf6; }
+  .avatar-3 { background: #10b981; }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .author-name {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .author-role {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+</style>

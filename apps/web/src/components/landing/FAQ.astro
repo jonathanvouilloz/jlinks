@@ -2,55 +2,55 @@
 // FAQ section with accordion
 ---
 
-<section id="faq" class="landing-section faq">
-  <div class="landing-container landing-container--narrow">
-    <h2 class="faq__title" data-animate data-i18n="faq.title">
-      Questions fréquentes
-    </h2>
+<section id="faq" class="section faq">
+  <div class="container" style="max-width: 800px;">
+    <div class="text-center mb-12">
+      <h2 class="section-title">Common Questions</h2>
+    </div>
 
-    <div class="faq__list" data-animate>
-      <details class="faq__item">
-        <summary data-i18n="faq.items.0.question">
-          C'est vraiment gratuit ?
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>
+          Is it really free?
         </summary>
-        <p data-i18n="faq.items.0.answer">
-          Oui. Pas de période d'essai, pas de piège. Le plan Free est gratuit pour toujours. Le plan Pro existe pour ceux qui veulent les analytics et retirer le badge.
+        <p>
+          Yes. No trial period, no catch. The Free plan is free forever. The Pro plan exists for those who want analytics and to remove the Noko badge.
         </p>
       </details>
 
-      <details class="faq__item">
-        <summary data-i18n="faq.items.1.question">
-          Pourquoi c'est gratuit ?
+      <details class="faq-item">
+        <summary>
+          Why is it free?
         </summary>
-        <p data-i18n="faq.items.1.answer">
-          Noko est un projet de Jon Labs, un studio web basé à Genève. On l'a créé pour nos clients, puis on s'est dit que ça pourrait servir à tout le monde.
+        <p>
+          Noko is a project by Jon Labs, a web studio based in Geneva. We built it for our clients, then realized it could be useful for everyone.
         </p>
       </details>
 
-      <details class="faq__item">
-        <summary data-i18n="faq.items.2.question">
-          C'est quoi la différence avec Linktree ?
+      <details class="faq-item">
+        <summary>
+          What's the difference with Linktree?
         </summary>
-        <p data-i18n="faq.items.2.answer">
-          On garde l'essentiel. Liens, personnalisation, c'est pareil. Ce qu'on ajoute : QR code brandé gratuit, bouton "ajouter aux contacts", et un prix Pro 2x moins cher.
+        <p>
+          We keep the essentials. Links, customization, it's the same. What we add: Free branded QR code, "Add to Contacts" button, and a Pro price that is 2x cheaper.
         </p>
       </details>
 
-      <details class="faq__item">
-        <summary data-i18n="faq.items.3.question">
-          Je peux migrer depuis Linktree ?
+      <details class="faq-item">
+        <summary>
+          Can I migrate from Linktree?
         </summary>
-        <p data-i18n="faq.items.3.answer">
-          En 2 minutes. Tu crées ta page, tu copies tes liens, tu changes l'URL dans ta bio. C'est tout.
+        <p>
+          In 2 minutes. You create your page, copy your links, change the URL in your bio. That's it.
         </p>
       </details>
 
-      <details class="faq__item">
-        <summary data-i18n="faq.items.4.question">
-          Mes données sont stockées où ?
+      <details class="faq-item">
+        <summary>
+          Where is my data stored?
         </summary>
-        <p data-i18n="faq.items.4.answer">
-          Sur des serveurs en Suisse.
+        <p>
+          On servers in Switzerland.
         </p>
       </details>
     </div>
@@ -58,38 +58,81 @@
 </section>
 
 <style>
-  .faq__item {
-    overflow: hidden;
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
-  .faq__item p {
-    animation: fadeIn 0.3s ease-out;
+  .faq-item {
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    transition: all 0.2s;
+    cursor: pointer;
   }
 
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .faq-item:hover {
+    border-color: var(--color-primary);
   }
 
-  /* Close other items when one opens (optional accordion behavior) */
+  .faq-item[open] {
+    border-color: var(--color-primary);
+    background: var(--color-surface);
+  }
+
+  .faq-item summary {
+    font-weight: 600;
+    color: var(--color-text);
+    list-style: none;
+    position: relative;
+    padding-right: 2rem;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-primary);
+    line-height: 1;
+  }
+
+  .faq-item[open] summary::after {
+    content: '−';
+  }
+
+  .faq-item p {
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    animation: slideDown 0.2s ease-out;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 </style>
 
 <script>
   // Optional: Accordion behavior - close others when one opens
-  const faqItems = document.querySelectorAll('.faq__item');
+  const faqItems = document.querySelectorAll('.faq-item');
 
   faqItems.forEach(item => {
     item.addEventListener('toggle', () => {
-      if (item.open) {
+      if ((item as HTMLDetailsElement).open) {
         faqItems.forEach(otherItem => {
-          if (otherItem !== item && otherItem.open) {
-            otherItem.open = false;
+          if (otherItem !== item && (otherItem as HTMLDetailsElement).open) {
+            (otherItem as HTMLDetailsElement).open = false;
           }
         });
       }

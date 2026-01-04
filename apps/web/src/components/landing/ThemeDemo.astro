@@ -11,16 +11,16 @@ const { adminUrl } = Astro.props;
 const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as const;
 ---
 
-<section class="landing-section landing-section--alt demo">
-  <div class="landing-container">
-    <h2 class="demo__title" data-animate data-i18n="demo.title">
-      Vois par toi-même.
-    </h2>
+<section id="demo" class="section demo">
+  <div class="container">
+    <div class="text-center mb-12">
+      <h2 class="section-title">See for yourself.</h2>
+    </div>
 
-    <div class="demo__tabs" role="tablist" data-animate>
+    <div class="demo-tabs" role="tablist">
       {demoThemes.map((themeId, index) => (
         <button
-          class="demo__tab"
+          class="demo-tab"
           role="tab"
           data-theme={themeId}
           aria-selected={index === 0 ? 'true' : 'false'}
@@ -30,19 +30,19 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
       ))}
     </div>
 
-    <div class="demo__preview" data-animate>
-      <div class="demo__phone" id="demo-phone">
-        <div class="demo__phone-frame">
-          <div class="demo__phone-notch"></div>
-          <div class="demo__phone-screen" id="demo-screen">
-            <div class="demo__content">
-              <div class="demo__avatar"></div>
-              <div class="demo__name">Jon Labs</div>
-              <div class="demo__bio">Studio web - Genève</div>
-              <div class="demo__links">
-                <a href="#" class="demo__link">Notre site</a>
-                <a href="#" class="demo__link">Instagram</a>
-                <a href="#" class="demo__link">Prendre rendez-vous</a>
+    <div class="demo-preview">
+      <div class="phone-mockup">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen" id="demo-screen">
+            <div class="demo-content">
+              <div class="demo-avatar"></div>
+              <div class="demo-name">Jon Labs</div>
+              <div class="demo-bio">Web Studio - Geneva</div>
+              <div class="demo-links">
+                <a href="#" class="demo-link">Our Website</a>
+                <a href="#" class="demo-link">Instagram</a>
+                <a href="#" class="demo-link">Book a meeting</a>
               </div>
             </div>
           </div>
@@ -50,69 +50,98 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
       </div>
     </div>
 
-    <p class="demo__subtitle" data-animate data-i18n="demo.subtitle">
-      C'est ta page dans 2 minutes.
-    </p>
-
-    <div class="text-center" data-animate>
-      <a href={adminUrl} class="btn btn--primary" data-i18n="demo.cta">
-        Créer la mienne
+    <div class="text-center mt-12">
+      <p class="section-subtitle mb-8">
+        This is your page in 2 minutes.
+      </p>
+      <a href={`${adminUrl}/register`} class="btn btn-primary btn-lg">
+        Create mine
       </a>
     </div>
   </div>
 </section>
 
 <style>
-  .demo__phone {
-    max-width: 280px;
+  .demo-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .demo-tab {
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    background: white;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .demo-tab:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .demo-tab[aria-selected="true"] {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+
+  .phone-mockup {
+    max-width: 300px;
     margin: 0 auto;
   }
 
-  .demo__phone-frame {
+  .phone-frame {
     position: relative;
     background: #1a1a1a;
-    border-radius: 36px;
+    border-radius: 40px;
     padding: 12px;
-    box-shadow:
-      0 25px 50px -12px rgba(0, 0, 0, 0.25),
-      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    box-shadow: var(--shadow-2xl);
   }
 
-  .demo__phone-notch {
+  .phone-notch {
     position: absolute;
     top: 12px;
     left: 50%;
     transform: translateX(-50%);
-    width: 80px;
+    width: 90px;
     height: 24px;
     background: #1a1a1a;
-    border-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
     z-index: 10;
   }
 
-  .demo__phone-screen {
+  .phone-screen {
     background: var(--demo-bg, #fafafa);
-    border-radius: 28px;
-    padding: 48px 20px 32px;
-    min-height: 420px;
+    border-radius: 32px;
+    padding: 60px 20px 40px;
+    min-height: 500px;
     transition: background-color 0.4s ease;
+    overflow: hidden;
   }
 
-  .demo__content {
+  .demo-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
   }
 
-  .demo__avatar {
-    width: 64px;
-    height: 64px;
+  .demo-avatar {
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--demo-primary, #FF6B5B) 0%, var(--demo-primary-dark, #E85A4F) 100%);
   }
 
-  .demo__name {
+  .demo-name {
     font-family: var(--demo-font-title, 'Manrope', sans-serif);
     font-size: 1.25rem;
     font-weight: 700;
@@ -120,25 +149,25 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
     transition: font-family 0.3s ease;
   }
 
-  .demo__bio {
+  .demo-bio {
     font-family: var(--demo-font-body, 'Inter', sans-serif);
     font-size: 0.875rem;
     color: var(--demo-text-secondary, #64748b);
     transition: font-family 0.3s ease;
   }
 
-  .demo__links {
+  .demo-links {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     margin-top: 16px;
   }
 
-  .demo__link {
+  .demo-link {
     display: block;
     width: 100%;
-    padding: 14px 16px;
+    padding: 16px;
     background: var(--demo-primary, #FF6B5B);
     color: white;
     font-family: var(--demo-font-body, 'Inter', sans-serif);
@@ -146,27 +175,22 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
     font-weight: 500;
     text-align: center;
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: 12px;
     transition: all 0.3s ease;
   }
 
-  .demo__link:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-  }
-
   /* Theme configurations - applied via JS */
-  .demo__phone-screen[data-theme="modern-pro"] {
+  .phone-screen[data-theme="modern-pro"] {
     --demo-bg: #fafafa;
     --demo-primary: #FF6B5B;
     --demo-primary-dark: #E85A4F;
     --demo-text: #0f172a;
     --demo-text-secondary: #64748b;
-    --demo-font-title: 'Manrope', sans-serif;
-    --demo-font-body: 'Inter', sans-serif;
+    --demo-font-title: 'Plus Jakarta Sans', sans-serif;
+    --demo-font-body: 'Plus Jakarta Sans', sans-serif;
   }
 
-  .demo__phone-screen[data-theme="elegant"] {
+  .phone-screen[data-theme="elegant"] {
     --demo-bg: #fdf8f3;
     --demo-primary: #1a1a1a;
     --demo-primary-dark: #000;
@@ -176,7 +200,7 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
     --demo-font-body: 'DM Sans', sans-serif;
   }
 
-  .demo__phone-screen[data-theme="bold"] {
+  .phone-screen[data-theme="bold"] {
     --demo-bg: #0f0f0f;
     --demo-primary: #ff4757;
     --demo-primary-dark: #e8414f;
@@ -186,7 +210,7 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
     --demo-font-body: 'Barlow', sans-serif;
   }
 
-  .demo__phone-screen[data-theme="friendly"] {
+  .phone-screen[data-theme="friendly"] {
     --demo-bg: #fff5f5;
     --demo-primary: #f59e0b;
     --demo-primary-dark: #d97706;
@@ -196,7 +220,7 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
     --demo-font-body: 'Nunito', sans-serif;
   }
 
-  .demo__phone-screen[data-theme="clean"] {
+  .phone-screen[data-theme="clean"] {
     --demo-bg: #ffffff;
     --demo-primary: #3b82f6;
     --demo-primary-dark: #2563eb;
@@ -205,21 +229,11 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
     --demo-font-title: 'DM Sans', sans-serif;
     --demo-font-body: 'DM Sans', sans-serif;
   }
-
-  @media (min-width: 768px) {
-    .demo__phone {
-      max-width: 300px;
-    }
-
-    .demo__phone-screen {
-      min-height: 460px;
-    }
-  }
 </style>
 
 <script>
   // Theme demo interaction
-  const tabs = document.querySelectorAll('.demo__tab');
+  const tabs = document.querySelectorAll('.demo-tab');
   const screen = document.getElementById('demo-screen');
 
   tabs.forEach(tab => {

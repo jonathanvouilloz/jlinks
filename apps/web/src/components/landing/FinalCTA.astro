@@ -6,20 +6,60 @@ interface Props {
 const { adminUrl } = Astro.props;
 ---
 
-<section class="landing-section final-cta">
-  <div class="landing-container">
-    <h2 class="final-cta__title" data-animate data-i18n="finalCta.title">
-      Ta page de liens, sans prise de tête.
-    </h2>
+<section class="section final-cta">
+  <div class="container text-center">
+    <div class="cta-card">
+      <h2 class="section-title text-white">Your link page, hassle-free.</h2>
+      
+      <div class="cta-actions">
+        <a href={`${adminUrl}/register`} class="btn btn-primary btn-lg bg-white text-primary">
+          Create my page for free
+        </a>
+      </div>
 
-    <div class="final-cta__cta" data-animate>
-      <a href={adminUrl} class="btn btn--primary btn--large" data-i18n="finalCta.cta">
-        Créer ma page gratuitement
-      </a>
+      <p class="cta-note">Free • 2 minutes • No credit card</p>
     </div>
-
-    <p class="final-cta__note" data-animate data-i18n="finalCta.note">
-      Gratuit • 2 minutes • Sans carte
-    </p>
   </div>
 </section>
+
+<style>
+  .final-cta {
+    padding-bottom: 8rem;
+  }
+
+  .cta-card {
+    background: linear-gradient(135deg, #16162a 0%, #1a1a2e 50%, #252547 100%);
+    border-radius: var(--radius-2xl);
+    padding: 5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-2xl);
+  }
+
+  .text-white { color: white; }
+  
+  .bg-white { background-color: white !important; }
+  .text-primary { color: var(--color-primary) !important; }
+
+  .cta-actions {
+    margin: 2.5rem 0 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-lg {
+    padding: 1rem 2.5rem;
+    font-size: 1.125rem;
+  }
+  
+  .btn-primary.bg-white:hover {
+    background-color: var(--color-primary-light) !important;
+    transform: translateY(-2px);
+  }
+
+  .cta-note {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+</style>

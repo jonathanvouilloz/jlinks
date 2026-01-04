@@ -6,147 +6,220 @@ interface Props {
 const { adminUrl } = Astro.props;
 ---
 
-<section class="landing-section hero">
-  <div class="landing-container">
-    <div class="hero__content" data-animate>
-      <h1 class="hero__title" data-i18n="hero.title">
-        Ton style. Tes liens. <span class="highlight">Ta page.</span>
+<section class="hero">
+  <!-- Dark Background Layer -->
+  <div class="hero-background">
+    <!-- Decorative Elements -->
+    <div class="decorative-elements">
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
+      <div class="circle-ring circle-ring-1"></div>
+      <div class="circle-ring circle-ring-2"></div>
+      <div class="circle-ring circle-ring-3"></div>
+      <div class="circle-ring circle-ring-4"></div>
+    </div>
+  </div>
+
+  <div class="container hero-content-wrapper">
+    <div class="hero-content">
+      <p class="hero-eyebrow">The personalized link platform</p>
+      <h1 class="hero-tagline">
+        All your links<br />
+        <span class="highlight">in one place</span>
       </h1>
-      <p class="hero__subtitle" data-i18n="hero.subtitle">
-        Crée ta page de liens personnalisée.<br/>Gratuite. En 2 minutes.
+      <p class="hero-description">
+        Create your personalized page in seconds. Share your social networks, music, videos and more with a single link.
       </p>
-      <div class="hero__cta-wrapper">
-        <a href={adminUrl} class="btn btn--primary btn--large" data-i18n="hero.cta">
-          Créer ma page gratuitement
+      
+      <div class="hero-actions">
+        <a href={`${adminUrl}/register`} class="btn btn-primary btn-lg">
+          Create my page
         </a>
-        <span class="hero__cta-note" data-i18n="hero.note">Pas de carte requise</span>
+        <a href="#demo" class="btn btn-secondary btn-lg">
+          See demo
+        </a>
       </div>
     </div>
-    <div class="hero__mockup" data-animate data-animate-delay="1">
-      <div class="hero__phone">
-        <div class="hero__phone-frame">
-          <div class="hero__phone-notch"></div>
-          <div class="hero__phone-screen">
-            <div class="hero__phone-content">
-              <div class="mock-avatar"></div>
-              <div class="mock-name"></div>
-              <div class="mock-bio"></div>
-              <div class="mock-links">
-                <div class="mock-link"></div>
-                <div class="mock-link"></div>
-                <div class="mock-link"></div>
-                <div class="mock-link"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+
+    <div class="hero-visual">
+      <div class="mascot-wrapper">
+        <img src="/good.png" alt="Noko Mascot" class="mascot-img" />
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .hero__phone {
-    max-width: 280px;
-    margin: 0 auto;
-  }
-
-  .hero__phone-frame {
+  .hero {
     position: relative;
-    background: #1a1a1a;
-    border-radius: 36px;
-    padding: 12px;
-    box-shadow:
-      0 25px 50px -12px rgba(0, 0, 0, 0.25),
-      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-  }
-
-  .hero__phone-notch {
-    position: absolute;
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 24px;
-    background: #1a1a1a;
-    border-radius: 12px;
-    z-index: 10;
-  }
-
-  .hero__phone-screen {
-    background: linear-gradient(180deg, #fafafa 0%, #f1f5f9 100%);
-    border-radius: 28px;
-    padding: 48px 20px 32px;
-    min-height: 480px;
-  }
-
-  .hero__phone-content {
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 16px;
+    background-color: #16162a;
+    overflow: hidden;
+    padding-top: 80px; /* Header height */
   }
 
-  .mock-avatar {
-    width: 72px;
-    height: 72px;
+  /* Background & Decor */
+  .hero-background {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #16162a 0%, #1a1a2e 50%, #252547 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .decorative-elements {
+    position: absolute;
+    inset: 0;
+  }
+
+  .glow {
+    position: absolute;
     border-radius: 50%;
-    background: linear-gradient(135deg, #FF6B5B 0%, #E85A4F 100%);
+    filter: blur(80px);
+    opacity: 0.4;
   }
 
-  .mock-name {
-    width: 100px;
-    height: 16px;
-    background: #0f172a;
-    border-radius: 4px;
+  .glow-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--color-primary);
+    top: 10%;
+    left: 5%;
+    opacity: 0.15;
   }
 
-  .mock-bio {
-    width: 140px;
-    height: 10px;
-    background: #94a3b8;
-    border-radius: 4px;
+  .glow-2 {
+    width: 300px;
+    height: 300px;
+    background: #8b5cf6;
+    bottom: 20%;
+    right: 15%;
+    opacity: 0.1;
   }
 
-  .mock-links {
+  .circle-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .circle-ring-1 { width: 1200px; height: 1200px; }
+  .circle-ring-2 { width: 900px; height: 900px; }
+  .circle-ring-3 { width: 600px; height: 600px; }
+  .circle-ring-4 { width: 300px; height: 300px; }
+
+  /* Content */
+  .hero-content-wrapper {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    align-items: center;
+    gap: 4rem;
     width: 100%;
+  }
+
+  .hero-content {
+    max-width: 600px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .hero-tagline {
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-description {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+  }
+
+  .hero-actions {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 16px;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 
-  .mock-link {
+  .btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    min-width: 160px;
+  }
+
+  /* Visual/Mascot */
+  .hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mascot-wrapper {
+    position: relative;
     width: 100%;
-    height: 48px;
-    background: #FF6B5B;
-    border-radius: 10px;
-    opacity: 0.9;
+    max-width: 500px;
   }
 
-  .mock-link:nth-child(2) {
-    opacity: 0.75;
+  .mascot-img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 60px rgba(255, 107, 91, 0.2));
+    animation: float-mascot 8s ease-in-out infinite;
+    transform: rotate(-5deg);
   }
 
-  .mock-link:nth-child(3) {
-    opacity: 0.6;
+  @keyframes float-mascot {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-30px) rotate(0deg); }
   }
 
-  .mock-link:nth-child(4) {
-    opacity: 0.45;
-  }
-
-  @media (min-width: 768px) {
+  @media (max-width: 968px) {
     .hero {
-      padding-top: clamp(4rem, 10vw, 8rem);
+      min-height: auto;
+      padding: 140px 0 80px;
+      text-align: center;
     }
 
-    .hero__phone {
-      max-width: 320px;
+    .hero-content-wrapper {
+      grid-template-columns: 1fr;
+      gap: 3rem;
     }
 
-    .hero__phone-screen {
-      min-height: 540px;
+    .hero-content {
+      margin: 0 auto;
+    }
+
+    .hero-description {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-actions {
+      justify-content: center;
+    }
+
+    .mascot-wrapper {
+      max-width: 300px;
+      margin: 0 auto;
     }
   }
 </style>

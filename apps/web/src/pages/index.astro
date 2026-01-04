@@ -18,13 +18,13 @@ const siteUrl = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'ht
 ---
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Noko - Créez votre page de liens personnalisée. Gratuite. Sans superflu. Alternative à Linktree avec QR code brandé et bouton contact inclus." />
+    <meta name="description" content="Noko - Create your custom link page. Free. No clutter. Alternative to Linktree with branded QR code and contact button included." />
 
-    <title>Noko - Tous tes liens. Un seul endroit.</title>
+    <title>Noko - All your links. One place.</title>
 
     <!-- Canonical URL -->
     <link rel="canonical" href={siteUrl} />
@@ -39,10 +39,7 @@ const siteUrl = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'ht
     <!-- Preload fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Additional fonts for theme demo -->
     <link
@@ -51,11 +48,11 @@ const siteUrl = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'ht
     />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Noko - Tous tes liens. Un seul endroit." />
-    <meta property="og:description" content="Créez votre page de liens personnalisée. Gratuite. Sans superflu." />
+    <meta property="og:title" content="Noko - All your links. One place." />
+    <meta property="og:description" content="Create your custom link page. Free. No clutter." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={siteUrl} />
-    <meta property="og:locale" content="fr_CH" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Noko" />
 
     <!-- Open Graph Image -->
@@ -65,8 +62,8 @@ const siteUrl = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'ht
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Noko - Tous tes liens. Un seul endroit." />
-    <meta name="twitter:description" content="Créez votre page de liens personnalisée. Gratuite. Sans superflu." />
+    <meta name="twitter:title" content="Noko - All your links. One place." />
+    <meta name="twitter:description" content="Create your custom link page. Free. No clutter." />
     <meta name="twitter:image" content={`${siteUrl}/images/brand/noko-mascot.png`} />
   </head>
 
@@ -85,9 +82,5 @@ const siteUrl = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'ht
     </main>
 
     <LandingFooter />
-
-    <script>
-      import '../scripts/landing.ts';
-    </script>
   </body>
 </html>
