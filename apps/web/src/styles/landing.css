@@ -100,8 +100,8 @@ button {
 
 .section-title {
   font-size: var(--text-3xl);
-  font-weight: var(--font-bold);
-  margin-bottom: var(--space-4);
+  font-weight: var(--font-medium);
+  margin-bottom: var(--space-8);
   letter-spacing: -0.02em;
 }
 
