@@ -550,7 +550,13 @@
   .register-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
   }
 
   .input-group { position: relative; display: flex; flex-direction: column; gap: 0.5rem; }
