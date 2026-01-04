@@ -222,7 +222,7 @@
 
   .hero-tagline {
     font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 700;
+    font-weight: var(--font-medium);
     color: #ffffff;
     line-height: 1.1;
     margin: 0;
@@ -311,7 +311,7 @@
 
   .form-title {
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: var(--font-medium);
     color: var(--color-text);
     margin: 0 0 0.5rem;
     letter-spacing: -0.02em;
