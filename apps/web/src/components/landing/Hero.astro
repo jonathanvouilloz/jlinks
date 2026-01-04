@@ -182,20 +182,20 @@ const { adminUrl } = Astro.props;
   }
 
   .mascot-left {
-    top: 20%;
-    left: 0; /* Align to edge */
-    width: 300px; /* Fixed width base */
-    max-width: 25vw; /* Responsive limit */
-    transform: translateX(-20%) rotate(15deg); /* Peek from left */
+    top: 15%;
+    left: 0;
+    width: 480px; /* Significantly larger */
+    max-width: 35vw;
+    transform: translateX(-25%) rotate(12deg);
     animation: float-left 6s ease-in-out infinite;
   }
 
   .mascot-right {
-    top: 30%;
-    right: 0; /* Align to edge */
-    width: 280px;
-    max-width: 20vw;
-    transform: translateX(20%) rotate(-15deg) scaleX(-1); /* Peek from right */
+    top: 45%; /* Lowered position */
+    right: 0;
+    width: 260px; /* Smaller */
+    max-width: 18vw;
+    transform: translateX(25%) rotate(-18deg) scaleX(-1);
     animation: float-right 7s ease-in-out infinite;
   }
 
