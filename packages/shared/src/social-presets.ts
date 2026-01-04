@@ -9,6 +9,7 @@ export interface SocialPreset {
   bgColor: string;
   textColor: string;
   urlPattern?: RegExp;
+  baseUrl?: string;
 }
 
 export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
@@ -16,7 +17,7 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
     icon: 'palette',
     iconSource: 'lucide',
     label: 'Thème',
-    bgColor: '#FF6B5B', // Default, will be overridden dynamically with client.primary_color
+    bgColor: '#FF6B5B',
     textColor: '#ffffff',
   },
   instagram: {
@@ -26,6 +27,7 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
     bgColor: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
     textColor: '#ffffff',
     urlPattern: /instagram\.com/i,
+    baseUrl: 'https://instagram.com/',
   },
   youtube: {
     icon: 'youtube',
@@ -34,6 +36,7 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
     bgColor: '#FF0000',
     textColor: '#ffffff',
     urlPattern: /youtube\.com|youtu\.be/i,
+    baseUrl: 'https://youtube.com/@',
   },
   linkedin: {
     icon: 'linkedin',
@@ -42,6 +45,7 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
     bgColor: '#0A66C2',
     textColor: '#ffffff',
     urlPattern: /linkedin\.com/i,
+    baseUrl: 'https://linkedin.com/in/',
   },
   x: {
     icon: 'x',
@@ -50,6 +54,7 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
     bgColor: '#000000',
     textColor: '#ffffff',
     urlPattern: /twitter\.com|x\.com/i,
+    baseUrl: 'https://x.com/',
   },
   tiktok: {
     icon: 'tiktok',
@@ -58,6 +63,7 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
     bgColor: '#000000',
     textColor: '#ffffff',
     urlPattern: /tiktok\.com/i,
+    baseUrl: 'https://tiktok.com/@',
   },
   facebook: {
     icon: 'facebook',
@@ -66,6 +72,7 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
     bgColor: '#1877F2',
     textColor: '#ffffff',
     urlPattern: /facebook\.com|fb\.com/i,
+    baseUrl: 'https://facebook.com/',
   },
   github: {
     icon: 'github',
@@ -74,6 +81,7 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
     bgColor: '#181717',
     textColor: '#ffffff',
     urlPattern: /github\.com/i,
+    baseUrl: 'https://github.com/',
   },
   email: {
     icon: 'mail',
@@ -82,6 +90,7 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
     bgColor: '#EA4335',
     textColor: '#ffffff',
     urlPattern: /^mailto:/i,
+    baseUrl: 'mailto:',
   },
   whatsapp: {
     icon: 'whatsapp',
@@ -90,6 +99,7 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
     bgColor: '#25D366',
     textColor: '#ffffff',
     urlPattern: /wa\.me|whatsapp\.com/i,
+    baseUrl: 'https://wa.me/',
   },
 } as const;
 

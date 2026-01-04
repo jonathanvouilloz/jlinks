@@ -136,14 +136,26 @@
     errors = {};
 
     try {
-      // Clean up links
+      // Clean up links and format URLs
       const cleanLinks = socialLinks
         .filter(l => l.url && l.title)
-        .map(l => ({
-          url: l.url,
-          title: l.title,
-          socialPreset: l.socialPreset
-        }));
+        .map(l => {
+          let url = l.url.trim();
+          if (l.socialPreset) {
+            const preset = SOCIAL_PRESETS[l.socialPreset];
+            // If preset has a base URL and input doesn't look like a URL (no protocol), prepend it
+            if (preset.baseUrl && !/^https?:\/\//i.test(url) && !/^mailto:/i.test(url)) {
+              // Remove @ if present at start for handles
+              const handle = url.replace(/^@/, '');
+              url = `${preset.baseUrl}${handle}`;
+            }
+          }
+          return {
+            url,
+            title: l.title,
+            socialPreset: l.socialPreset
+          };
+        });
 
       await api.auth.register({
         email,
