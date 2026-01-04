@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { BackgroundType, ButtonStyle, LayoutType } from '@noko/shared/types';
   import { Card, Button, Input } from '$lib/components/ui';
-  import { ButtonStyleSelector, ColorPicker, FontPresetSelector, FontSelector, LayoutSelector, OpacitySlider } from '$lib/components/settings';
+  import { ButtonStyleSelector, ColorPicker, FontPresetSelector, FontSelector, GradientSelector, LayoutSelector, OpacitySlider } from '$lib/components/settings';
   import { Preview } from '$lib/components/dashboard';
   import { authStore, clientStore, linksStore } from '$lib/stores';
 
@@ -108,11 +108,13 @@
 
             {#if backgroundType === 'solid'}
               <ColorPicker label="Couleur de fond" value={backgroundValue} onchange={(v) => backgroundValue = v} />
+            {:else if backgroundType === 'gradient'}
+              <GradientSelector value={backgroundValue} onchange={(v) => backgroundValue = v} />
             {:else}
               <Input
-                label={backgroundType === 'gradient' ? 'Dégradé CSS' : 'URL de l\'image'}
+                label="URL de l'image"
                 bind:value={backgroundValue}
-                placeholder={backgroundType === 'gradient' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'https://example.com/bg.jpg'}
+                placeholder="https://example.com/bg.jpg"
               />
             {/if}
 
