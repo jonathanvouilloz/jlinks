@@ -26,6 +26,7 @@ export default defineConfig({
     'drizzle-orm/libsql',
     'drizzle-orm/sqlite-core',
     'better-auth',
+    'better-auth/crypto',
     'qrcode',
     'resend',
     'zod',
