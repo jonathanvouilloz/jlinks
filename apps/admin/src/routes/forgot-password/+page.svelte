@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button, Input, Card } from '$lib/components/ui';
-  import { ArrowLeft, CheckCircle } from 'lucide-svelte';
+  import { AuthButton, AuthInput } from '$lib/components/ui';
+  import { Mail, CheckCircle, ArrowLeft } from 'lucide-svelte';
   import { api } from '$lib/api';
 
   let email = $state('');
@@ -8,7 +8,8 @@
   let sent = $state(false);
   let error = $state('');
 
-  async function handleSubmit() {
+  async function handleSubmit(e: Event) {
+    e.preventDefault();
     if (!email) return;
 
     error = '';
@@ -26,154 +27,457 @@
 </script>
 
 <svelte:head>
-  <title>Mot de passe oublié | Noko</title>
+  <title>Mot de passe oublie | Noko</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </svelte:head>
 
-<div class="container">
-  <div class="form-wrapper">
-    <div class="logo">
-      <span class="logo-text">Noko</span>
+<div class="forgot-page">
+  <!-- Dark Background Layer -->
+  <div class="hero-background">
+    <div class="decorative-elements">
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
+      <div class="circle-ring circle-ring-1"></div>
+      <div class="circle-ring circle-ring-2"></div>
+      <div class="circle-ring circle-ring-3"></div>
     </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Recuperation de compte</p>
+      <h1 class="hero-tagline">
+        Recuperez votre<br />
+        <span class="highlight">acces en un clic</span>
+      </h1>
+    </div>
+  </div>
 
-    {#if sent}
-      <Card>
-        <div class="success-content">
-          <CheckCircle size={48} class="success-icon" />
-          <h1>Email envoyé</h1>
-          <p>
-            Si un compte existe avec l'adresse <strong>{email}</strong>,
-            vous recevrez un email avec un lien pour réinitialiser votre mot de passe.
-          </p>
-          <p class="hint">
-            Vérifiez également vos spams si vous ne voyez pas l'email dans votre boîte de réception.
-          </p>
-          <a href="/login" class="back-link">
-            <ArrowLeft size={16} />
-            Retour à la connexion
-          </a>
-        </div>
-      </Card>
-    {:else}
-      <Card>
-        <h1>Mot de passe oublié</h1>
-        <p class="description">
-          Entrez votre adresse email pour recevoir un lien de réinitialisation.
-        </p>
-
-        <form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-          <Input
-            type="email"
-            label="Email"
-            placeholder="votre@email.com"
-            bind:value={email}
-            required
-          />
-
-          {#if error}
-            <p class="error-message">{error}</p>
-          {/if}
-
-          <Button type="submit" disabled={!email || loading} loading={loading}>
-            Envoyer le lien
-          </Button>
-        </form>
-
-        <a href="/login" class="back-link">
-          <ArrowLeft size={16} />
-          Retour à la connexion
+  <!-- White Form Panel -->
+  <div class="form-panel">
+    <div class="form-panel-inner">
+      <header class="form-header">
+        <a href="/" class="logo">
+          <img src="/logonono.webp" alt="Nokolink" class="logo-img" />
         </a>
-      </Card>
-    {/if}
+        <a href="/login" class="login-link">
+          <span>Retour a la connexion</span>
+        </a>
+      </header>
+
+      <div class="form-content">
+        <div class="form-content-inner">
+          <!-- ÉTAT FORMULAIRE -->
+          {#if !sent}
+            <h2 class="form-title">Mot de passe oublie</h2>
+            <p class="form-subtitle">Entrez votre email pour recevoir un lien de reinitialisation</p>
+            <form onsubmit={handleSubmit} class="login-form">
+              {#if error}
+                <div class="error-message">
+                  <span class="error-icon">!</span>
+                  {error}
+                </div>
+              {/if}
+
+              <div class="input-group">
+                <AuthInput
+                  type="email"
+                  bind:value={email}
+                  placeholder="votre@email.com"
+                  required
+                  disabled={loading}
+                />
+              </div>
+
+              <AuthButton type="submit" {loading} disabled={!email || loading}>
+                <Mail size={18} />
+                <span>Envoyer le lien</span>
+              </AuthButton>
+            </form>
+          {:else}
+            <!-- ÉTAT SUCCÈS -->
+            <div class="success-state">
+              <div class="success-icon-wrapper">
+                <CheckCircle />
+              </div>
+              <h2>Email envoye</h2>
+              <p>Si un compte existe avec l'adresse <strong>{email}</strong>, vous recevrez un email avec un lien pour reinitialiser votre mot de passe.</p>
+              <p class="hint">Verifiez egalement vos spams si vous ne voyez pas l'email dans votre boite de reception.</p>
+              
+              <div class="success-actions">
+                <a href="/login" class="button-link">
+                  <AuthButton type="button">
+                    <span>Retour a la connexion</span>
+                  </AuthButton>
+                </a>
+              </div>
+            </div>
+          {/if}
+        </div>
+      </div>
+    </div>
+    <footer class="form-footer">
+      <p>&copy; 2025 Noko. Tous droits reserves.</p>
+    </footer>
   </div>
 </div>
 
 <style>
-  .container {
+  /* Base Layout */
+  .forgot-page {
     min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Plus Jakarta Sans', var(--font-family);
+    letter-spacing: -0.015em;
+  }
+
+  /* Hero Background */
+  .hero-background {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #16162a 0%, #1a1a2e 50%, #252547 100%);
+    display: flex;
+    align-items: center;
+    padding-left: 5%;
+    padding-right: 55%;
+  }
+
+  /* Decorative Elements - identiques à login */
+  .decorative-elements {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+  }
+
+  .glow-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--color-primary);
+    top: 10%;
+    left: 5%;
+    opacity: 0.15;
+  }
+
+  .glow-2 {
+    width: 300px;
+    height: 300px;
+    background: #8b5cf6;
+    bottom: 20%;
+    left: 25%;
+    opacity: 0.1;
+  }
+
+  .circle-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    top: 50%;
+    left: 22%;
+    transform: translate(-50%, -50%);
+  }
+
+  .circle-ring-1 {
+    width: 500px;
+    height: 500px;
+  }
+
+  .circle-ring-2 {
+    width: 380px;
+    height: 380px;
+  }
+
+  .circle-ring-3 {
+    width: 260px;
+    height: 260px;
+  }
+
+  /* Hero Content */
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1.5rem;
+    font-weight: 500;
+  }
+
+  .hero-tagline {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: var(--font-medium);
+    color: #ffffff;
+    line-height: 1.1;
+    margin: 0;
+    letter-spacing: -0.04em;
+  }
+
+  .hero-tagline .highlight {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #ff8a7a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Form Panel */
+  .form-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 52%;
+    min-width: 480px;
+    background: #ffffff;
+    border-radius: 64px 0 0 64px;
+    box-shadow:
+      -28px 0 80px rgba(0, 0, 0, 0.2),
+      -10px 0 30px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Form Content */
+  .form-panel-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2.5rem 5rem 0;
+    width: 100%;
+  }
+
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .logo-img {
+    height: 36px;
+    width: auto;
+  }
+
+  .login-link {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .login-link:hover {
+    color: var(--color-primary);
+  }
+
+  .form-content {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-lg);
-    background-color: var(--color-bg-secondary);
   }
 
-  .form-wrapper {
+  .form-content-inner {
     width: 100%;
     max-width: 400px;
   }
 
-  .logo {
-    text-align: center;
-    margin-bottom: var(--space-xl);
-  }
-
-  .logo-text {
-    font-size: var(--text-3xl);
-    font-weight: 700;
-    color: var(--color-primary);
-  }
-
-  h1 {
-    font-size: var(--text-xl);
-    font-weight: 600;
-    margin: 0 0 var(--space-sm) 0;
+  .form-title {
+    font-size: 2rem;
+    font-weight: var(--font-medium);
     color: var(--color-text);
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.04em;
   }
 
-  .description {
+  .form-subtitle {
+    font-size: 1rem;
     color: var(--color-text-secondary);
-    margin: 0 0 var(--space-lg) 0;
-    font-size: var(--text-sm);
+    margin: 0 0 2rem;
   }
 
-  form {
+  /* Login Form Styles Reuse */
+  .login-form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
+    gap: 1.25rem;
   }
 
+  .input-group {
+    position: relative;
+  }
+
+  /* Error Message */
   .error-message {
-    color: var(--color-error);
-    font-size: var(--text-sm);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    color: #b91c1c;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .error-icon {
+    width: 20px;
+    height: 20px;
+    background: #ef4444;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* Success State */
+  .success-state {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .success-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: #f0fdf4;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .success-icon-wrapper :global(svg) {
+    width: 40px;
+    height: 40px;
+    color: #22c55e;
+  }
+
+  .success-state h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .success-state p {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    margin: 0 0 1rem;
+    line-height: 1.6;
+    max-width: 320px;
+  }
+
+  .success-state .hint {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .success-actions {
+    margin-top: 2.5rem;
+    width: 100%;
+  }
+
+  .button-link {
+    text-decoration: none;
+    display: block;
+    width: 100%;
+  }
+
+  .forgot-link {
+    font-size: 0.875rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+  }
+
+  .forgot-link:hover {
+    color: var(--color-primary-hover);
+    text-decoration: underline;
+  }
+
+  /* Footer */
+  .form-footer {
+    padding: 2rem 5rem;
+    width: 100%;
+    text-align: right;
+    margin-top: auto;
+  }
+
+  .form-footer p {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
     margin: 0;
   }
 
-  .back-link {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    color: var(--color-text-secondary);
-    text-decoration: none;
-    font-size: var(--text-sm);
-    margin-top: var(--space-lg);
-    transition: color 0.2s;
+  /* Responsive - identique à login */
+  @media (max-width: 1024px) {
+    .hero-background {
+      padding-right: 50%;
+    }
+
+    .form-panel {
+      width: 55%;
+      min-width: 420px;
+    }
+
+    .form-panel-inner {
+      padding: 2rem 3rem;
+    }
   }
 
-  .back-link:hover {
-    color: var(--color-primary);
-  }
+  @media (max-width: 768px) {
+    .hero-background {
+      display: none;
+    }
 
-  .success-content {
-    text-align: center;
-  }
+    .form-panel {
+      position: relative;
+      width: 100%;
+      min-width: unset;
+      border-radius: 0;
+      box-shadow: none;
+    }
 
-  .success-content :global(.success-icon) {
-    color: var(--color-success);
-    margin-bottom: var(--space-md);
-  }
+    .form-panel-inner {
+      padding: 2rem 1.5rem;
+      max-width: 400px;
+    }
 
-  .success-content p {
-    color: var(--color-text-secondary);
-    margin: var(--space-sm) 0;
-    line-height: 1.5;
-  }
-
-  .success-content .hint {
-    font-size: var(--text-sm);
-    color: var(--color-text-tertiary);
-  }
-
-  .success-content .back-link {
-    justify-content: center;
+    .form-title {
+      font-size: 1.75rem;
+    }
   }
 </style>
