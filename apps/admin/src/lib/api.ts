@@ -5,6 +5,7 @@ import type {
   Link,
   User,
   Session,
+  SocialPresetKey,
   CreateLinkInput,
   UpdateLinkInput,
   ReorderLinksInput,
@@ -123,6 +124,22 @@ export const auth = {
     return request('/auth/account', {
       method: 'DELETE',
       body: JSON.stringify({ password }),
+    });
+  },
+
+  async register(data: {
+    email: string;
+    password: string;
+    slug: string;
+    socialLinks?: Array<{
+      url: string;
+      title: string;
+      socialPreset?: SocialPresetKey;
+    }>;
+  }): Promise<{ user: User; client: Client }> {
+    return request('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(data),
     });
   },
 };
