@@ -282,6 +282,8 @@
   }
 
   .login-link {
+    display: flex;
+    align-items: center;
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--color-text-secondary);
