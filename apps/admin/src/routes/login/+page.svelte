@@ -284,6 +284,7 @@
   .login-link {
     display: flex;
     align-items: center;
+    height: 36px;
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--color-text-secondary);
