@@ -29,6 +29,7 @@
   let editingLink = $state<Link | null>(null);
   let showDeleteConfirm = $state(false);
   let deletingLink = $state<Link | null>(null);
+  let deleting = $state(false);
 
   // Handlers
   function handleAddLink() {
@@ -62,7 +63,9 @@
 
   async function handleConfirmDelete() {
     if (deletingLink) {
+      deleting = true;
       await linksStore.deleteLink(deletingLink.id);
+      deleting = false;
     }
     showDeleteConfirm = false;
     deletingLink = null;
@@ -180,8 +183,8 @@
 
   {#snippet footer()}
     <div class="modal-actions">
-      <Button variant="secondary" onclick={handleCancelDelete}>Annuler</Button>
-      <Button variant="danger" onclick={handleConfirmDelete}>Supprimer</Button>
+      <Button variant="secondary" onclick={handleCancelDelete} disabled={deleting}>Annuler</Button>
+      <Button variant="danger" onclick={handleConfirmDelete} loading={deleting} disabled={deleting}>Supprimer</Button>
     </div>
   {/snippet}
 </Modal>

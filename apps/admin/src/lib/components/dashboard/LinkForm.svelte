@@ -9,7 +9,7 @@
     open: boolean;
     link?: Link | null;
     onClose: () => void;
-    onSave: (data: CreateLinkInput) => void;
+    onSave: (data: CreateLinkInput) => Promise<void>;
   }
 
   let { open, link = null, onClose, onSave }: Props = $props();
@@ -99,7 +99,7 @@
       custom_text_color: useCustomStyle ? customTextColor : undefined,
     };
 
-    onSave(data);
+    await onSave(data);
     saving = false;
   }
 
@@ -191,7 +191,7 @@
 
   {#snippet footer()}
     <div class="form-actions">
-      <Button variant="secondary" onclick={onClose}>Annuler</Button>
+      <Button variant="secondary" onclick={onClose} disabled={saving}>Annuler</Button>
       <Button variant="primary" onclick={handleFormSubmit} loading={saving} disabled={!title.trim() || !url.trim()}>
         {link ? 'Enregistrer' : 'Créer'}
       </Button>

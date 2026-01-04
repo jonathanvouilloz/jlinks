@@ -75,16 +75,15 @@ export const DELETE: RequestHandler = async (event) => {
   const { id } = event.params;
   const client = sessionData.client!;
 
-  // Verify ownership
-  const link = await db.query.links.findFirst({
-    where: and(eq(links.id, id), eq(links.client_id, client.id)),
-  });
+  // Delete with ownership check in one query
+  const deleted = await db
+    .delete(links)
+    .where(and(eq(links.id, id), eq(links.client_id, client.id)))
+    .returning();
 
-  if (!link) {
+  if (deleted.length === 0) {
     return json({ error: 'Link not found' }, { status: 404 });
   }
-
-  await db.delete(links).where(eq(links.id, id));
 
   // Mark client as having draft changes
   await db
