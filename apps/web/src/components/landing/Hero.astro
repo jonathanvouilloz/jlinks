@@ -20,6 +20,14 @@ const { adminUrl } = Astro.props;
     </div>
   </div>
 
+  <!-- Side Mascots -->
+  <div class="mascot-side mascot-left">
+    <img src="/good.png" alt="" class="mascot-img" />
+  </div>
+  <div class="mascot-side mascot-right">
+    <img src="/good.png" alt="" class="mascot-img" />
+  </div>
+
   <div class="container hero-content-wrapper">
     <div class="hero-content text-center">
       <h1 class="hero-tagline">
@@ -61,9 +69,34 @@ const { adminUrl } = Astro.props;
       </div>
     </div>
 
+    <!-- Dashboard Preview -->
     <div class="hero-visual">
-      <div class="mascot-wrapper">
-        <img src="/good.png" alt="Noko Mascot" class="mascot-img" />
+      <div class="dashboard-preview">
+        <!-- Placeholder for Screenshot -->
+        <div class="dashboard-placeholder">
+          <div class="dashboard-header">
+            <div class="dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="address-bar">nokolink.com/admin</div>
+          </div>
+          <div class="dashboard-body">
+            <div class="skeleton-sidebar"></div>
+            <div class="skeleton-content">
+              <div class="skeleton-hero"></div>
+              <div class="skeleton-grid">
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+              </div>
+            </div>
+          </div>
+          <div class="dashboard-overlay">
+            <span>Dashboard Screenshot</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -78,7 +111,7 @@ const { adminUrl } = Astro.props;
     justify-content: center;
     background-color: #16162a;
     overflow: hidden;
-    padding-top: 120px;
+    padding-top: 140px;
     padding-bottom: 80px;
   }
 
@@ -133,14 +166,54 @@ const { adminUrl } = Astro.props;
   .circle-ring-1 { width: 1400px; height: 1400px; }
   .circle-ring-2 { width: 1000px; height: 1000px; }
 
+  /* Mascots */
+  .mascot-side {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+
+  .mascot-img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 40px rgba(0, 0, 0, 0.3));
+  }
+
+  .mascot-left {
+    top: 25%;
+    left: -8%;
+    width: 350px;
+    transform: rotate(15deg);
+    animation: float-left 6s ease-in-out infinite;
+  }
+
+  .mascot-right {
+    top: 35%;
+    right: -5%;
+    width: 300px;
+    transform: rotate(-15deg) scaleX(-1); /* Mirror effect */
+    animation: float-right 7s ease-in-out infinite;
+  }
+
+  @keyframes float-left {
+    0%, 100% { transform: translateY(0) rotate(15deg); }
+    50% { transform: translateY(-20px) rotate(12deg); }
+  }
+
+  @keyframes float-right {
+    0%, 100% { transform: translateY(0) rotate(-15deg) scaleX(-1); }
+    50% { transform: translateY(-20px) rotate(-18deg) scaleX(-1); }
+  }
+
   /* Content */
   .hero-content-wrapper {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4rem;
+    gap: 3.5rem;
     width: 100%;
   }
 
@@ -192,7 +265,7 @@ const { adminUrl } = Astro.props;
 
   .avatars {
     display: flex;
-    padding-left: 10px; /* Offset for overlap */
+    padding-left: 10px;
   }
 
   .avatar {
@@ -226,33 +299,148 @@ const { adminUrl } = Astro.props;
     color: rgba(255, 255, 255, 0.6);
   }
 
-  /* Visual/Mascot */
+  /* Dashboard Visual */
   .hero-visual {
-    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    perspective: 1000px;
+  }
+
+  .dashboard-preview {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.4),
+      0 0 100px rgba(255, 107, 91, 0.1); /* Subtle glow */
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    transform: rotateX(5deg); /* Slight 3D tilt */
+    transition: transform 0.5s ease;
+  }
+
+  .hero-visual:hover .dashboard-preview {
+    transform: rotateX(0deg);
+  }
+
+  .dashboard-placeholder {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #0f172a;
     display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 900px;
-  }
-
-  .mascot-wrapper {
+    flex-direction: column;
     position: relative;
-    width: 100%;
+  }
+
+  .dashboard-header {
+    height: 40px;
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
     display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .red { background: #ef4444; }
+  .yellow { background: #f59e0b; }
+  .green { background: #10b981; }
+
+  .address-bar {
+    flex: 1;
+    height: 24px;
+    background: #0f172a;
+    border-radius: 4px;
+    color: #64748b;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    padding: 0 0.75rem;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .dashboard-body {
+    flex: 1;
+    display: flex;
+    padding: 1rem;
+    gap: 1rem;
+    position: relative;
+  }
+
+  .skeleton-sidebar {
+    width: 200px;
+    background: #1e293b;
+    border-radius: 8px;
+    opacity: 0.5;
+  }
+
+  .skeleton-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .skeleton-hero {
+    height: 150px;
+    background: #1e293b;
+    border-radius: 8px;
+    opacity: 0.7;
+  }
+
+  .skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    flex: 1;
+  }
+
+  .skeleton-card {
+    background: #1e293b;
+    border-radius: 8px;
+    opacity: 0.5;
+  }
+
+  .dashboard-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
   }
 
-  .mascot-img {
-    width: 100%;
-    max-width: 600px;
-    height: auto;
-    filter: drop-shadow(0 0 60px rgba(255, 107, 91, 0.15));
-    animation: float-mascot 8s ease-in-out infinite;
+  .dashboard-overlay span {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    padding: 1rem 2rem;
+    border-radius: 8px;
   }
 
-  @keyframes float-mascot {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+  @media (max-width: 1024px) {
+    .mascot-side {
+      opacity: 0.5;
+    }
+    
+    .mascot-left { left: -150px; }
+    .mascot-right { right: -150px; }
   }
 
   @media (max-width: 768px) {
@@ -260,8 +448,19 @@ const { adminUrl } = Astro.props;
       padding-top: 100px;
     }
 
+    .mascot-side {
+      display: none; /* Hide mascots on small screens to reduce clutter */
+    }
+
     .hero-tagline {
       font-size: 2.5rem;
     }
+
+    .dashboard-placeholder {
+      aspect-ratio: 4/3; /* Taller on mobile */
+    }
+    
+    .skeleton-sidebar { display: none; }
+    .skeleton-grid { grid-template-columns: 1fr; }
   }
 </style>
