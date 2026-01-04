@@ -7,6 +7,10 @@ const { adminUrl } = Astro.props;
 ---
 
 <section class="section final-cta">
+  <div class="mascot-bg">
+    <img src="/good.png" alt="" />
+  </div>
+  
   <div class="container text-center">
     <div class="cta-card">
       <h2 class="section-title text-white">Your link page, hassle-free.</h2>
@@ -25,6 +29,27 @@ const { adminUrl } = Astro.props;
 <style>
   .final-cta {
     padding-bottom: 8rem;
+    position: relative;
+    overflow: hidden; /* Prevent horizontal scroll if mascot is huge */
+  }
+
+  .mascot-bg {
+    position: absolute;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -1;
+    width: 100%;
+    max-width: 1200px; /* Match container width roughly, maybe slightly larger */
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mascot-bg img {
+    width: 100%;
+    height: auto;
+    opacity: 0.8; /* Slight transparency to blend better */
   }
 
   .cta-card {
