@@ -393,6 +393,7 @@
     max-width: 400px;
     margin: 0 auto;
     width: 100%;
+    text-align: right;
   }
 
   .form-footer p {
