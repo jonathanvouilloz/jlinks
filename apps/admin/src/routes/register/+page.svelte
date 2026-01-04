@@ -511,7 +511,7 @@
   .form-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     margin-bottom: 2rem;
   }
 
