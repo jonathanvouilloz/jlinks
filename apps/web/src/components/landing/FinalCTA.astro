@@ -35,12 +35,12 @@ const { adminUrl } = Astro.props;
 
   .mascot-bg {
     position: absolute;
-    bottom: -100px;
+    bottom: -450px; /* Lowered significantly to hide the bottom half */
     left: 50%;
     transform: translateX(-50%);
-    z-index: -1;
+    z-index: 0; /* Sits above page bg but behind card */
     width: 100%;
-    max-width: 1200px; /* Match container width roughly, maybe slightly larger */
+    max-width: 1000px; /* Adjusted size for better fit */
     pointer-events: none;
     display: flex;
     justify-content: center;
@@ -49,14 +49,15 @@ const { adminUrl } = Astro.props;
   .mascot-bg img {
     width: 100%;
     height: auto;
-    opacity: 0.8; /* Slight transparency to blend better */
+    opacity: 0.9; /* Made slightly more visible */
   }
 
   .cta-card {
     background: linear-gradient(135deg, #16162a 0%, #1a1a2e 50%, #252547 100%);
     border-radius: var(--radius-2xl);
     padding: 5rem 2rem;
-    position: relative;
+    position: relative; /* Ensure card is above the mascot */
+    z-index: 1;
     overflow: hidden;
     box-shadow: var(--shadow-2xl);
   }
