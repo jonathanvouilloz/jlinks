@@ -1,4 +1,6 @@
 ---
+import { Check, X } from 'lucide-astro';
+
 interface Props {
   adminUrl: string;
 }
@@ -8,20 +10,30 @@ const { adminUrl } = Astro.props;
 
 <section id="pricing" class="section pricing">
   <div class="container">
-    <div class="text-center mb-24">
-      <h2 class="section-title">Free for most.</h2>
-      <p class="section-subtitle">Pro for those who want more.</p>
+    <div class="text-center mb-16">
+      <h2 class="section-title">Your digital identity, sorted.</h2>
+      <p class="section-subtitle">Start for free. Upgrade for the price of a coffee when you're ready to scale.</p>
+      
+      <!-- Pricing Toggle -->
+      <div class="pricing-toggle-wrapper">
+        <span class="toggle-label">Monthly</span>
+        <button id="billing-toggle" class="toggle-switch" aria-pressed="false">
+          <span class="toggle-thumb"></span>
+        </button>
+        <span class="toggle-label">Yearly <span class="discount-badge">-15%</span></span>
+      </div>
     </div>
 
     <div class="pricing-cards">
       <!-- Free Plan -->
       <div class="pricing-card">
         <div class="card-header">
-          <div class="plan-name">Free</div>
+          <h3 class="plan-name">Starter</h3>
           <div class="plan-price">
+            <span class="currency">CHF</span>
             <span class="amount">0</span>
           </div>
-          <p class="plan-note">Free forever</p>
+          <p class="plan-desc">Perfect for testing the waters.</p>
         </div>
         
         <div class="card-body">
@@ -29,19 +41,20 @@ const { adminUrl } = Astro.props;
           
           <ul class="features-list">
             <li>
-              <span class="check-icon">✓</span> 6 links
+              <Check size={20} class="check-icon" />
+              <span><strong>6 links</strong> to share your essentials</span>
             </li>
             <li>
-              <span class="check-icon">✓</span> Custom colors
+              <Check size={20} class="check-icon" />
+              <span><strong>Branded QR code</strong> for your flyers</span>
             </li>
             <li>
-              <span class="check-icon">✓</span> Branded QR code
+              <Check size={20} class="check-icon" />
+              <span><strong>"Add to Contacts"</strong> button</span>
             </li>
             <li>
-              <span class="check-icon">✓</span> Contact button
-            </li>
-            <li>
-              <span class="check-icon">✓</span> Email support
+              <Check size={20} class="check-icon" />
+              <span>Basic customization</span>
             </li>
           </ul>
         </div>
@@ -49,13 +62,15 @@ const { adminUrl } = Astro.props;
 
       <!-- Pro Plan -->
       <div class="pricing-card featured">
+        <div class="featured-badge">Most Popular</div>
         <div class="card-header">
-          <div class="plan-name text-primary">Pro</div>
+          <h3 class="plan-name text-primary">Pro</h3>
           <div class="plan-price">
-            <span class="amount">5</span>
-            <span class="period">CHF/mo</span>
+            <span class="currency">CHF</span>
+            <span class="amount" data-monthly="5" data-yearly="4.20">5</span>
+            <span class="period">/mo</span>
           </div>
-          <p class="plan-note">Everything in Free +</p>
+          <p class="plan-desc">For creators who mean business.</p>
         </div>
         
         <div class="card-body">
@@ -63,36 +78,96 @@ const { adminUrl } = Astro.props;
           
           <ul class="features-list">
             <li>
-              <span class="check-icon">✓</span> Unlimited links
+              <Check size={20} class="check-icon" />
+              <span><strong>Unlimited links</strong> & integrations</span>
             </li>
             <li>
-              <span class="check-icon">✓</span> Custom themes & fonts
+              <Check size={20} class="check-icon" />
+              <span><strong>Pro Themes</strong> & Custom Fonts</span>
             </li>
             <li>
-              <span class="check-icon">✓</span> Exclusive layouts
+              <Check size={20} class="check-icon" />
+              <span><strong>Analytics</strong> to know your audience</span>
             </li>
             <li>
-              <span class="check-icon">✓</span> Complete analytics
+              <Check size={20} class="check-icon" />
+              <span><strong>Remove Noko logo</strong> (White label)</span>
             </li>
             <li>
-              <span class="check-icon">✓</span> No Noko branding
-            </li>
-            <li>
-              <span class="check-icon">✓</span> Priority support
+              <Check size={20} class="check-icon" />
+              <span>Priority Support</span>
             </li>
           </ul>
         </div>
       </div>
     </div>
+    
+    <div class="text-center mt-12">
+      <p class="text-sm text-secondary">Prices in CHF. Cancel anytime. No hidden fees.</p>
+    </div>
   </div>
 </section>
 
 <style>
+  /* Toggle Styles */
+  .pricing-toggle-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .toggle-label {
+    font-weight: 500;
+    color: var(--color-text);
+    font-size: 0.9375rem;
+  }
+
+  .toggle-switch {
+    width: 52px;
+    height: 28px;
+    background: var(--color-text-secondary);
+    border-radius: 99px;
+    position: relative;
+    padding: 2px;
+    transition: background 0.3s ease;
+  }
+
+  .toggle-switch[aria-pressed="true"] {
+    background: var(--color-primary);
+  }
+
+  .toggle-thumb {
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .toggle-switch[aria-pressed="true"] .toggle-thumb {
+    transform: translateX(24px);
+  }
+
+  .discount-badge {
+    background: #dcfce7;
+    color: #166534;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 99px;
+    margin-left: 0.25rem;
+  }
+
+  /* Cards */
   .pricing-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
     justify-content: center;
     gap: 2rem;
+    align-items: stretch; /* Align heights */
   }
 
   .pricing-card {
@@ -103,6 +178,7 @@ const { adminUrl } = Astro.props;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
 
   .pricing-card:hover {
@@ -111,13 +187,12 @@ const { adminUrl } = Astro.props;
   }
 
   .pricing-card.featured {
-    border-color: var(--color-primary);
+    border: 2px solid var(--color-primary);
     box-shadow: var(--shadow-lg);
-    position: relative;
+    z-index: 1; /* Pop above */
   }
-  
-  .pricing-card.featured::before {
-    content: 'Recommended';
+
+  .featured-badge {
     position: absolute;
     top: 0;
     left: 50%;
@@ -125,15 +200,18 @@ const { adminUrl } = Astro.props;
     background: var(--color-primary);
     color: white;
     font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.25rem 0.75rem;
-    border-bottom-left-radius: var(--radius-md);
-    border-bottom-right-radius: var(--radius-md);
+    font-weight: 700;
+    padding: 0.25rem 1rem;
+    border-bottom-left-radius: var(--radius-lg);
+    border-bottom-right-radius: var(--radius-lg);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .card-header {
-    padding: 2.5rem 2.5rem 0;
+    padding: 3rem 2.5rem 1.5rem;
     text-align: center;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
   }
 
   .plan-name {
@@ -144,29 +222,37 @@ const { adminUrl } = Astro.props;
 
   .plan-price {
     display: flex;
-    align-items: baseline;
+    align-items: flex-start;
     justify-content: center;
     gap: 0.25rem;
     color: var(--color-text);
+    line-height: 1;
+  }
+  
+  .currency {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
   }
 
   .amount {
     font-size: 3.5rem;
     font-weight: 800;
-    line-height: 1;
     letter-spacing: -0.05em;
   }
 
   .period {
+    align-self: flex-end;
     font-size: 1rem;
     color: var(--color-text-secondary);
     font-weight: 500;
+    margin-bottom: 0.5rem;
   }
 
-  .plan-note {
+  .plan-desc {
     color: var(--color-text-secondary);
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
+    font-size: 0.9375rem;
+    margin-top: 1rem;
   }
 
   .card-body {
@@ -186,20 +272,63 @@ const { adminUrl } = Astro.props;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
   }
 
   .features-list li {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.75rem;
-    color: var(--color-text-secondary);
+    color: var(--color-text);
     font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+  
+  .features-list strong {
+    font-weight: 600;
   }
 
   .check-icon {
     color: var(--color-primary);
-    font-weight: 700;
-    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 1px;
   }
+  
+  .text-secondary { color: var(--color-text-secondary); }
 </style>
+
+<script>
+  const toggle = document.getElementById('billing-toggle');
+  const amounts = document.querySelectorAll('.amount[data-monthly]');
+  const periods = document.querySelectorAll('.period');
+  
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      const isPressed = toggle.getAttribute('aria-pressed') === 'true';
+      const newState = !isPressed;
+      
+      toggle.setAttribute('aria-pressed', String(newState));
+      
+      amounts.forEach(el => {
+        const monthly = el.getAttribute('data-monthly');
+        const yearly = el.getAttribute('data-yearly');
+        
+        if (monthly && yearly) {
+          // Animate transition
+          el.style.opacity = '0';
+          setTimeout(() => {
+            el.textContent = newState ? yearly : monthly;
+            el.style.opacity = '1';
+          }, 150);
+        }
+      });
+      
+      periods.forEach(el => {
+         // Optionally change /mo to /year but usually SaaS display /mo billed yearly
+         // Let's keep /mo but user pays annually.
+         // If we want to be explicit:
+         // el.textContent = newState ? '/mo (billed yearly)' : '/mo';
+      });
+    });
+  }
+</script>
