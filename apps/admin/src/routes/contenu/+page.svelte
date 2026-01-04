@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { ProfileImageShape } from '@noko/shared/types';
   import { Card, Button, Input, Toggle } from '$lib/components/ui';
   import { Preview } from '$lib/components/dashboard';
   import { Download, QrCode, UserPlus } from 'lucide-svelte';
@@ -17,6 +18,8 @@
   // Branding fields
   let logoUrl = $state('');
   let profileImageUrl = $state('');
+  let profileImageSize = $state(96);
+  let profileImageShape = $state<ProfileImageShape>('round');
 
   // vCard fields
   let vcardEnabled = $state(false);
@@ -41,6 +44,8 @@
     bio,
     logo_url: logoUrl || null,
     profile_image_url: profileImageUrl || null,
+    profile_image_size: profileImageSize,
+    profile_image_shape: profileImageShape,
   } : null);
 
   // Initialize form values from client
@@ -52,6 +57,8 @@
       metaDescription = client.meta_description || '';
       logoUrl = client.logo_url || '';
       profileImageUrl = client.profile_image_url || '';
+      profileImageSize = client.profile_image_size ?? 96;
+      profileImageShape = client.profile_image_shape ?? 'round';
       vcardEnabled = client.vcard_enabled || false;
       vcardName = client.vcard_name || '';
       vcardEmail = client.vcard_email || '';
@@ -82,6 +89,8 @@
       await clientStore.updateBranding({
         logo_url: logoUrl || undefined,
         profile_image_url: profileImageUrl || undefined,
+        profile_image_size: profileImageSize,
+        profile_image_shape: profileImageShape,
       });
     } finally {
       savingBranding = false;
@@ -183,6 +192,55 @@
               placeholder="https://example.com/profile.jpg"
               hint="URL d'une image carrée pour votre profil"
             />
+
+            <!-- Profile Image Size Slider -->
+            <div class="form-field">
+              <label for="profile-size">Taille de la photo ({profileImageSize}px)</label>
+              <input
+                type="range"
+                id="profile-size"
+                min="60"
+                max="200"
+                step="5"
+                bind:value={profileImageSize}
+                class="size-slider"
+              />
+            </div>
+
+            <!-- Profile Image Shape Selector -->
+            <div class="form-field">
+              <label>Forme de la photo</label>
+              <div class="shape-selector">
+                <button
+                  type="button"
+                  class="shape-option"
+                  class:selected={profileImageShape === 'round'}
+                  onclick={() => profileImageShape = 'round'}
+                >
+                  <div class="shape-preview round"></div>
+                  <span>Rond</span>
+                </button>
+                <button
+                  type="button"
+                  class="shape-option"
+                  class:selected={profileImageShape === 'rounded'}
+                  onclick={() => profileImageShape = 'rounded'}
+                >
+                  <div class="shape-preview rounded"></div>
+                  <span>Arrondi</span>
+                </button>
+                <button
+                  type="button"
+                  class="shape-option"
+                  class:selected={profileImageShape === 'square'}
+                  onclick={() => profileImageShape = 'square'}
+                >
+                  <div class="shape-preview square"></div>
+                  <span>Carré</span>
+                </button>
+              </div>
+            </div>
+
             {#if logoUrl || profileImageUrl}
               <div class="image-previews">
                 {#if logoUrl}
@@ -543,5 +601,96 @@
     gap: var(--space-3);
     padding-top: var(--space-3);
     border-top: 1px solid var(--color-border);
+  }
+
+  /* Size Slider */
+  .size-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--color-border);
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .size-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .size-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Shape Selector */
+  .shape-selector {
+    display: flex;
+    gap: var(--space-3);
+  }
+
+  .shape-option {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .shape-option:hover {
+    border-color: var(--color-border-hover);
+  }
+
+  .shape-option.selected {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+  }
+
+  .shape-preview {
+    width: 40px;
+    height: 40px;
+    background: var(--color-primary);
+  }
+
+  .shape-preview.round {
+    border-radius: 50%;
+  }
+
+  .shape-preview.rounded {
+    border-radius: 8px;
+  }
+
+  .shape-preview.square {
+    border-radius: 2px;
+  }
+
+  .shape-option span {
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+    color: var(--color-text-secondary);
+  }
+
+  .shape-option.selected span {
+    color: var(--color-primary);
   }
 </style>

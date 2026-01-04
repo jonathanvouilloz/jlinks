@@ -12,9 +12,10 @@ interface Props {
   textColor?: string;
   opacity?: number;
   buttonStyle?: ButtonStyle;
+  outlineColor?: string;
 }
 
-const { title, url, icon, socialPreset, bgColor = '#000000', textColor = '#FFFFFF', opacity = 100, buttonStyle = 'rounded' } = Astro.props;
+const { title, url, icon, socialPreset, bgColor = '#000000', textColor = '#FFFFFF', opacity = 100, buttonStyle = 'rounded', outlineColor } = Astro.props;
 
 // Get preset styling if using a social preset
 const preset = socialPreset ? SOCIAL_PRESETS[socialPreset as SocialPresetKey] : null;
@@ -38,13 +39,15 @@ function getButtonRadius(style: ButtonStyle): string {
     case 'pill': return '50px';
     case 'square': return '4px';
     case 'soft': return '16px';
-    case 'outline': return '8px';
+    case 'outline':
+    case 'outline-icon': return '8px';
     case 'rounded':
     default: return '8px';
   }
 }
 
-const isOutline = buttonStyle === 'outline';
+const isOutline = buttonStyle === 'outline' || buttonStyle === 'outline-icon';
+const showIcon = buttonStyle !== 'outline'; // outline = sans icône, outline-icon = avec icône
 const buttonRadius = getButtonRadius(buttonStyle);
 
 // Apply opacity only to solid hex colors
@@ -53,8 +56,10 @@ const bgWithOpacity = opacity < 100 && finalBgColor.startsWith('#')
   : finalBgColor;
 
 // Build style string based on button style
+// For outline styles, use outlineColor (primary_color) if provided, otherwise fallback to finalBgColor
+const outlineBorderColor = outlineColor || finalBgColor;
 const styleString = isOutline
-  ? `background: transparent; border: 2px solid ${finalBgColor}; color: ${finalBgColor}; border-radius: ${buttonRadius};`
+  ? `background: transparent; border: 2px solid ${outlineBorderColor}; color: ${outlineBorderColor}; border-radius: ${buttonRadius};`
   : `background: ${bgWithOpacity}; color: ${finalTextColor}; border-radius: ${buttonRadius};`;
 ---
 
@@ -65,7 +70,7 @@ const styleString = isOutline
   rel="noopener noreferrer"
   style={styleString}
 >
-  <Icon name={iconName} size={20} source={iconSource} />
+  {showIcon && <Icon name={iconName} size={20} source={iconSource} />}
   <span>{title}</span>
 </a>
 

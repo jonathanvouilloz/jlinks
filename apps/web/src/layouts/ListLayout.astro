@@ -59,35 +59,40 @@ const outerBackgroundColor = isImageBg
   textColor={textColor}
 >
   <main class="container">
-    <ProfileHeader
-      name={client.name}
-      bio={client.bio}
-      imageUrl={client.profile_image_url}
-      logoUrl={client.logo_url}
-    />
+    <div class="main-content">
+      <ProfileHeader
+        name={client.name}
+        bio={client.bio}
+        imageUrl={client.profile_image_url}
+        logoUrl={client.logo_url}
+        imageSize={client.profile_image_size}
+        imageShape={client.profile_image_shape}
+      />
 
-    <div class="links-list">
-      {
-        links.map((link) => {
-          // For 'theme' preset, use primary_color directly (ignore preset.bgColor)
-          const useTheme = link.social_preset === 'theme';
-          return (
-            <LinkButton
-              title={link.title}
-              url={link.url}
-              icon={link.icon}
-              socialPreset={useTheme ? null : link.social_preset}
-              bgColor={useTheme ? client.primary_color : (link.custom_bg_color || client.primary_color)}
-              textColor={link.custom_text_color || '#FFFFFF'}
-              opacity={client.button_opacity ?? 100}
-              buttonStyle={client.button_style}
-            />
-          );
-        })
-      }
+      <div class="links-list">
+        {
+          links.map((link) => {
+            // For 'theme' preset, use primary_color directly (ignore preset.bgColor)
+            const useTheme = link.social_preset === 'theme';
+            return (
+              <LinkButton
+                title={link.title}
+                url={link.url}
+                icon={link.icon}
+                socialPreset={useTheme ? null : link.social_preset}
+                bgColor={useTheme ? client.primary_color : (link.custom_bg_color || client.primary_color)}
+                textColor={link.custom_text_color || '#FFFFFF'}
+                opacity={client.button_opacity ?? 100}
+                buttonStyle={client.button_style}
+                outlineColor={client.primary_color}
+              />
+            );
+          })
+        }
+      </div>
+
+      {client.vcard_enabled && <VCardButton slug={client.slug} />}
     </div>
-
-    {client.vcard_enabled && <VCardButton slug={client.slug} />}
 
     <Footer showBranding={client.plan !== 'pro'} />
   </main>

@@ -7,6 +7,8 @@ export interface Client {
   // Branding
   logo_url: string | null;
   profile_image_url: string | null;
+  profile_image_size: number;
+  profile_image_shape: ProfileImageShape;
 
   // Colors
   primary_color: string;
@@ -139,8 +141,9 @@ export interface Session {
 // Enums
 export type BackgroundType = 'solid' | 'gradient' | 'image';
 export type LayoutType = 'list' | 'cards' | 'grid' | 'premium';
-export type ButtonStyle = 'rounded' | 'pill' | 'square' | 'soft' | 'outline';
+export type ButtonStyle = 'rounded' | 'pill' | 'square' | 'soft' | 'outline' | 'outline-icon';
 export type PlanType = 'free' | 'pro';
+export type ProfileImageShape = 'round' | 'rounded' | 'square';
 
 // Social preset keys
 export type SocialPresetKey =

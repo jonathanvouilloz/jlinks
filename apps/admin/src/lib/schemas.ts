@@ -83,7 +83,7 @@ export const updateClientSettingsSchema = z.object({
   font_title: z.string().optional(),
   font_text: z.string().optional(),
   layout_type: z.enum(['list', 'cards', 'grid', 'premium']).optional(),
-  button_style: z.enum(['rounded', 'pill', 'square', 'soft', 'outline']).optional(),
+  button_style: z.enum(['rounded', 'pill', 'square', 'soft', 'outline', 'outline-icon']).optional(),
 });
 
 export const updateVcardSchema = z.object({
@@ -98,6 +98,8 @@ export const updateVcardSchema = z.object({
 export const updateBrandingSchema = z.object({
   logo_url: z.union([z.string().regex(/^https?:\/\/.+/), z.literal('')]).optional(),
   profile_image_url: z.union([z.string().regex(/^https?:\/\/.+/), z.literal('')]).optional(),
+  profile_image_size: z.number().min(60).max(200).optional(),
+  profile_image_shape: z.enum(['round', 'rounded', 'square']).optional(),
 });
 
 // ============================================

@@ -1,6 +1,6 @@
 // Client data store using Svelte 5 runes
 
-import type { Client, BackgroundType, LayoutType, ButtonStyle } from '@noko/shared/types';
+import type { Client, BackgroundType, LayoutType, ButtonStyle, ProfileImageShape } from '@noko/shared/types';
 import { api, ApiError } from '$lib/api';
 import { toastStore } from './toast.svelte';
 import { authStore } from './auth.svelte';
@@ -77,6 +77,8 @@ async function updateSettings(data: {
 async function updateBranding(data: {
   logo_url?: string;
   profile_image_url?: string;
+  profile_image_size?: number;
+  profile_image_shape?: ProfileImageShape;
 }): Promise<Client | null> {
   try {
     const updatedClient = await api.client.updateBranding(data);

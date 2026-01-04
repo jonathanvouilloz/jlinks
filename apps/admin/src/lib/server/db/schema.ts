@@ -15,6 +15,8 @@ export const clients = sqliteTable('clients', {
   // Branding
   logo_url: text('logo_url'),
   profile_image_url: text('profile_image_url'),
+  profile_image_size: integer('profile_image_size').default(96),
+  profile_image_shape: text('profile_image_shape').default('round'),
 
   // Colors
   primary_color: text('primary_color').default('#000000'),

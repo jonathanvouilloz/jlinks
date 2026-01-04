@@ -49,13 +49,16 @@ function getButtonRadius(style: string): string {
     case 'pill': return '20px';
     case 'square': return '4px';
     case 'soft': return '16px';
-    case 'outline': return '8px';
+    case 'outline':
+    case 'outline-icon': return '8px';
     case 'rounded':
     default: return '8px';
   }
 }
 
-const isOutline = buttonStyle === 'outline';
+const isOutline = buttonStyle === 'outline' || buttonStyle === 'outline-icon';
+const showPresetIcon = buttonStyle !== 'outline'; // outline = sans icône, outline-icon = avec icône
+const outlineColor = client.primary_color || '#FF6B5B'; // Couleur uniforme pour les styles outline
 const gridRadius = getButtonRadius(buttonStyle);
 
 // Transform background based on type
@@ -85,51 +88,57 @@ const outerBackgroundColor = isImageBg
   textColor={pageTextColor}
 >
   <main class="container">
-    <ProfileHeader
-      name={client.name}
-      bio={client.bio}
-      imageUrl={client.profile_image_url}
-      logoUrl={client.logo_url}
-    />
+    <div class="main-content">
+      <ProfileHeader
+        name={client.name}
+        bio={client.bio}
+        imageUrl={client.profile_image_url}
+        logoUrl={client.logo_url}
+        imageSize={client.profile_image_size}
+        imageShape={client.profile_image_shape}
+      />
 
-    <div class="links-grid">
-      {
-        links.map((link) => {
-          // For 'theme' preset, use primary_color directly (ignore preset.bgColor)
-          const useTheme = link.social_preset === 'theme';
-          const preset = link.social_preset && !useTheme
-            ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey]
-            : null;
-          const bgColor = useTheme ? client.primary_color : (preset?.bgColor || link.custom_bg_color || client.primary_color);
-          const bgStyle = buttonOpacity < 100 && bgColor.startsWith('#') ? hexToRgba(bgColor, buttonOpacity) : bgColor;
-          const textColor = preset?.textColor || link.custom_text_color || '#FFFFFF';
-          const iconName = link.icon || preset?.icon || 'link';
-          const iconSource = preset?.iconSource || (useTheme ? SOCIAL_PRESETS.theme.iconSource : 'lucide');
+      <div class="links-grid">
+        {
+          links.map((link) => {
+            // For 'theme' preset, use primary_color directly (ignore preset.bgColor)
+            const useTheme = link.social_preset === 'theme';
+            const preset = link.social_preset && !useTheme
+              ? SOCIAL_PRESETS[link.social_preset as SocialPresetKey]
+              : null;
+            const bgColor = useTheme ? client.primary_color : (preset?.bgColor || link.custom_bg_color || client.primary_color);
+            const bgStyle = buttonOpacity < 100 && bgColor.startsWith('#') ? hexToRgba(bgColor, buttonOpacity) : bgColor;
+            const textColor = preset?.textColor || link.custom_text_color || '#FFFFFF';
+            const iconName = link.icon || preset?.icon || 'link';
+            const iconSource = preset?.iconSource || (useTheme ? SOCIAL_PRESETS.theme.iconSource : 'lucide');
 
-          const itemStyle = isOutline
-            ? `background: transparent; border: 2px solid ${bgColor}; color: ${bgColor}; border-radius: ${gridRadius};`
-            : `background: ${bgStyle}; color: ${textColor}; border-radius: ${gridRadius};`;
+            const itemStyle = isOutline
+              ? `background: transparent; border: 2px solid ${outlineColor}; color: ${outlineColor}; border-radius: ${gridRadius};`
+              : `background: ${bgStyle}; color: ${textColor}; border-radius: ${gridRadius};`;
 
-          return (
-            <a
-              href={link.url}
-              class="link-grid-item"
-              style={itemStyle}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={link.title}
-            >
-              <span class="link-grid-icon">
-                <Icon name={iconName} size={28} source={iconSource} />
-              </span>
-              <span class="link-grid-title">{link.title}</span>
-            </a>
-          );
-        })
-      }
+            return (
+              <a
+                href={link.url}
+                class="link-grid-item"
+                style={itemStyle}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={link.title}
+              >
+                {showPresetIcon && (
+                  <span class="link-grid-icon">
+                    <Icon name={iconName} size={28} source={iconSource} />
+                  </span>
+                )}
+                <span class="link-grid-title">{link.title}</span>
+              </a>
+            );
+          })
+        }
+      </div>
+
+      {client.vcard_enabled && <VCardButton slug={client.slug} />}
     </div>
-
-    {client.vcard_enabled && <VCardButton slug={client.slug} />}
 
     <Footer showBranding={client.plan !== 'pro'} />
   </main>

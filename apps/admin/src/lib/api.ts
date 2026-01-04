@@ -14,7 +14,8 @@ import type {
   BackgroundType,
   LayoutType,
   ButtonStyle,
-  PlanType
+  PlanType,
+  ProfileImageShape
 } from '@noko/shared/types';
 
 // API Error class
@@ -184,6 +185,8 @@ export const client = {
   async updateBranding(data: {
     logo_url?: string;
     profile_image_url?: string;
+    profile_image_size?: number;
+    profile_image_shape?: ProfileImageShape;
   }): Promise<Client> {
     return request('/clients/me/branding', {
       method: 'PUT',

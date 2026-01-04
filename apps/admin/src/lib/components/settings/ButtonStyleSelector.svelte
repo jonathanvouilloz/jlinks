@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { ButtonStyle } from '@noko/shared/types';
+  import { Link } from 'lucide-svelte';
 
   interface Props {
     value: ButtonStyle;
@@ -14,6 +15,7 @@
     { type: 'square', label: 'Carré' },
     { type: 'soft', label: 'Doux' },
     { type: 'outline', label: 'Contour' },
+    { type: 'outline-icon', label: 'Contour + Icône' },
   ];
 </script>
 
@@ -28,6 +30,9 @@
         onclick={() => onchange(style.type)}
       >
         <div class="style-preview style-{style.type}">
+          {#if style.type === 'outline-icon'}
+            <Link size={12} />
+          {/if}
           <span>Lien</span>
         </div>
         <span class="style-label">{style.label}</span>
@@ -51,11 +56,11 @@
 
   .style-options {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: var(--space-2);
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
     .style-options {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -111,6 +116,17 @@
   }
 
   .style-preview.style-outline {
+    background: transparent;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    border-radius: 8px;
+  }
+
+  .style-preview.style-outline-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
     background: transparent;
     border: 2px solid var(--color-primary);
     color: var(--color-primary);

@@ -1,20 +1,36 @@
 ---
+import type { ProfileImageShape } from '@noko/shared/types';
+
 interface Props {
   name: string;
   bio?: string | null;
   imageUrl?: string | null;
   logoUrl?: string | null;
+  imageSize?: number;
+  imageShape?: ProfileImageShape;
 }
 
-const { name, bio, imageUrl, logoUrl } = Astro.props;
+const { name, bio, imageUrl, logoUrl, imageSize = 96, imageShape = 'round' } = Astro.props;
 
 const displayImage = imageUrl || logoUrl;
+
+// Get border-radius based on shape
+function getBorderRadius(shape: ProfileImageShape): string {
+  switch (shape) {
+    case 'round': return '50%';
+    case 'rounded': return '16px';
+    case 'square': return '4px';
+    default: return '50%';
+  }
+}
+
+const imageStyle = displayImage ? `width: ${imageSize}px; height: ${imageSize}px; border-radius: ${getBorderRadius(imageShape)};` : '';
 ---
 
 <header class="profile-header">
   {
     displayImage && (
-      <img src={displayImage} alt={name} class="profile-image" loading="lazy" />
+      <img src={displayImage} alt={name} class="profile-image" style={imageStyle} loading="lazy" />
     )
   }
   <h1 class="profile-name">{name}</h1>
