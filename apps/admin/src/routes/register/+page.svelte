@@ -10,8 +10,7 @@
   } from 'lucide-svelte';
   import * as Icons from 'lucide-svelte';
   import SimpleIcon from '$lib/components/icons/SimpleIcon.svelte';
-  import { z } from 'zod';
-  import { registerSchema } from '$lib/schemas';
+  import { registerBaseSchema } from '$lib/schemas';
 
   // Helper to get Lucide icon component dynamically
   function getLucideIconComponent(iconName: string) {
@@ -40,8 +39,7 @@
     errors = {};
 
     // First validate individual fields
-    const baseSchema = registerSchema.innerType();
-    const result = baseSchema.pick({ email: true, password: true, confirmPassword: true, slug: true }).safeParse({ email, password, confirmPassword, slug });
+    const result = registerBaseSchema.pick({ email: true, password: true, confirmPassword: true, slug: true }).safeParse({ email, password, confirmPassword, slug });
     if (!result.success) {
       const formatted = result.error.format();
       if (formatted.email?._errors) errors.email = formatted.email._errors[0];

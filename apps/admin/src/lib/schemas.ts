@@ -9,7 +9,7 @@ export const signInSchema = z.object({
   password: z.string().min(1),
 });
 
-export const registerSchema = z.object({
+export const registerBaseSchema = z.object({
   email: z.string().email('Email invalide'),
   password: z.string().min(8, 'Minimum 8 caractères'),
   confirmPassword: z.string().min(1, 'Confirmez le mot de passe'),
@@ -25,7 +25,9 @@ export const registerSchema = z.object({
       'tiktok', 'facebook', 'github', 'email', 'whatsapp', 'theme'
     ]).optional(),
   })).max(5).optional(),
-}).refine((data) => data.password === data.confirmPassword, {
+});
+
+export const registerSchema = registerBaseSchema.refine((data) => data.password === data.confirmPassword, {
   message: 'Les mots de passe ne correspondent pas',
   path: ['confirmPassword'],
 });
