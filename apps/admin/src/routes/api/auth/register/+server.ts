@@ -1,9 +1,10 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { db, users, clients, sessions, links } from '$lib/server/db';
+import { db, users, clients, links, verifications } from '$lib/server/db';
 import { eq } from 'drizzle-orm';
 import { hashPassword } from '$lib/server/auth/password';
 import { registerSchema } from '$lib/schemas';
+import { sendEmailVerificationEmail } from '$lib/server/email';
 
 const registerAttempts = new Map<string, { count: number; resetAt: number }>();
 
@@ -92,31 +93,34 @@ export const POST: RequestHandler = async (event) => {
       return { user: newUser, client: newClient };
     });
 
-    // Create session
-    const sessionId = crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+    // Create email verification token (24 hours expiry)
+    const verificationToken = crypto.randomUUID();
+    const tokenExpiresAt = new Date();
+    tokenExpiresAt.setHours(tokenExpiresAt.getHours() + 24);
 
-    await db.insert(sessions).values({
-      id: sessionId,
-      user_id: user.id,
-      token: sessionId,
-      expires_at: expiresAt,
-      ip_address: ip,
-      user_agent: event.request.headers.get('user-agent'),
+    // Delete any existing verification for this email
+    await db.delete(verifications).where(eq(verifications.identifier, email.toLowerCase()));
+
+    // Create new verification token
+    await db.insert(verifications).values({
+      id: crypto.randomUUID(),
+      identifier: email.toLowerCase(),
+      value: verificationToken,
+      expires_at: tokenExpiresAt.toISOString(),
     });
 
-    event.cookies.set('session', sessionId, {
-      path: '/',
-      httpOnly: true,
-      secure: import.meta.env.PROD,
-      sameSite: 'lax',
-      maxAge: 30 * 24 * 60 * 60,
-    });
+    // Send verification email (don't await to avoid blocking)
+    sendEmailVerificationEmail(email.toLowerCase(), verificationToken).catch(console.error);
 
     // Clear rate limit
     registerAttempts.delete(ip);
 
-    return json({ user, client });
+    // Return success - no session created until email is verified
+    return json({
+      success: true,
+      requiresVerification: true,
+      message: 'Vérifiez votre email pour activer votre compte'
+    });
 
   } catch (err) {
     console.error('Registration error:', err);

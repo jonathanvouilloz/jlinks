@@ -24,6 +24,7 @@
   let step = $state(1);
   let email = $state('');
   let password = $state('');
+  let confirmPassword = $state('');
   let slug = $state('');
   let socialLinks = $state<Array<{ url: string; title: string; socialPreset: SocialPresetKey | undefined; id: string }>>([]);
   let loading = $state(false);
@@ -37,14 +38,25 @@
 
   function validateStep1() {
     errors = {};
-    const result = registerSchema.pick({ email: true, password: true, slug: true }).safeParse({ email, password, slug });
+
+    // First validate individual fields
+    const baseSchema = registerSchema.innerType();
+    const result = baseSchema.pick({ email: true, password: true, confirmPassword: true, slug: true }).safeParse({ email, password, confirmPassword, slug });
     if (!result.success) {
       const formatted = result.error.format();
       if (formatted.email?._errors) errors.email = formatted.email._errors[0];
       if (formatted.password?._errors) errors.password = formatted.password._errors[0];
+      if (formatted.confirmPassword?._errors) errors.confirmPassword = formatted.confirmPassword._errors[0];
       if (formatted.slug?._errors) errors.slug = formatted.slug._errors[0];
       return false;
     }
+
+    // Check password match
+    if (password !== confirmPassword) {
+      errors.confirmPassword = 'Les mots de passe ne correspondent pas';
+      return false;
+    }
+
     return true;
   }
 
@@ -175,8 +187,8 @@
         socialLinks: cleanLinks.length > 0 ? cleanLinks : undefined
       });
 
-      // Redirect to home/dashboard
-      goto('/');
+      // Redirect to check-email page
+      goto('/check-email');
     } catch (err: any) {
       console.error(err);
       if (err.message === 'Email already exists') {
@@ -283,6 +295,18 @@
                     placeholder="Mot de passe (min. 8 caractères)"
                     required
                     error={errors.password}
+                    disabled={loading}
+                    showPasswordToggle
+                  />
+                </div>
+
+                <div class="input-group">
+                  <AuthInput
+                    type="password"
+                    bind:value={confirmPassword}
+                    placeholder="Confirmer le mot de passe"
+                    required
+                    error={errors.confirmPassword}
                     disabled={loading}
                     showPasswordToggle
                   />

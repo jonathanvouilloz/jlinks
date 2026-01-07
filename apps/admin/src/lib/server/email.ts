@@ -62,3 +62,57 @@ export async function sendPasswordResetEmail(
     return false;
   }
 }
+
+export async function sendEmailVerificationEmail(
+  email: string,
+  token: string
+): Promise<boolean> {
+  const verifyUrl = `${adminUrl}/verify-email?token=${token}`;
+
+  // If Resend is not configured, log the verification URL for development
+  if (!resend) {
+    console.log('=== EMAIL VERIFICATION (Resend not configured) ===');
+    console.log(`Email: ${email}`);
+    console.log(`Verification URL: ${verifyUrl}`);
+    console.log('=================================================');
+    return true;
+  }
+
+  try {
+    await resend.emails.send({
+      from: fromEmail,
+      to: email,
+      subject: 'Vérifiez votre adresse email - Noko',
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; background-color: #f5f5f5;">
+          <div style="max-width: 500px; margin: 0 auto; background: white; border-radius: 8px; padding: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <h1 style="margin: 0 0 24px 0; font-size: 24px; color: #1a1a1a;">Bienvenue sur Noko !</h1>
+            <p style="margin: 0 0 16px 0; color: #4a4a4a; line-height: 1.5;">
+              Merci de vous être inscrit. Pour activer votre compte, veuillez vérifier votre adresse email.
+            </p>
+            <p style="margin: 0 0 24px 0; color: #4a4a4a; line-height: 1.5;">
+              Cliquez sur le bouton ci-dessous pour confirmer votre email :
+            </p>
+            <a href="${verifyUrl}" style="display: inline-block; background-color: #FF6B5B; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: 500;">
+              Vérifier mon email
+            </a>
+            <p style="margin: 24px 0 0 0; color: #888; font-size: 14px; line-height: 1.5;">
+              Ce lien expire dans 24 heures. Si vous n'avez pas créé de compte Noko, ignorez cet email.
+            </p>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+    return true;
+  } catch (error) {
+    console.error('Failed to send email verification:', error);
+    return false;
+  }
+}
