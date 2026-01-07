@@ -523,11 +523,18 @@
   .mascot-wrapper {
     position: absolute;
     bottom: -250px;
-    right: 38%;
+    left: 50%;
+    transform: translateX(-50%);
     width: 850px;
     z-index: 1;
     pointer-events: none;
     opacity: 0.8;
+  }
+
+  .mascot-img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 60px rgba(255, 107, 91, 0.2));
   }
 
   .circle-ring-1 { width: 800px; height: 800px; }
