@@ -32,6 +32,24 @@ export const registerSchema = registerBaseSchema.refine((data) => data.password 
   path: ['confirmPassword'],
 });
 
+// Schéma pour validation serveur (sans confirmPassword)
+export const registerServerSchema = z.object({
+  email: z.string().email('Email invalide'),
+  password: z.string().min(8, 'Minimum 8 caractères'),
+  slug: z.string()
+    .min(3, 'Minimum 3 caractères')
+    .max(50, 'Maximum 50 caractères')
+    .regex(/^[a-z0-9-]+$/, 'Uniquement lettres minuscules, chiffres et tirets'),
+  socialLinks: z.array(z.object({
+    url: z.string().url('URL invalide'),
+    title: z.string().min(1, 'Titre requis'),
+    socialPreset: z.enum([
+      'instagram', 'youtube', 'linkedin', 'x',
+      'tiktok', 'facebook', 'github', 'email', 'whatsapp', 'theme'
+    ]).optional(),
+  })).max(5).optional(),
+});
+
 export const changePasswordSchema = z.object({
   currentPassword: z.string().min(1),
   newPassword: z.string().min(8),

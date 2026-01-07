@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 import { db, users, clients, links, verifications } from '$lib/server/db';
 import { eq } from 'drizzle-orm';
 import { hashPassword } from '$lib/server/auth/password';
-import { registerSchema } from '$lib/schemas';
+import { registerServerSchema } from '$lib/schemas';
 import { sendEmailVerificationEmail } from '$lib/server/email';
 
 const registerAttempts = new Map<string, { count: number; resetAt: number }>();
@@ -26,7 +26,7 @@ export const POST: RequestHandler = async (event) => {
 
   try {
     const body = await event.request.json();
-    const result = registerSchema.safeParse(body);
+    const result = registerServerSchema.safeParse(body);
 
     if (!result.success) {
       return json({ error: 'Validation error', details: result.error.format() }, { status: 400 });

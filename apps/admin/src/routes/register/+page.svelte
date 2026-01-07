@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { Button, AuthButton, BackAuthButton, AuthInput } from '$lib/components/ui';
+  import { Button, AuthButton, BackAuthButton, AuthInput, Modal } from '$lib/components/ui';
   import { api } from '$lib/api';
   import { detectSocialPreset, SOCIAL_PRESETS } from '@noko/shared/social-presets';
   import type { SocialPresetKey } from '@noko/shared/types';
@@ -31,6 +31,7 @@
   let slugAvailable = $state<boolean | null>(null);
   let checkingSlug = $state(false);
   let slugTimeout: NodeJS.Timeout;
+  let showSkipModal = $state(false);
 
   // Social Presets for Grid
   const PRESETS_TO_SHOW: SocialPresetKey[] = ['instagram', 'youtube', 'tiktok', 'x', 'linkedin', 'facebook', 'whatsapp', 'github'];
@@ -443,14 +444,10 @@
                   
                   {#if socialLinks.length === 0}
                     <div style="flex: 1">
-                      <AuthButton 
-                        type="button" 
-                        onclick={() => {
-                          if(confirm('Voulez-vous vraiment créer votre compte sans ajouter de liens pour le moment ?')) {
-                            handleSubmit();
-                          }
-                        }} 
-                        {loading} 
+                      <AuthButton
+                        type="button"
+                        onclick={() => { showSkipModal = true; }}
+                        {loading}
                         disabled={loading}
                         style="background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border); box-shadow: none;"
                       >
@@ -477,6 +474,25 @@
     </footer>
   </div>
 </div>
+
+<!-- Modal de confirmation pour passer l'étape des liens -->
+<Modal bind:open={showSkipModal} title="Créer votre compte" size="sm">
+  <p style="margin: 0;">Voulez-vous vraiment créer votre compte sans ajouter de liens pour le moment ?</p>
+  <p style="color: var(--color-text-secondary); font-size: 0.875rem; margin-top: 0.75rem; margin-bottom: 0;">
+    Vous pourrez toujours ajouter des liens plus tard depuis votre tableau de bord.
+  </p>
+
+  {#snippet footer()}
+    <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+      <Button variant="secondary" onclick={() => showSkipModal = false}>
+        Annuler
+      </Button>
+      <Button variant="primary" onclick={() => { showSkipModal = false; handleSubmit(); }} {loading}>
+        Créer mon compte
+      </Button>
+    </div>
+  {/snippet}
+</Modal>
 
 <style>
   /* Reuse styles from login page + specific additions */
