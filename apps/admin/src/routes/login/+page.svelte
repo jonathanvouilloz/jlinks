@@ -119,6 +119,14 @@
               <LogIn size={18} />
               <span>Se connecter</span>
             </AuthButton>
+
+            <div class="divider">
+              <span>Ou</span>
+            </div>
+
+            <a href="/register" class="create-account-link">
+              Créer un compte
+            </a>
           </form>
         </div>
       </div>
@@ -418,6 +426,40 @@
   }
 
   .forgot-link:hover {
+    color: var(--color-primary-hover);
+    text-decoration: underline;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .divider span {
+    padding: 0 1rem;
+  }
+
+  .create-account-link {
+    display: block;
+    text-align: center;
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .create-account-link:hover {
     color: var(--color-primary-hover);
     text-decoration: underline;
   }
