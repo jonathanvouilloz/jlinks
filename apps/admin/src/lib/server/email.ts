@@ -6,6 +6,9 @@ import { env } from '$env/dynamic/private';
 const RESEND_API_KEY = env.RESEND_API_KEY;
 const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 
+// Debug log (remove after testing)
+console.log('[Email] RESEND_API_KEY configured:', !!RESEND_API_KEY);
+
 const fromEmail = EMAIL_FROM || 'Noko <noreply@nokolink.com>';
 const adminUrl = ADMIN_URL || 'http://localhost:5173';
 

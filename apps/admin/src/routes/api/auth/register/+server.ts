@@ -109,8 +109,11 @@ export const POST: RequestHandler = async (event) => {
       expires_at: tokenExpiresAt.toISOString(),
     });
 
-    // Send verification email (don't await to avoid blocking)
-    sendEmailVerificationEmail(email.toLowerCase(), verificationToken).catch(console.error);
+    // Send verification email
+    const emailSent = await sendEmailVerificationEmail(email.toLowerCase(), verificationToken);
+    if (!emailSent) {
+      console.error('Failed to send verification email to:', email);
+    }
 
     // Clear rate limit
     registerAttempts.delete(ip);
