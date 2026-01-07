@@ -228,7 +228,7 @@
       <!-- Header -->
       <header class="form-header">
         <a href="/" class="logo">
-          <img src="/logonono.webp" alt="Noko" class="logo-img" />
+          <img src="/black-logo.webp" alt="Noko" class="logo-img" />
         </a>
         <a href="/login" class="login-link">
           <span>Déjà un compte ? Se connecter</span>

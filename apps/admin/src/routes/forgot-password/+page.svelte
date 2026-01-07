@@ -61,7 +61,7 @@
     <div class="form-panel-inner">
       <header class="form-header">
         <a href="/" class="logo">
-          <img src="/logonono.webp" alt="Nokolink" class="logo-img" />
+          <img src="/black-logo.webp" alt="Noko" class="logo-img" />
         </a>
         <a href="/login" class="login-link">
           <span>Retour a la connexion</span>
