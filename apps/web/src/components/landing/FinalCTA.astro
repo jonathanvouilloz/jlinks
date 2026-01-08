@@ -36,15 +36,22 @@ const { adminUrl } = Astro.props;
 
   .mascot-bg {
     position: absolute;
-    bottom: -350px; /* Adjusted to show more of the mascot's top */
+    bottom: -250px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 0; /* Behind the card */
+    z-index: 0;
     width: 100%;
-    max-width: 900px; /* Adjusted size */
+    max-width: 900px;
     pointer-events: none;
     display: flex;
     justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .mascot-bg {
+      bottom: -180px;
+      max-width: 600px;
+    }
   }
 
   .mascot-bg img {

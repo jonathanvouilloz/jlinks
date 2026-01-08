@@ -241,6 +241,7 @@
         <a href="/" class="logo">
           <img src="/black-logo.webp" alt="Noko" class="logo-img" />
         </a>
+        <a href="/" class="back-link">← Retour</a>
         <a href="/login" class="login-link">
           <span>Déjà un compte ? Se connecter</span>
         </a>
@@ -619,7 +620,7 @@
     bottom: 0;
     width: 52%;
     min-width: 480px;
-    background: #ffffff;
+    background: var(--color-bg);
     border-radius: 64px 0 0 64px;
     box-shadow: -28px 0 80px rgba(0, 0, 0, 0.2), -10px 0 30px rgba(0, 0, 0, 0.12);
     z-index: 10;
@@ -655,6 +656,15 @@
     transition: all var(--transition-fast);
   }
   .login-link:hover { color: var(--color-primary, #FF6B5B); }
+
+  .back-link {
+    display: none;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+  .back-link:hover { color: var(--color-primary); }
 
   .form-content {
     flex: 1;
@@ -965,6 +975,7 @@
     .form-panel-inner { padding: 2rem 1.5rem; max-width: 400px; margin: 0 auto; }
     .presets-grid { grid-template-columns: repeat(3, 1fr); }
     .login-link { display: none; }
+    .back-link { display: block; }
     .form-footer { text-align: center; padding: 2rem 1.5rem; }
   }
 </style>

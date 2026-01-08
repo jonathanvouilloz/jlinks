@@ -69,6 +69,7 @@
         <a href="/" class="logo">
           <img src="/black-logo.webp" alt="Noko" class="logo-img" />
         </a>
+        <a href="/" class="back-link">← Retour</a>
         <a href="/register" class="login-link">
           <span>Pas encore de compte ? S'inscrire</span>
         </a>
@@ -287,7 +288,7 @@
     bottom: 0;
     width: 52%;
     min-width: 480px;
-    background: #ffffff;
+    background: var(--color-bg);
     border-radius: 64px 0 0 64px;
     box-shadow:
       -28px 0 80px rgba(0, 0, 0, 0.2),
@@ -336,6 +337,18 @@
   }
 
   .login-link:hover {
+    color: var(--color-primary);
+  }
+
+  .back-link {
+    display: none;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .back-link:hover {
     color: var(--color-primary);
   }
 
@@ -519,6 +532,10 @@
 
     .login-link {
       display: none;
+    }
+
+    .back-link {
+      display: block;
     }
 
     .form-footer {
