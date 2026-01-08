@@ -3,6 +3,7 @@
   import { Button, AuthButton, AuthInput } from '$lib/components/ui';
   import { authStore } from '$lib/stores';
   import { LogIn, UserPlus } from 'lucide-svelte';
+  import * as m from '$lib/paraglide/messages';
 
   let email = $state('');
   let password = $state('');
@@ -14,7 +15,7 @@
     error = '';
 
     if (!email || !password) {
-      error = 'Veuillez remplir tous les champs';
+      error = m.auth_login_error_fill_all();
       return;
     }
 
@@ -29,7 +30,7 @@
 </script>
 
 <svelte:head>
-  <title>Connexion - Noko</title>
+  <title>{m.auth_login_page_title()}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -53,10 +54,10 @@
 
     <!-- Hero Content -->
     <div class="hero-content">
-      <p class="hero-eyebrow">La plateforme de liens personnalisee</p>
+      <p class="hero-eyebrow">{m.auth_login_hero_eyebrow()}</p>
       <h1 class="hero-tagline">
-        Tous vos liens<br />
-        <span class="highlight">en un seul endroit</span>
+        {m.auth_login_hero_tagline_1()}<br />
+        <span class="highlight">{m.auth_login_hero_tagline_2()}</span>
       </h1>
     </div>
   </div>
@@ -69,17 +70,17 @@
         <a href="/" class="logo">
           <img src="/black-logo.webp" alt="Noko" class="logo-img" />
         </a>
-        <a href="/" class="back-link">← Retour</a>
+        <a href="/" class="back-link">← {m.auth_login_back()}</a>
         <a href="/register" class="login-link">
-          <span>Pas encore de compte ? S'inscrire</span>
+          <span>{m.auth_login_no_account()}</span>
         </a>
       </header>
 
       <!-- Form Content (Centered) -->
       <div class="form-content">
         <div class="form-content-inner">
-          <h2 class="form-title">Connexion</h2>
-          <p class="form-subtitle">Accedez a votre espace Noko</p>
+          <h2 class="form-title">{m.auth_login_title()}</h2>
+          <p class="form-subtitle">{m.auth_login_subtitle()}</p>
 
           <form onsubmit={handleSubmit} class="login-form">
             {#if error}
@@ -93,7 +94,7 @@
               <AuthInput
                 type="email"
                 bind:value={email}
-                placeholder="votre@email.com"
+                placeholder={m.auth_login_email_placeholder()}
                 required
                 disabled={loading}
               />
@@ -103,7 +104,7 @@
               <AuthInput
                 type="password"
                 bind:value={password}
-                placeholder="Mot de passe"
+                placeholder={m.auth_login_password_placeholder()}
                 required
                 disabled={loading}
                 showPasswordToggle
@@ -112,21 +113,21 @@
 
             <div class="form-options">
               <a href="/forgot-password" class="forgot-link">
-                Mot de passe oublie ?
+                {m.auth_login_forgot_password()}
               </a>
             </div>
 
             <AuthButton type="submit" {loading} disabled={loading}>
               <LogIn size={18} />
-              <span>Se connecter</span>
+              <span>{m.auth_login_submit()}</span>
             </AuthButton>
 
             <div class="divider">
-              <span>Ou</span>
+              <span>{m.common_or()}</span>
             </div>
 
             <a href="/register" class="create-account-link">
-              Créer un compte
+              {m.auth_login_create_account()}
             </a>
           </form>
         </div>
@@ -135,7 +136,7 @@
     
     <!-- Footer -->
     <footer class="form-footer">
-      <p>&copy; 2025 Noko. Tous droits reserves.</p>
+      <p>&copy; {m.common_footer_copyright()}</p>
     </footer>
   </div>
 </div>

@@ -94,6 +94,40 @@ export const FONT_PRESETS = {
   },
 } as const;
 
+/**
+ * Translation key mapping for font preset names.
+ * Consumers can use these keys to get translated labels from their i18n system.
+ */
+export const FONT_PRESET_NAME_KEYS: Record<keyof typeof FONT_PRESETS, string> = {
+  'modern-pro': 'font_preset_modern_pro',
+  'tech-minimal': 'font_preset_tech_minimal',
+  elegant: 'font_preset_elegant',
+  friendly: 'font_preset_friendly',
+  editorial: 'font_preset_editorial',
+  clean: 'font_preset_clean',
+  bold: 'font_preset_bold',
+  soft: 'font_preset_soft',
+  classic: 'font_preset_classic',
+  geometric: 'font_preset_geometric',
+} as const;
+
+/**
+ * Translation key mapping for font preset descriptions.
+ * Consumers can use these keys to get translated descriptions from their i18n system.
+ */
+export const FONT_PRESET_DESC_KEYS: Record<keyof typeof FONT_PRESETS, string> = {
+  'modern-pro': 'font_preset_modern_pro_desc',
+  'tech-minimal': 'font_preset_tech_minimal_desc',
+  elegant: 'font_preset_elegant_desc',
+  friendly: 'font_preset_friendly_desc',
+  editorial: 'font_preset_editorial_desc',
+  clean: 'font_preset_clean_desc',
+  bold: 'font_preset_bold_desc',
+  soft: 'font_preset_soft_desc',
+  classic: 'font_preset_classic_desc',
+  geometric: 'font_preset_geometric_desc',
+} as const;
+
 export type FontPresetId = keyof typeof FONT_PRESETS;
 export type FontPreset = (typeof FONT_PRESETS)[FontPresetId];
 

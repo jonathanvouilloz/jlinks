@@ -1,0 +1,94 @@
+---
+// French Landing Page - Redirect to main index with locale
+// This file exists to handle /fr/ route properly with Astro's i18n
+
+import Header from '../../components/landing/Header.astro';
+import Hero from '../../components/landing/Hero.astro';
+import ComparisonTable from '../../components/landing/ComparisonTable.astro';
+import Features from '../../components/landing/Features.astro';
+import ThemeDemo from '../../components/landing/ThemeDemo.astro';
+import Pricing from '../../components/landing/Pricing.astro';
+import Testimonials from '../../components/landing/Testimonials.astro';
+import FAQ from '../../components/landing/FAQ.astro';
+import FinalCTA from '../../components/landing/FinalCTA.astro';
+import LandingFooter from '../../components/landing/LandingFooter.astro';
+import fr from '@noko/shared/i18n/fr.json';
+
+import '../../styles/landing.css';
+
+const adminUrl = import.meta.env.DEV ? 'http://localhost:5173' : 'https://admin.nokolink.com';
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'http://localhost:4321';
+
+const locale = 'fr';
+const t = fr;
+---
+
+<!DOCTYPE html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={t.landing_meta_description} />
+
+    <title>{t.landing_meta_title}</title>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={`${siteUrl}/fr/`} />
+    <link rel="alternate" hreflang="en" href={siteUrl} />
+    <link rel="alternate" hreflang="fr" href={`${siteUrl}/fr/`} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Additional fonts for theme demo -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&family=Barlow:wght@400;500&family=Nunito:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={t.landing_meta_title} />
+    <meta property="og:description" content={t.landing_meta_og_description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={`${siteUrl}/fr/`} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Noko" />
+
+    <!-- Open Graph Image -->
+    <meta property="og:image" content={`${siteUrl}/images/brand/noko-mascot.png`} />
+    <meta property="og:image:width" content="535" />
+    <meta property="og:image:height" content="535" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={t.landing_meta_title} />
+    <meta name="twitter:description" content={t.landing_meta_og_description} />
+    <meta name="twitter:image" content={`${siteUrl}/images/brand/noko-mascot.png`} />
+  </head>
+
+  <body class="landing-page">
+    <Header adminUrl={adminUrl} />
+
+    <main>
+      <Hero adminUrl={adminUrl} />
+      <ComparisonTable />
+      <Features />
+      <ThemeDemo adminUrl={adminUrl} />
+      <Pricing adminUrl={adminUrl} />
+      <Testimonials />
+      <FAQ />
+      <FinalCTA adminUrl={adminUrl} />
+    </main>
+
+    <LandingFooter />
+  </body>
+</html>

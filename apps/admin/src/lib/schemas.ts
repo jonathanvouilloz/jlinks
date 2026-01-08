@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import * as m from '$lib/paraglide/messages';
 
 // ============================================
 // AUTH SCHEMAS
@@ -9,13 +10,35 @@ export const signInSchema = z.object({
   password: z.string().min(1),
 });
 
+// Function to get the register base schema with translated messages
+export function getRegisterBaseSchema() {
+  return z.object({
+    email: z.string().email(m.error_email_invalid()),
+    password: z.string().min(8, m.error_password_min()),
+    confirmPassword: z.string().min(1, m.error_confirm_password_required()),
+    slug: z.string()
+      .min(3, m.error_slug_min())
+      .max(50, m.error_slug_max())
+      .regex(/^[a-z0-9-]+$/, m.error_slug_format()),
+    socialLinks: z.array(z.object({
+      url: z.string().url(m.error_url_invalid()),
+      title: z.string().min(1, m.error_title_required()),
+      socialPreset: z.enum([
+        'instagram', 'youtube', 'linkedin', 'x',
+        'tiktok', 'facebook', 'github', 'email', 'whatsapp', 'theme'
+      ]).optional(),
+    })).max(5).optional(),
+  });
+}
+
+// Static version for backward compatibility
 export const registerBaseSchema = z.object({
   email: z.string().email('Email invalide'),
-  password: z.string().min(8, 'Minimum 8 caractères'),
+  password: z.string().min(8, 'Minimum 8 caracteres'),
   confirmPassword: z.string().min(1, 'Confirmez le mot de passe'),
   slug: z.string()
-    .min(3, 'Minimum 3 caractères')
-    .max(50, 'Maximum 50 caractères')
+    .min(3, 'Minimum 3 caracteres')
+    .max(50, 'Maximum 50 caracteres')
     .regex(/^[a-z0-9-]+$/, 'Uniquement lettres minuscules, chiffres et tirets'),
   socialLinks: z.array(z.object({
     url: z.string().url('URL invalide'),
@@ -27,18 +50,46 @@ export const registerBaseSchema = z.object({
   })).max(5).optional(),
 });
 
+// Function to get register schema with translated messages
+export function getRegisterSchema() {
+  return getRegisterBaseSchema().refine((data) => data.password === data.confirmPassword, {
+    message: m.auth_register_error_passwords_mismatch(),
+    path: ['confirmPassword'],
+  });
+}
+
 export const registerSchema = registerBaseSchema.refine((data) => data.password === data.confirmPassword, {
   message: 'Les mots de passe ne correspondent pas',
   path: ['confirmPassword'],
 });
 
-// Schéma pour validation serveur (sans confirmPassword)
+// Function to get server schema with translated messages
+export function getRegisterServerSchema() {
+  return z.object({
+    email: z.string().email(m.error_email_invalid()),
+    password: z.string().min(8, m.error_password_min()),
+    slug: z.string()
+      .min(3, m.error_slug_min())
+      .max(50, m.error_slug_max())
+      .regex(/^[a-z0-9-]+$/, m.error_slug_format()),
+    socialLinks: z.array(z.object({
+      url: z.string().url(m.error_url_invalid()),
+      title: z.string().min(1, m.error_title_required()),
+      socialPreset: z.enum([
+        'instagram', 'youtube', 'linkedin', 'x',
+        'tiktok', 'facebook', 'github', 'email', 'whatsapp', 'theme'
+      ]).optional(),
+    })).max(5).optional(),
+  });
+}
+
+// Schema for server validation (without confirmPassword) - static version for backward compatibility
 export const registerServerSchema = z.object({
   email: z.string().email('Email invalide'),
-  password: z.string().min(8, 'Minimum 8 caractères'),
+  password: z.string().min(8, 'Minimum 8 caracteres'),
   slug: z.string()
-    .min(3, 'Minimum 3 caractères')
-    .max(50, 'Maximum 50 caractères')
+    .min(3, 'Minimum 3 caracteres')
+    .max(50, 'Maximum 50 caracteres')
     .regex(/^[a-z0-9-]+$/, 'Uniquement lettres minuscules, chiffres et tirets'),
   socialLinks: z.array(z.object({
     url: z.string().url('URL invalide'),

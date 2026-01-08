@@ -45,6 +45,15 @@ export const PLANS: Record<PlanType, Plan> = {
   },
 } as const;
 
+/**
+ * Translation key mapping for plan names.
+ * Consumers can use these keys to get translated labels from their i18n system.
+ */
+export const PLAN_LABEL_KEYS: Record<PlanType, string> = {
+  free: 'plan_free',
+  pro: 'plan_pro',
+} as const;
+
 export function getPlan(planId: PlanType): Plan {
   return PLANS[planId];
 }

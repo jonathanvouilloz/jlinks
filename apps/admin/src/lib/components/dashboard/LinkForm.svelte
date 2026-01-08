@@ -4,6 +4,7 @@
   import { Modal, Input, Button, Toggle } from '$lib/components/ui';
   import { authStore } from '$lib/stores';
   import * as Icons from 'lucide-svelte';
+  import * as m from '$lib/paraglide/messages';
 
   interface Props {
     open: boolean;
@@ -110,47 +111,47 @@
   const presetKeys = getSocialPresetKeys();
 </script>
 
-<Modal {open} onclose={onClose} title={link ? 'Modifier le lien' : 'Nouveau lien'} size="md">
+<Modal {open} onclose={onClose} title={link ? m.link_form_title_edit() : m.link_form_title_new()} size="md">
   <form onsubmit={handleSubmit} class="link-form">
     <Input
-      label="Titre"
+      label={m.link_form_title_label()}
       bind:value={title}
-      placeholder="Mon site web"
+      placeholder={m.link_form_title_placeholder()}
       required
     />
 
     <Input
-      label="URL"
+      label={m.link_form_url_label()}
       type="url"
       bind:value={url}
-      placeholder="https://example.com"
+      placeholder={m.link_form_url_placeholder()}
       required
       oninput={handleUrlChange}
     />
 
     <Input
-      label="Description (optionnel)"
+      label={m.link_form_description_label()}
       bind:value={description}
-      placeholder="Une courte description..."
+      placeholder={m.link_form_description_placeholder()}
     />
 
     <div class="style-section">
       <div class="style-toggle">
-        <span class="style-label">Style personnalisé</span>
+        <span class="style-label">{m.link_form_custom_style()}</span>
         <Toggle bind:checked={useCustomStyle} />
       </div>
 
       {#if useCustomStyle}
         <div class="color-pickers">
           <div class="color-picker">
-            <label for="bg-color">Couleur de fond</label>
+            <label for="bg-color">{m.link_form_bg_color()}</label>
             <div class="color-input-wrapper">
               <input type="color" id="bg-color" bind:value={customBgColor} />
               <input type="text" bind:value={customBgColor} class="color-text" />
             </div>
           </div>
           <div class="color-picker">
-            <label for="text-color">Couleur du texte</label>
+            <label for="text-color">{m.link_form_text_color()}</label>
             <div class="color-input-wrapper">
               <input type="color" id="text-color" bind:value={customTextColor} />
               <input type="text" bind:value={customTextColor} class="color-text" />
@@ -179,21 +180,21 @@
     </div>
 
     <div class="preview-section">
-      <span class="preview-label">Aperçu</span>
+      <span class="preview-label">{m.link_form_preview()}</span>
       <div
         class="preview-button"
         style="background: {previewBgColor}; color: {previewTextColor};"
       >
-        {title || 'Titre du lien'}
+        {title || m.link_form_preview_placeholder()}
       </div>
     </div>
   </form>
 
   {#snippet footer()}
     <div class="form-actions">
-      <Button variant="secondary" onclick={onClose} disabled={saving}>Annuler</Button>
+      <Button variant="secondary" onclick={onClose} disabled={saving}>{m.common_cancel()}</Button>
       <Button variant="primary" onclick={handleFormSubmit} loading={saving} disabled={!title.trim() || !url.trim()}>
-        {link ? 'Enregistrer' : 'Créer'}
+        {link ? m.link_form_save() : m.link_form_create()}
       </Button>
     </div>
   {/snippet}

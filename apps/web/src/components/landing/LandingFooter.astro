@@ -1,5 +1,9 @@
 ---
-// Landing page footer
+import en from '@noko/shared/i18n/en.json';
+import fr from '@noko/shared/i18n/fr.json';
+
+const locale = Astro.currentLocale || 'en';
+const t = locale === 'fr' ? fr : en;
 ---
 
 <footer class="footer">
@@ -10,18 +14,17 @@
            <img src="/black-logo.webp" alt="Noko" height="24" />
         </div>
         <p class="footer-tagline">
-          All your links. One place.
+          {t.landing_footer_tagline}
         </p>
       </div>
 
       <nav class="footer-nav">
-        <a href="/legal">Legal</a>
-        <a href="/privacy">Privacy</a>
-        <a href="mailto:hello@nokolink.com">Contact</a>
+        <a href="/legal">{t.landing_footer_legal}</a>
+        <a href="/privacy">{t.landing_footer_privacy}</a>
+        <a href="mailto:hello@nokolink.com">{t.landing_footer_contact}</a>
       </nav>
 
-      <div class="footer-copyright">
-        Made with <span class="heart">♥</span> in Geneva
+      <div class="footer-copyright" set:html={t.landing_footer_made_in.replace('<heart>', '<span class="heart">&#9829;</span>')}>
       </div>
     </div>
   </div>

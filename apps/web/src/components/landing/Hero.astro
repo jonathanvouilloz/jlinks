@@ -1,11 +1,15 @@
 ---
 import { Star } from 'lucide-astro';
+import en from '@noko/shared/i18n/en.json';
+import fr from '@noko/shared/i18n/fr.json';
 
 interface Props {
   adminUrl: string;
 }
 
 const { adminUrl } = Astro.props;
+const locale = Astro.currentLocale || 'en';
+const t = locale === 'fr' ? fr : en;
 ---
 
 <section class="hero">
@@ -36,20 +40,20 @@ const { adminUrl } = Astro.props;
   <div class="container hero-content-wrapper">
     <div class="hero-content text-center">
       <h1 class="hero-tagline">
-        All your links<br />
-        <span class="highlight">in one place</span>
+        {t.landing_hero_tagline_1}<br />
+        <span class="highlight">{t.landing_hero_tagline_2}</span>
       </h1>
-      
+
       <p class="hero-description">
-        Create your personalized page in seconds. Share your social networks, music, videos and more with a single link.
+        {t.landing_hero_description}
       </p>
-      
+
       <div class="hero-actions">
         <a href={`${adminUrl}/register`} class="btn btn-primary btn-lg">
-          Create my page
+          {t.landing_hero_cta_create}
         </a>
         <a href="#demo" class="btn btn-secondary btn-lg">
-          See demo
+          {t.landing_hero_cta_demo}
         </a>
       </div>
 
@@ -69,7 +73,7 @@ const { adminUrl } = Astro.props;
             <Star size={16} fill="#FCD34D" strokeWidth={0} />
             <Star size={16} fill="#FCD34D" strokeWidth={0} />
           </div>
-          <span class="happy-users">100+ happy users</span>
+          <span class="happy-users">{t.landing_hero_social_proof}</span>
         </div>
       </div>
     </div>
@@ -99,7 +103,7 @@ const { adminUrl } = Astro.props;
             </div>
           </div>
           <div class="dashboard-overlay">
-            <span>Dashboard Screenshot</span>
+            <span>{t.landing_hero_dashboard_placeholder}</span>
           </div>
         </div>
       </div>

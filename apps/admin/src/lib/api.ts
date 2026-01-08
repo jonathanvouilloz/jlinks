@@ -143,6 +143,13 @@ export const auth = {
       body: JSON.stringify(data),
     });
   },
+
+  async resendVerification(email: string): Promise<{ success: boolean }> {
+    return request('/auth/resend-verification', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  },
 };
 
 // Client API (current user's client)

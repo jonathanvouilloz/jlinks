@@ -1,12 +1,16 @@
 ---
-// Features section
+import en from '@noko/shared/i18n/en.json';
+import fr from '@noko/shared/i18n/fr.json';
+
+const locale = Astro.currentLocale || 'en';
+const t = locale === 'fr' ? fr : en;
 ---
 
 <section id="features" class="section features">
   <div class="container">
     <div class="text-center mb-16">
-      <h2 class="section-title">What Noko offers.</h2>
-      <p class="section-subtitle">Everything you need to showcase your online presence.</p>
+      <h2 class="section-title">{t.landing_features_title}</h2>
+      <p class="section-subtitle">{t.landing_features_subtitle}</p>
     </div>
 
     <div class="features-grid">
@@ -23,11 +27,11 @@
             <rect x="40" y="28" width="4" height="4" fill="currentColor"/>
           </svg>
         </div>
-        <h3 class="feature-title">Branded QR Code</h3>
+        <h3 class="feature-title">{t.landing_features_qrcode_title}</h3>
         <p class="feature-description">
-          Download your branded QR code in 1 click. Perfect for business cards, flyers, and menus.
+          {t.landing_features_qrcode_description}
         </p>
-        <span class="feature-note">Usually paid elsewhere. Included here.</span>
+        <span class="feature-note">{t.landing_features_qrcode_note}</span>
       </article>
 
       <!-- Contact Button Feature -->
@@ -40,11 +44,11 @@
             <path d="M36 32v8M32 36h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </div>
-        <h3 class="feature-title">"Add to Contacts" Button</h3>
+        <h3 class="feature-title">{t.landing_features_contact_title}</h3>
         <p class="feature-description">
-          Visitors can add you to their phone in one tap. Name, email, phone — all in there.
+          {t.landing_features_contact_description}
         </p>
-        <span class="feature-note">A unique Noko feature.</span>
+        <span class="feature-note">{t.landing_features_contact_note}</span>
       </article>
 
       <!-- Themes Feature -->
@@ -57,11 +61,11 @@
             <rect x="26" y="30" width="18" height="18" rx="4" fill="#f59e0b"/>
           </svg>
         </div>
-        <h3 class="feature-title">10 Pro Themes. Free.</h3>
+        <h3 class="feature-title">{t.landing_features_themes_title}</h3>
         <p class="feature-description">
-          Not just "a color". Real font and style combos created by designers.
+          {t.landing_features_themes_description}
         </p>
-        <span class="feature-note">Modern, Elegant, Bold, Friendly...</span>
+        <span class="feature-note">{t.landing_features_themes_note}</span>
       </article>
     </div>
   </div>

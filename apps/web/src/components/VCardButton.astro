@@ -1,14 +1,20 @@
 ---
+import en from '@noko/shared/i18n/en.json';
+import fr from '@noko/shared/i18n/fr.json';
+
 interface Props {
   slug: string;
+  locale?: string;
 }
 
-const { slug } = Astro.props;
+const { slug, locale: propLocale } = Astro.props;
+const locale = propLocale || Astro.currentLocale || 'en';
+const t = locale === 'fr' ? fr : en;
 const apiUrl = import.meta.env.API_URL || 'http://localhost:5174/api';
 const vcardUrl = `${apiUrl}/vcard/${slug}`;
 ---
 
-<a href={vcardUrl} class="vcard-button" download aria-label="Télécharger la carte de contact">
+<a href={vcardUrl} class="vcard-button" download aria-label={t.common_download_vcard}>
   <svg
     width="20"
     height="20"
@@ -24,7 +30,7 @@ const vcardUrl = `${apiUrl}/vcard/${slug}`;
     <line x1="19" y1="8" x2="19" y2="14"></line>
     <line x1="22" y1="11" x2="16" y2="11"></line>
   </svg>
-  <span>Add to Contacts</span>
+  <span>{t.common_add_to_contacts}</span>
 </a>
 
 <style>

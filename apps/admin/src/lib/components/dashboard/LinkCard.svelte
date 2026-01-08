@@ -5,6 +5,7 @@
   import { GripVertical, Pencil, Trash2, ExternalLink } from 'lucide-svelte';
   import * as Icons from 'lucide-svelte';
   import SimpleIcon from '$lib/components/icons/SimpleIcon.svelte';
+  import * as m from '$lib/paraglide/messages';
 
   interface Props {
     link: Link;
@@ -58,10 +59,10 @@
 
   <div class="link-actions">
     <Toggle checked={link.is_active} onchange={() => onToggle(link)} />
-    <Button variant="ghost" size="sm" onclick={() => onEdit(link)} aria-label="Modifier {link.title}">
+    <Button variant="ghost" size="sm" onclick={() => onEdit(link)} aria-label={m.link_form_modify({ title: link.title })}>
       <Pencil size={16} aria-hidden="true" />
     </Button>
-    <Button variant="ghost" size="sm" onclick={() => onDelete(link)} aria-label="Supprimer {link.title}">
+    <Button variant="ghost" size="sm" onclick={() => onDelete(link)} aria-label={m.link_form_delete({ title: link.title })}>
       <Trash2 size={16} aria-hidden="true" />
     </Button>
   </div>

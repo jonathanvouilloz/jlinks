@@ -1,9 +1,45 @@
 <script lang="ts">
-  import { Mail, ArrowLeft } from 'lucide-svelte';
+  import { page } from '$app/stores';
+  import { Mail, ArrowLeft, RefreshCw, CheckCircle } from 'lucide-svelte';
+  import * as m from '$lib/paraglide/messages';
+  import { api } from '$lib/api';
+
+  // Récupérer l'email depuis l'URL
+  const email = $page.url.searchParams.get('email') || '';
+
+  // État du bouton resend
+  let resending = $state(false);
+  let resendSuccess = $state(false);
+  let resendError = $state('');
+
+  async function handleResend() {
+    if (!email || resending) return;
+
+    resending = true;
+    resendError = '';
+    resendSuccess = false;
+
+    try {
+      await api.auth.resendVerification(email);
+      resendSuccess = true;
+      // Reset après 5 secondes
+      setTimeout(() => {
+        resendSuccess = false;
+      }, 5000);
+    } catch (err: any) {
+      if (err.status === 429 || err.message?.includes('attendre')) {
+        resendError = m.auth_check_email_resend_rate_limit();
+      } else {
+        resendError = m.auth_check_email_resend_error();
+      }
+    } finally {
+      resending = false;
+    }
+  }
 </script>
 
 <svelte:head>
-  <title>Vérifiez votre email - Noko</title>
+  <title>{m.auth_check_email_page_title()}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -25,10 +61,10 @@
     </div>
 
     <div class="hero-content">
-      <p class="hero-eyebrow">Plus qu'une etape</p>
+      <p class="hero-eyebrow">{m.auth_check_email_hero_eyebrow()}</p>
       <h1 class="hero-tagline">
-        Verifiez votre<br />
-        <span class="highlight">boite mail</span>
+        {m.auth_check_email_hero_tagline_1()}<br />
+        <span class="highlight">{m.auth_check_email_hero_tagline_2()}</span>
       </h1>
     </div>
   </div>
@@ -41,7 +77,7 @@
           <img src="/black-logo.webp" alt="Noko" class="logo-img" />
         </a>
         <a href="/login" class="login-link">
-          <span>Retour a la connexion</span>
+          <span>{m.auth_forgot_password_back_to_login()}</span>
         </a>
       </header>
 
@@ -51,30 +87,51 @@
             <Mail size={48} />
           </div>
 
-          <h2 class="form-title">Email envoye !</h2>
+          <h2 class="form-title">{m.auth_check_email_title()}</h2>
           <p class="form-subtitle">
-            Nous vous avons envoye un email de verification.<br />
-            Cliquez sur le lien dans l'email pour activer votre compte.
+            {@html m.auth_check_email_subtitle().replace('\n', '<br />')}
           </p>
 
           <div class="info-box">
-            <p>Vous n'avez pas recu l'email ?</p>
+            <p>{m.auth_check_email_not_received_title()}</p>
             <ul>
-              <li>Verifiez votre dossier spam</li>
-              <li>Assurez-vous d'avoir entre la bonne adresse</li>
+              <li>{m.auth_check_email_not_received_spam()}</li>
+              <li>{m.auth_check_email_not_received_address()}</li>
             </ul>
+            {#if email}
+              <div class="resend-section">
+                {#if resendSuccess}
+                  <div class="resend-success">
+                    <CheckCircle size={16} />
+                    <span>{m.auth_check_email_resend_success()}</span>
+                  </div>
+                {:else}
+                  <button
+                    class="resend-button"
+                    onclick={handleResend}
+                    disabled={resending}
+                  >
+                    <RefreshCw size={16} class={resending ? 'spinning' : ''} />
+                    <span>{resending ? m.auth_check_email_resending() : m.auth_check_email_resend_button()}</span>
+                  </button>
+                {/if}
+                {#if resendError}
+                  <p class="resend-error">{resendError}</p>
+                {/if}
+              </div>
+            {/if}
           </div>
 
           <a href="/register" class="back-link">
             <ArrowLeft size={18} />
-            <span>Revenir a l'inscription</span>
+            <span>{m.auth_check_email_back_to_register()}</span>
           </a>
         </div>
       </div>
     </div>
 
     <footer class="form-footer">
-      <p>&copy; 2025 Noko. Tous droits reserves.</p>
+      <p>&copy; {m.common_footer_copyright()}</p>
     </footer>
   </div>
 </div>
@@ -310,6 +367,65 @@
     font-size: 0.875rem;
     color: var(--color-text-secondary);
     margin-bottom: 0.25rem;
+  }
+
+  .resend-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .resend-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .resend-button:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .resend-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .resend-button :global(.spinning) {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .resend-success {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    background: #ecfdf5;
+    border: 1px solid #10b981;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #059669;
+  }
+
+  .resend-error {
+    margin: 0.5rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--color-error);
   }
 
   .back-link {

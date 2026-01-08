@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { LayoutType } from '@noko/shared/types';
   import { List, LayoutGrid, Grid3X3, Sparkles } from 'lucide-svelte';
+  import * as m from '$lib/paraglide/messages';
 
   interface Props {
     value: LayoutType;
@@ -9,16 +10,24 @@
 
   let { value, onchange }: Props = $props();
 
-  const layouts: Array<{ type: LayoutType; label: string; icon: typeof List; disabled?: boolean }> = [
-    { type: 'list', label: 'Liste', icon: List },
-    { type: 'cards', label: 'Cartes', icon: LayoutGrid, disabled: true },
-    { type: 'grid', label: 'Grille', icon: Grid3X3, disabled: true },
-    { type: 'premium', label: 'Premium', icon: Sparkles },
+  // Map layout types to their translation functions
+  const layoutLabels: Record<LayoutType, () => string> = {
+    'list': m.appearance_layout_list,
+    'cards': m.appearance_layout_cards,
+    'grid': m.appearance_layout_grid,
+    'premium': m.appearance_layout_premium,
+  };
+
+  const layouts: Array<{ type: LayoutType; icon: typeof List; disabled?: boolean }> = [
+    { type: 'list', icon: List },
+    { type: 'cards', icon: LayoutGrid, disabled: true },
+    { type: 'grid', icon: Grid3X3, disabled: true },
+    { type: 'premium', icon: Sparkles },
   ];
 </script>
 
 <div class="layout-selector">
-  <label>Layout de la page</label>
+  <label>{m.appearance_layout_page()}</label>
   <div class="layout-options">
     {#each layouts as layout}
       <button
@@ -29,10 +38,10 @@
         disabled={layout.disabled}
         onclick={() => !layout.disabled && onchange(layout.type)}
       >
-        <svelte:component this={layout.icon} size={24} />
-        <span>{layout.label}</span>
+        <layout.icon size={24} />
+        <span>{layoutLabels[layout.type]()}</span>
         {#if layout.disabled}
-          <span class="coming-soon">Bientôt</span>
+          <span class="coming-soon">{m.appearance_coming_soon()}</span>
         {/if}
       </button>
     {/each}

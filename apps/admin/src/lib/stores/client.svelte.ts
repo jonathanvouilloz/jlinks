@@ -4,6 +4,7 @@ import type { Client, BackgroundType, LayoutType, ButtonStyle, ProfileImageShape
 import { api, ApiError } from '$lib/api';
 import { toastStore } from './toast.svelte';
 import { authStore } from './auth.svelte';
+import * as m from '$lib/paraglide/messages';
 
 // Store state
 let publishStatus = $state<{
@@ -33,13 +34,13 @@ async function updateProfile(data: {
     const updatedClient = await api.client.updateMe(data);
     authStore.setClient(updatedClient);
     await loadPublishStatus();
-    toastStore.success('Profil mis à jour');
+    toastStore.success(m.toast_success_profile_updated());
     return updatedClient;
   } catch (e) {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur lors de la mise à jour du profil');
+      toastStore.error(m.toast_error_profile_update());
     }
     return null;
   }
@@ -62,13 +63,13 @@ async function updateSettings(data: {
     const updatedClient = await api.client.updateSettings(data);
     authStore.setClient(updatedClient);
     await loadPublishStatus();
-    toastStore.success('Paramètres mis à jour');
+    toastStore.success(m.toast_success_settings_updated());
     return updatedClient;
   } catch (e) {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur lors de la mise à jour des paramètres');
+      toastStore.error(m.toast_error_settings_update());
     }
     return null;
   }
@@ -84,13 +85,13 @@ async function updateBranding(data: {
     const updatedClient = await api.client.updateBranding(data);
     authStore.setClient(updatedClient);
     await loadPublishStatus();
-    toastStore.success('Branding mis à jour');
+    toastStore.success(m.toast_success_branding_updated());
     return updatedClient;
   } catch (e) {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur lors de la mise à jour du branding');
+      toastStore.error(m.toast_error_branding_update());
     }
     return null;
   }
@@ -108,13 +109,13 @@ async function updateVCard(data: {
     const updatedClient = await api.client.updateVCard(data);
     authStore.setClient(updatedClient);
     await loadPublishStatus();
-    toastStore.success('Carte de contact mise à jour');
+    toastStore.success(m.toast_success_vcard_updated());
     return updatedClient;
   } catch (e) {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur lors de la mise à jour de la carte de contact');
+      toastStore.error(m.toast_error_vcard_update());
     }
     return null;
   }
@@ -125,13 +126,13 @@ async function publish(): Promise<boolean> {
   try {
     await api.publish.trigger();
     await loadPublishStatus();
-    toastStore.success('Modifications publiées!');
+    toastStore.success(m.toast_success_published());
     return true;
   } catch (e) {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur lors de la publication');
+      toastStore.error(m.toast_error_publish());
     }
     return false;
   } finally {

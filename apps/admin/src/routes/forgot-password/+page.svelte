@@ -2,6 +2,7 @@
   import { AuthButton, AuthInput } from '$lib/components/ui';
   import { Mail, CheckCircle, ArrowLeft } from 'lucide-svelte';
   import { api } from '$lib/api';
+  import * as m from '$lib/paraglide/messages';
 
   let email = $state('');
   let loading = $state(false);
@@ -19,7 +20,7 @@
       await api.auth.forgotPassword(email);
       sent = true;
     } catch (err: any) {
-      error = err.message || 'Une erreur est survenue';
+      error = err.message || m.auth_forgot_password_error_generic();
     } finally {
       loading = false;
     }
@@ -27,7 +28,7 @@
 </script>
 
 <svelte:head>
-  <title>Mot de passe oublie | Noko</title>
+  <title>{m.auth_forgot_password_page_title()}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -48,10 +49,10 @@
       <div class="circle-ring circle-ring-4"></div>
     </div>
     <div class="hero-content">
-      <p class="hero-eyebrow">Recuperation de compte</p>
+      <p class="hero-eyebrow">{m.auth_forgot_password_hero_eyebrow()}</p>
       <h1 class="hero-tagline">
-        Recuperez votre<br />
-        <span class="highlight">acces en un clic</span>
+        {m.auth_forgot_password_hero_tagline_1()}<br />
+        <span class="highlight">{m.auth_forgot_password_hero_tagline_2()}</span>
       </h1>
     </div>
   </div>
@@ -63,9 +64,9 @@
         <a href="/" class="logo">
           <img src="/black-logo.webp" alt="Noko" class="logo-img" />
         </a>
-        <a href="/" class="back-link">← Retour</a>
+        <a href="/" class="back-link">← {m.common_back()}</a>
         <a href="/login" class="login-link">
-          <span>Retour a la connexion</span>
+          <span>{m.auth_forgot_password_back_to_login()}</span>
         </a>
       </header>
 
@@ -73,8 +74,8 @@
         <div class="form-content-inner">
           <!-- ÉTAT FORMULAIRE -->
           {#if !sent}
-            <h2 class="form-title">Mot de passe oublie</h2>
-            <p class="form-subtitle">Entrez votre email pour recevoir un lien de reinitialisation</p>
+            <h2 class="form-title">{m.auth_forgot_password_title()}</h2>
+            <p class="form-subtitle">{m.auth_forgot_password_subtitle()}</p>
             <form onsubmit={handleSubmit} class="login-form">
               {#if error}
                 <div class="error-message">
@@ -87,7 +88,7 @@
                 <AuthInput
                   type="email"
                   bind:value={email}
-                  placeholder="votre@email.com"
+                  placeholder={m.auth_login_email_placeholder()}
                   required
                   disabled={loading}
                 />
@@ -95,7 +96,7 @@
 
               <AuthButton type="submit" {loading} disabled={!email || loading}>
                 <Mail size={18} />
-                <span>Envoyer le lien</span>
+                <span>{m.auth_forgot_password_submit()}</span>
               </AuthButton>
             </form>
           {:else}
@@ -104,14 +105,14 @@
               <div class="success-icon-wrapper">
                 <CheckCircle />
               </div>
-              <h2>Email envoye</h2>
-              <p>Si un compte existe avec l'adresse <strong>{email}</strong>, vous recevrez un email avec un lien pour reinitialiser votre mot de passe.</p>
-              <p class="hint">Verifiez egalement vos spams si vous ne voyez pas l'email dans votre boite de reception.</p>
-              
+              <h2>{m.auth_forgot_password_success_title()}</h2>
+              <p>{@html m.auth_forgot_password_success_text({ email })}</p>
+              <p class="hint">{m.auth_forgot_password_success_hint()}</p>
+
               <div class="success-actions">
                 <a href="/login" class="button-link">
                   <AuthButton type="button">
-                    <span>Retour a la connexion</span>
+                    <span>{m.auth_forgot_password_back_to_login()}</span>
                   </AuthButton>
                 </a>
               </div>
@@ -121,7 +122,7 @@
       </div>
     </div>
     <footer class="form-footer">
-      <p>&copy; 2025 Noko. Tous droits reserves.</p>
+      <p>&copy; {m.common_footer_copyright()}</p>
     </footer>
   </div>
 </div>

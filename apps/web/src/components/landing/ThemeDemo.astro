@@ -1,11 +1,15 @@
 ---
 import { FONT_PRESETS } from '@noko/shared/font-presets';
+import en from '@noko/shared/i18n/en.json';
+import fr from '@noko/shared/i18n/fr.json';
 
 interface Props {
   adminUrl: string;
 }
 
 const { adminUrl } = Astro.props;
+const locale = Astro.currentLocale || 'en';
+const t = locale === 'fr' ? fr : en;
 
 // Select 5 themes to showcase
 const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as const;
@@ -14,7 +18,7 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
 <section id="demo" class="section demo">
   <div class="container">
     <div class="text-center mb-16">
-      <h2 class="section-title">See for yourself.</h2>
+      <h2 class="section-title">{t.landing_demo_title}</h2>
     </div>
 
     <div class="demo-tabs" role="tablist">
@@ -37,12 +41,12 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
           <div class="phone-screen" id="demo-screen">
             <div class="demo-content">
               <div class="demo-avatar"></div>
-              <div class="demo-name">Jon Labs</div>
-              <div class="demo-bio">Web Studio - Geneva</div>
+              <div class="demo-name">{t.landing_demo_name}</div>
+              <div class="demo-bio">{t.landing_demo_bio}</div>
               <div class="demo-links">
-                <a href="#" class="demo-link">Our Website</a>
-                <a href="#" class="demo-link">Instagram</a>
-                <a href="#" class="demo-link">Book a meeting</a>
+                <a href="#" class="demo-link">{t.landing_demo_link_1}</a>
+                <a href="#" class="demo-link">{t.landing_demo_link_2}</a>
+                <a href="#" class="demo-link">{t.landing_demo_link_3}</a>
               </div>
             </div>
           </div>
@@ -52,10 +56,10 @@ const demoThemes = ['modern-pro', 'elegant', 'bold', 'friendly', 'clean'] as con
 
     <div class="text-center mt-12">
       <p class="section-subtitle mb-8">
-        This is your page in 2 minutes.
+        {t.landing_demo_cta_text}
       </p>
       <a href={`${adminUrl}/register`} class="btn btn-primary btn-lg">
-        Create mine
+        {t.landing_demo_cta_button}
       </a>
     </div>
   </div>

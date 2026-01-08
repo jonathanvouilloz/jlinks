@@ -1,4 +1,5 @@
 <script lang="ts">
+  import * as m from '$lib/paraglide/messages';
   import type { Client, PlanType } from '@noko/shared/types';
   import { onMount } from 'svelte';
   import { Card, Button, Badge, Input, Modal } from '$lib/components/ui';
@@ -41,7 +42,7 @@
       if (e instanceof ApiError) {
         toastStore.error(e.message);
       } else {
-        toastStore.error('Erreur de chargement des clients');
+        toastStore.error(m.admin_clients_error_loading());
       }
     } finally {
       loading = false;
@@ -71,14 +72,14 @@
         email: createEmail,
         password: createPassword,
       });
-      toastStore.success('Client créé avec succès');
+      toastStore.success(m.toast_success_client_created());
       showCreateModal = false;
       await loadClients();
     } catch (e) {
       if (e instanceof ApiError) {
         toastStore.error(e.message);
       } else {
-        toastStore.error('Erreur lors de la création');
+        toastStore.error(m.admin_clients_error_creating());
       }
     } finally {
       creating = false;
@@ -105,7 +106,7 @@
         name: editName,
         plan: editPlan,
       });
-      toastStore.success('Client mis à jour');
+      toastStore.success(m.toast_success_client_updated());
       showEditModal = false;
       editingClient = null;
       await loadClients();
@@ -113,7 +114,7 @@
       if (e instanceof ApiError) {
         toastStore.error(e.message);
       } else {
-        toastStore.error('Erreur lors de la mise à jour');
+        toastStore.error(m.admin_clients_error_updating());
       }
     } finally {
       editing = false;
@@ -132,7 +133,7 @@
     deleting = true;
     try {
       await api.admin.deleteClient(deletingClient.id);
-      toastStore.success('Client supprimé');
+      toastStore.success(m.toast_success_client_deleted());
       showDeleteModal = false;
       deletingClient = null;
       await loadClients();
@@ -140,7 +141,7 @@
       if (e instanceof ApiError) {
         toastStore.error(e.message);
       } else {
-        toastStore.error('Erreur lors de la suppression');
+        toastStore.error(m.admin_clients_error_deleting());
       }
     } finally {
       deleting = false;
@@ -154,28 +155,28 @@
 </script>
 
 <svelte:head>
-  <title>Gestion des clients | Noko Admin</title>
+  <title>{m.admin_clients_page_title()}</title>
 </svelte:head>
 
 <div class="admin-page">
   <div class="page-header">
-    <h2>Gestion des clients</h2>
+    <h2>{m.admin_clients_title()}</h2>
     <Button variant="primary" onclick={openCreateModal}>
       <Plus size={16} />
-      Nouveau client
+      {m.admin_clients_new()}
     </Button>
   </div>
 
   {#if loading}
     <Card>
-      <div class="loading">Chargement des clients...</div>
+      <div class="loading">{m.admin_clients_loading()}</div>
     </Card>
   {:else if clients.length === 0}
     <Card>
       <div class="empty-state">
-        <p>Aucun client pour le moment</p>
+        <p>{m.admin_clients_empty()}</p>
         <Button variant="primary" onclick={openCreateModal}>
-          Créer le premier client
+          {m.admin_clients_create_first()}
         </Button>
       </div>
     </Card>
@@ -184,12 +185,12 @@
       <table class="clients-table">
         <thead>
           <tr>
-            <th scope="col">Nom</th>
-            <th scope="col">Slug</th>
-            <th scope="col">Plan</th>
-            <th scope="col">Statut</th>
-            <th scope="col">Créé le</th>
-            <th scope="col">Actions</th>
+            <th scope="col">{m.admin_clients_table_name()}</th>
+            <th scope="col">{m.admin_clients_table_slug()}</th>
+            <th scope="col">{m.admin_clients_table_plan()}</th>
+            <th scope="col">{m.admin_clients_table_status()}</th>
+            <th scope="col">{m.admin_clients_table_created()}</th>
+            <th scope="col">{m.admin_clients_table_actions()}</th>
           </tr>
         </thead>
         <tbody>
@@ -213,12 +214,12 @@
                 {#if client.is_published}
                   <Badge variant="success">
                     <CheckCircle size={12} />
-                    Publié
+                    {m.admin_clients_status_published()}
                   </Badge>
                 {:else}
                   <Badge variant="warning">
                     <Clock size={12} />
-                    Brouillon
+                    {m.admin_clients_status_draft()}
                   </Badge>
                 {/if}
               </td>
@@ -242,68 +243,68 @@
 </div>
 
 <!-- Create Modal -->
-<Modal open={showCreateModal} onclose={() => showCreateModal = false} title="Nouveau client" size="md">
+<Modal open={showCreateModal} onclose={() => showCreateModal = false} title={m.admin_clients_create_modal_title()} size="md">
   <form onsubmit={handleCreate} class="client-form">
     <Input
-      label="Slug"
+      label={m.admin_clients_create_slug_label()}
       bind:value={createSlug}
-      placeholder="mon-client"
+      placeholder={m.admin_clients_create_slug_placeholder()}
       required
-      hint="Uniquement lettres minuscules, chiffres et tirets"
+      hint={m.admin_clients_create_slug_hint()}
       oninput={() => createSlug = validateSlug(createSlug)}
     />
     <Input
-      label="Nom"
+      label={m.admin_clients_create_name_label()}
       bind:value={createName}
-      placeholder="Mon Client"
+      placeholder={m.admin_clients_create_name_placeholder()}
       required
     />
     <Input
-      label="Email"
+      label={m.admin_clients_create_email_label()}
       type="email"
       bind:value={createEmail}
-      placeholder="client@example.com"
+      placeholder={m.admin_clients_create_email_placeholder()}
       required
-      hint="Email de connexion du client"
+      hint={m.admin_clients_create_email_hint()}
     />
     <Input
-      label="Mot de passe initial"
+      label={m.admin_clients_create_password_label()}
       type="password"
       bind:value={createPassword}
-      placeholder="••••••••"
+      placeholder={m.admin_clients_create_password_placeholder()}
       required
-      hint="Minimum 8 caractères"
+      hint={m.admin_clients_create_password_hint()}
     />
   </form>
 
   {#snippet footer()}
     <div class="modal-actions">
-      <Button variant="secondary" onclick={() => showCreateModal = false}>Annuler</Button>
+      <Button variant="secondary" onclick={() => showCreateModal = false}>{m.common_cancel()}</Button>
       <Button variant="primary" onclick={() => handleCreate(new Event('click'))} loading={creating} disabled={!createSlug || !createName || !createEmail || !createPassword}>
-        Créer
+        {m.common_create()}
       </Button>
     </div>
   {/snippet}
 </Modal>
 
 <!-- Edit Modal -->
-<Modal open={showEditModal} onclose={() => showEditModal = false} title="Modifier le client" size="md">
+<Modal open={showEditModal} onclose={() => showEditModal = false} title={m.admin_clients_edit_modal_title()} size="md">
   <form onsubmit={handleEdit} class="client-form">
     <Input
-      label="Slug"
+      label={m.admin_clients_create_slug_label()}
       bind:value={editSlug}
-      placeholder="mon-client"
+      placeholder={m.admin_clients_create_slug_placeholder()}
       required
       oninput={() => editSlug = validateSlug(editSlug)}
     />
     <Input
-      label="Nom"
+      label={m.admin_clients_create_name_label()}
       bind:value={editName}
-      placeholder="Mon Client"
+      placeholder={m.admin_clients_create_name_placeholder()}
       required
     />
     <div class="form-field">
-      <label for="edit-plan">Plan</label>
+      <label for="edit-plan">{m.admin_clients_edit_plan_label()}</label>
       <select id="edit-plan" bind:value={editPlan}>
         <option value="free">Free</option>
         <option value="pro">Pro</option>
@@ -313,24 +314,24 @@
 
   {#snippet footer()}
     <div class="modal-actions">
-      <Button variant="secondary" onclick={() => showEditModal = false}>Annuler</Button>
+      <Button variant="secondary" onclick={() => showEditModal = false}>{m.common_cancel()}</Button>
       <Button variant="primary" onclick={() => handleEdit(new Event('click'))} loading={editing} disabled={!editSlug || !editName}>
-        Enregistrer
+        {m.common_save()}
       </Button>
     </div>
   {/snippet}
 </Modal>
 
 <!-- Delete Modal -->
-<Modal open={showDeleteModal} onclose={() => showDeleteModal = false} title="Supprimer le client" size="sm">
-  <p>Êtes-vous sûr de vouloir supprimer le client <strong>{deletingClient?.name}</strong> ?</p>
-  <p class="text-danger">Cette action supprimera également tous ses liens et est irréversible.</p>
+<Modal open={showDeleteModal} onclose={() => showDeleteModal = false} title={m.admin_clients_delete_modal_title()} size="sm">
+  <p>{@html m.admin_clients_delete_modal_confirm({ name: deletingClient?.name ?? '' })}</p>
+  <p class="text-danger">{m.admin_clients_delete_modal_warning()}</p>
 
   {#snippet footer()}
     <div class="modal-actions">
-      <Button variant="secondary" onclick={() => showDeleteModal = false}>Annuler</Button>
+      <Button variant="secondary" onclick={() => showDeleteModal = false}>{m.common_cancel()}</Button>
       <Button variant="danger" onclick={handleDelete} loading={deleting}>
-        Supprimer
+        {m.common_delete()}
       </Button>
     </div>
   {/snippet}

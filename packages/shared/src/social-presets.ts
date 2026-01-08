@@ -104,6 +104,23 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
 } as const;
 
 /**
+ * Translation key mapping for social preset labels.
+ * Consumers can use these keys to get translated labels from their i18n system.
+ */
+export const SOCIAL_PRESET_LABEL_KEYS: Record<SocialPresetKey, string> = {
+  theme: 'social_theme',
+  instagram: 'social_instagram',
+  youtube: 'social_youtube',
+  linkedin: 'social_linkedin',
+  x: 'social_x',
+  tiktok: 'social_tiktok',
+  facebook: 'social_facebook',
+  github: 'social_github',
+  email: 'social_email',
+  whatsapp: 'social_whatsapp',
+} as const;
+
+/**
  * Get a social preset by key
  */
 export function getSocialPreset(key: SocialPresetKey): SocialPreset {

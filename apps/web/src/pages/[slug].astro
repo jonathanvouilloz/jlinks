@@ -7,6 +7,9 @@ import CardsLayout from '../layouts/CardsLayout.astro';
 import GridLayout from '../layouts/GridLayout.astro';
 import PremiumLayout from '../layouts/PremiumLayout.astro';
 
+// SSR mode - get slug from URL params (no getStaticPaths needed)
+const { slug } = Astro.params;
+
 // Get API URL from environment
 const API_URL = import.meta.env.API_URL;
 if (!API_URL && import.meta.env.PROD) {
@@ -16,9 +19,6 @@ if (!API_URL && import.meta.env.PROD) {
   );
 }
 const apiUrl = API_URL || 'http://localhost:5173/api';
-
-// SSR mode - get slug from URL params (no getStaticPaths needed)
-const { slug } = Astro.params;
 
 // Fetch client data on every request
 let client = null;

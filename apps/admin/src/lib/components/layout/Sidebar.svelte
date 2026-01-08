@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import { Link, Palette, FileText, Users, LogOut, Settings } from 'lucide-svelte';
   import { authStore } from '$lib/stores';
+  import * as m from '$lib/paraglide/messages';
 
   // Check if current path matches
   function isActive(path: string): boolean {
@@ -27,37 +28,37 @@
       <li>
         <a href="/" class="nav-link" class:active={isActive('/')} aria-current={isActive('/') ? 'page' : undefined}>
           <Link size={20} aria-hidden="true" />
-          <span>Liens</span>
+          <span>{m.nav_links()}</span>
         </a>
       </li>
       <li>
         <a href="/apparence" class="nav-link" class:active={isActive('/apparence')} aria-current={isActive('/apparence') ? 'page' : undefined}>
           <Palette size={20} aria-hidden="true" />
-          <span>Apparence</span>
+          <span>{m.nav_appearance()}</span>
         </a>
       </li>
       <li>
         <a href="/contenu" class="nav-link" class:active={isActive('/contenu')} aria-current={isActive('/contenu') ? 'page' : undefined}>
           <FileText size={20} aria-hidden="true" />
-          <span>Contenu</span>
+          <span>{m.nav_content()}</span>
         </a>
       </li>
       <li>
         <a href="/parametres" class="nav-link" class:active={isActive('/parametres')} aria-current={isActive('/parametres') ? 'page' : undefined}>
           <Settings size={20} aria-hidden="true" />
-          <span>Paramètres</span>
+          <span>{m.nav_settings()}</span>
         </a>
       </li>
     </ul>
 
     {#if authStore.isSuperAdmin}
       <div class="nav-section">
-        <span class="nav-section-title">Administration</span>
+        <span class="nav-section-title">{m.nav_administration()}</span>
         <ul class="nav-list">
           <li>
             <a href="/admin/clients" class="nav-link" class:active={isActive('/admin/clients')} aria-current={isActive('/admin/clients') ? 'page' : undefined}>
               <Users size={20} aria-hidden="true" />
-              <span>Clients</span>
+              <span>{m.nav_clients()}</span>
             </a>
           </li>
         </ul>
@@ -69,12 +70,12 @@
     <div class="user-info">
       <span class="user-email">{authStore.user?.email ?? ''}</span>
       {#if authStore.isSuperAdmin}
-        <span class="user-role">Super Admin</span>
+        <span class="user-role">{m.nav_super_admin()}</span>
       {/if}
     </div>
     <button class="logout-btn" onclick={handleLogout}>
       <LogOut size={18} />
-      <span>Déconnexion</span>
+      <span>{m.nav_logout()}</span>
     </button>
   </div>
 </aside>

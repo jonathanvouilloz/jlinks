@@ -11,4 +11,11 @@ export default defineConfig({
   }),
   // Only set site if defined (avoids Invalid URL error in dev)
   ...(process.env.PUBLIC_SITE_URL && { site: process.env.PUBLIC_SITE_URL }),
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'fr'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
 });

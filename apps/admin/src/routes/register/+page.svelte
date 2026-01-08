@@ -4,13 +4,14 @@
   import { api } from '$lib/api';
   import { detectSocialPreset, SOCIAL_PRESETS } from '@noko/shared/social-presets';
   import type { SocialPresetKey } from '@noko/shared/types';
-  import { 
-    UserPlus, ArrowRight, ArrowLeft, Trash2, Check, X, 
+  import {
+    UserPlus, ArrowRight, ArrowLeft, Trash2, Check, X,
     Link as LinkIcon, Palette, Mail, Globe, Plus, Linkedin
   } from 'lucide-svelte';
   import * as Icons from 'lucide-svelte';
   import SimpleIcon from '$lib/components/icons/SimpleIcon.svelte';
   import { registerBaseSchema } from '$lib/schemas';
+  import * as m from '$lib/paraglide/messages';
 
   // Helper to get Lucide icon component dynamically
   function getLucideIconComponent(iconName: string) {
@@ -52,7 +53,7 @@
 
     // Check password match
     if (password !== confirmPassword) {
-      errors.confirmPassword = 'Les mots de passe ne correspondent pas';
+      errors.confirmPassword = m.auth_register_error_passwords_mismatch();
       return false;
     }
 
@@ -68,7 +69,7 @@
     // Validate format locally first
     if (!/^[a-z0-9-]+$/.test(slug)) {
       slugAvailable = false;
-      errors.slug = 'Uniquement lettres minuscules, chiffres et tirets';
+      errors.slug = m.auth_register_error_slug_format();
       return;
     }
 
@@ -186,18 +187,18 @@
         socialLinks: cleanLinks.length > 0 ? cleanLinks : undefined
       });
 
-      // Redirect to check-email page
-      goto('/check-email');
+      // Redirect to check-email page with email for resend functionality
+      goto(`/check-email?email=${encodeURIComponent(email)}`);
     } catch (err: any) {
       console.error(err);
       if (err.message === 'Email already exists') {
-        errors.email = 'Cet email est déjà utilisé';
+        errors.email = m.auth_register_error_email_exists();
         step = 1;
       } else if (err.message === 'Slug already taken') {
-        errors.slug = 'Ce lien est déjà pris';
+        errors.slug = m.auth_register_error_slug_taken();
         step = 1;
       } else {
-        errors.general = err.message || 'Une erreur est survenue';
+        errors.general = err.message || m.auth_register_error_generic();
       }
     } finally {
       loading = false;
@@ -206,7 +207,7 @@
 </script>
 
 <svelte:head>
-  <title>Inscription - Noko</title>
+  <title>{m.auth_register_page_title()}</title>
 </svelte:head>
 
 <div class="register-page">
@@ -225,10 +226,10 @@
     </div>
 
     <div class="hero-content">
-      <p class="hero-eyebrow">La plateforme de liens personnalisée</p>
+      <p class="hero-eyebrow">{m.auth_register_hero_eyebrow()}</p>
       <h1 class="hero-tagline">
-        Créez votre page de liens<br />
-        <span class="highlight">en quelques secondes</span>
+        {m.auth_register_hero_tagline_1()}<br />
+        <span class="highlight">{m.auth_register_hero_tagline_2()}</span>
       </h1>
     </div>
   </div>
@@ -241,9 +242,9 @@
         <a href="/" class="logo">
           <img src="/black-logo.webp" alt="Noko" class="logo-img" />
         </a>
-        <a href="/" class="back-link">← Retour</a>
+        <a href="/" class="back-link">← {m.common_back()}</a>
         <a href="/login" class="login-link">
-          <span>Déjà un compte ? Se connecter</span>
+          <span>{m.auth_register_has_account()}</span>
         </a>
       </header>
 
@@ -252,10 +253,10 @@
         <div class="form-content-inner">
           <div class="stepper-header" style="max-width: 400px; margin: 0 auto;">
             <h2 class="form-title">
-              {step === 1 ? 'Inscription' : 'Ajoutez vos liens'}
+              {step === 1 ? m.auth_register_step_1() : m.auth_register_step_2()}
             </h2>
             <p class="form-subtitle">
-              {step === 1 ? 'Créez votre page Noko' : 'Commencez avec vos réseaux sociaux'}
+              {step === 1 ? m.auth_register_step_1_subtitle() : m.auth_register_step_2_subtitle()}
             </p>
             
             <!-- Step Indicator -->
@@ -281,7 +282,7 @@
                   <AuthInput
                     type="email"
                     bind:value={email}
-                    placeholder="votre@email.com"
+                    placeholder={m.auth_register_email_placeholder()}
                     required
                     error={errors.email}
                     disabled={loading}
@@ -292,7 +293,7 @@
                   <AuthInput
                     type="password"
                     bind:value={password}
-                    placeholder="Mot de passe (min. 8 caractères)"
+                    placeholder={m.auth_register_password_placeholder()}
                     required
                     error={errors.password}
                     disabled={loading}
@@ -304,7 +305,7 @@
                   <AuthInput
                     type="password"
                     bind:value={confirmPassword}
-                    placeholder="Confirmer le mot de passe"
+                    placeholder={m.auth_register_confirm_password_placeholder()}
                     required
                     error={errors.confirmPassword}
                     disabled={loading}
@@ -319,7 +320,7 @@
                       type="text"
                       value={slug}
                       oninput={handleSlugInput}
-                      placeholder="nokolink.com/votre-nom"
+                      placeholder={m.auth_register_slug_placeholder()}
                       class="input slug-input {errors.slug ? 'error' : ''}"
                       required
                       disabled={loading}
@@ -334,7 +335,7 @@
                 </div>
 
                 <AuthButton type="submit">
-                  <span>Continuer</span>
+                  <span>{m.auth_register_continue()}</span>
                   <ArrowRight size={18} />
                 </AuthButton>
               </div>
@@ -347,11 +348,11 @@
                   <div class="presets-grid">
                     {#each PRESETS_TO_SHOW as presetKey}
                       {@const preset = SOCIAL_PRESETS[presetKey]}
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         class="preset-btn"
                         onclick={() => addSocialLink(presetKey)}
-                        aria-label="Ajouter {preset.label}"
+                        aria-label={m.auth_register_add_social({ name: preset.label })}
                         title={preset.label}
                       >
                         <div class="preset-icon" style:background={preset.bgColor} style:color={preset.textColor}>
@@ -368,7 +369,7 @@
                         </div>
                       </button>
                     {/each}
-                    <button type="button" class="preset-btn add-custom" onclick={() => addSocialLink()} title="Lien personnalisé">
+                    <button type="button" class="preset-btn add-custom" onclick={() => addSocialLink()} title={m.auth_register_custom_link()}>
                       <div class="preset-icon custom">
                         <Plus size={28} />
                       </div>
@@ -405,7 +406,7 @@
                                 type="text"
                                 value={link.url}
                                 oninput={(e) => handleSocialLinkUrlChange(link.id, e.currentTarget.value)}
-                                placeholder="votre-nom"
+                                placeholder={m.auth_register_your_name_placeholder()}
                                 class="url-suffix-input"
                               />
                             </div>
@@ -415,14 +416,14 @@
                               <input
                                 type="text"
                                 bind:value={link.title}
-                                placeholder="Titre (ex: Mon Site)"
+                                placeholder={m.auth_register_custom_title_placeholder()}
                                 class="custom-title-input"
                               />
                               <input
                                 type="url"
                                 value={link.url}
                                 oninput={(e) => handleSocialLinkUrlChange(link.id, e.currentTarget.value)}
-                                placeholder="https://..."
+                                placeholder={m.auth_register_custom_url_placeholder()}
                                 class="custom-url-input"
                               />
                             </div>
@@ -430,7 +431,7 @@
                         </div>
 
                         <!-- Delete -->
-                        <button type="button" class="remove-link-btn" onclick={() => removeSocialLink(link.id)} aria-label="Supprimer">
+                        <button type="button" class="remove-link-btn" onclick={() => removeSocialLink(link.id)} aria-label={m.common_delete()}>
                           <Trash2 size={20} />
                         </button>
                       </div>
@@ -439,10 +440,10 @@
                 </div>
 
                 <div class="buttons-row">
-                  <BackAuthButton onclick={prevStep} disabled={loading} aria-label="Retour" style="margin-top: 0.5rem;">
+                  <BackAuthButton onclick={prevStep} disabled={loading} aria-label={m.common_back()} style="margin-top: 0.5rem;">
                     <ArrowLeft size={24} />
                   </BackAuthButton>
-                  
+
                   {#if socialLinks.length === 0}
                     <div style="flex: 1">
                       <AuthButton
@@ -452,13 +453,13 @@
                         disabled={loading}
                         style="background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border); box-shadow: none;"
                       >
-                        Passer cette étape
+                        {m.auth_register_skip_step()}
                       </AuthButton>
                     </div>
                   {:else}
                     <div style="flex: 1">
                       <AuthButton type="button" onclick={handleSubmit} {loading} disabled={loading}>
-                        Créer mon compte
+                        {m.auth_register_create_account()}
                       </AuthButton>
                     </div>
                   {/if}
@@ -471,25 +472,25 @@
     </div>
 
     <footer class="form-footer">
-      <p>&copy; 2025 Noko. Tous droits réservés.</p>
+      <p>&copy; {m.common_footer_copyright()}</p>
     </footer>
   </div>
 </div>
 
 <!-- Modal de confirmation pour passer l'étape des liens -->
-<Modal bind:open={showSkipModal} title="Créer votre compte" size="sm">
-  <p style="margin: 0;">Voulez-vous vraiment créer votre compte sans ajouter de liens pour le moment ?</p>
+<Modal bind:open={showSkipModal} title={m.auth_register_skip_modal_title()} size="sm">
+  <p style="margin: 0;">{m.auth_register_skip_modal_text()}</p>
   <p style="color: var(--color-text-secondary); font-size: 0.875rem; margin-top: 0.75rem; margin-bottom: 0;">
-    Vous pourrez toujours ajouter des liens plus tard depuis votre tableau de bord.
+    {m.auth_register_skip_modal_hint()}
   </p>
 
   {#snippet footer()}
     <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
       <Button variant="secondary" onclick={() => showSkipModal = false}>
-        Annuler
+        {m.common_cancel()}
       </Button>
       <Button variant="primary" onclick={() => { showSkipModal = false; handleSubmit(); }} {loading}>
-        Créer mon compte
+        {m.auth_register_create_account()}
       </Button>
     </div>
   {/snippet}

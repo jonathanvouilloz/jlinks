@@ -1,4 +1,6 @@
 <script lang="ts">
+  import * as m from '$lib/paraglide/messages';
+
   interface Props {
     label: string;
     value: string;
@@ -43,7 +45,7 @@
     {/each}
   </select>
   <p class="font-preview" style="font-family: '{value}', sans-serif">
-    Aperçu du texte avec cette police
+    {m.appearance_font_preview()}
   </p>
 </div>
 

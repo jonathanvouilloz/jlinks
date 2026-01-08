@@ -4,7 +4,7 @@ import { db, users, clients, links, verifications } from '$lib/server/db';
 import { eq } from 'drizzle-orm';
 import { hashPassword } from '$lib/server/auth/password';
 import { registerServerSchema } from '$lib/schemas';
-import { sendEmailVerificationEmail } from '$lib/server/email';
+import { queueEmail } from '$lib/server/qstash';
 
 const registerAttempts = new Map<string, { count: number; resetAt: number }>();
 
@@ -109,11 +109,12 @@ export const POST: RequestHandler = async (event) => {
       expires_at: tokenExpiresAt.toISOString(),
     });
 
-    // Send verification email
-    const emailSent = await sendEmailVerificationEmail(email.toLowerCase(), verificationToken);
-    if (!emailSent) {
-      console.error('Failed to send verification email to:', email);
-    }
+    // Queue verification email (via QStash in prod, direct in dev)
+    await queueEmail({
+      type: 'verification',
+      email: email.toLowerCase(),
+      token: verificationToken
+    });
 
     // Clear rate limit
     registerAttempts.delete(ip);

@@ -3,6 +3,7 @@
 import type { Link, CreateLinkInput, UpdateLinkInput } from '@noko/shared/types';
 import { api, ApiError } from '$lib/api';
 import { toastStore } from './toast.svelte';
+import * as m from '$lib/paraglide/messages';
 
 // Store state
 let links = $state<Link[]>([]);
@@ -17,7 +18,7 @@ async function loadLinks(): Promise<void> {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur de chargement des liens');
+      toastStore.error(m.toast_error_links_loading());
     }
   } finally {
     loading = false;
@@ -28,13 +29,13 @@ async function createLink(data: CreateLinkInput): Promise<Link | null> {
   try {
     const newLink = await api.links.create(data);
     links = [...links, newLink];
-    toastStore.success('Lien créé');
+    toastStore.success(m.toast_success_link_created());
     return newLink;
   } catch (e) {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur lors de la création du lien');
+      toastStore.error(m.toast_error_link_create());
     }
     return null;
   }
@@ -44,13 +45,13 @@ async function updateLink(id: string, data: UpdateLinkInput): Promise<Link | nul
   try {
     const updatedLink = await api.links.update(id, data);
     links = links.map((l) => (l.id === id ? updatedLink : l));
-    toastStore.success('Lien mis à jour');
+    toastStore.success(m.toast_success_link_updated());
     return updatedLink;
   } catch (e) {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur lors de la mise à jour du lien');
+      toastStore.error(m.toast_error_link_update());
     }
     return null;
   }
@@ -60,13 +61,13 @@ async function deleteLink(id: string): Promise<boolean> {
   try {
     await api.links.delete(id);
     links = links.filter((l) => l.id !== id);
-    toastStore.success('Lien supprimé');
+    toastStore.success(m.toast_success_link_deleted());
     return true;
   } catch (e) {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur lors de la suppression du lien');
+      toastStore.error(m.toast_error_link_delete());
     }
     return false;
   }
@@ -90,7 +91,7 @@ async function reorderLinks(order: Array<{ id: string; sort_order: number }>): P
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur lors du réordonnancement');
+      toastStore.error(m.toast_error_link_reorder());
     }
     return false;
   }
@@ -111,7 +112,7 @@ async function toggleLink(id: string): Promise<Link | null> {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur lors du changement de statut');
+      toastStore.error(m.toast_error_link_toggle());
     }
     return null;
   }

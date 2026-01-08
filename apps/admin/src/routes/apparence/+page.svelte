@@ -1,4 +1,5 @@
 <script lang="ts">
+  import * as m from '$lib/paraglide/messages';
   import type { BackgroundType, ButtonStyle, LayoutType } from '@noko/shared/types';
   import { Card, Button, Input } from '$lib/components/ui';
   import { ButtonStyleSelector, ColorPicker, FontPresetSelector, FontSelector, GradientSelector, LayoutSelector, OpacitySlider } from '$lib/components/settings';
@@ -84,45 +85,45 @@
 </script>
 
 <svelte:head>
-  <title>Apparence | Noko Admin</title>
+  <title>{m.appearance_page_title()}</title>
 </svelte:head>
 
-<div class="apparence-page">
+<div class="apparence-page" style="--disabled-premium-text: '{m.appearance_disabled_for_premium()}'">
   <div class="apparence-layout">
     <div class="apparence-content">
       <div class="apparence-grid">
         <!-- Appearance Section -->
         <Card class={isPremiumLayout ? 'disabled' : ''}>
           {#snippet header()}
-            <h2>Fond</h2>
+            <h2>{m.appearance_background()}</h2>
           {/snippet}
           <div class="form-section">
             <div class="form-field">
-              <label for="bg-type">Type d'arrière-plan</label>
+              <label for="bg-type">{m.appearance_background_type()}</label>
               <select id="bg-type" bind:value={backgroundType}>
-                <option value="solid">Couleur unie</option>
-                <option value="gradient">Dégradé</option>
-                <option value="image">Image</option>
+                <option value="solid">{m.appearance_background_solid()}</option>
+                <option value="gradient">{m.appearance_background_gradient()}</option>
+                <option value="image">{m.appearance_background_image()}</option>
               </select>
             </div>
 
             {#if backgroundType === 'solid'}
-              <ColorPicker label="Couleur de fond" value={backgroundValue} onchange={(v) => backgroundValue = v} />
+              <ColorPicker label={m.appearance_background_color()} value={backgroundValue} onchange={(v) => backgroundValue = v} />
             {:else if backgroundType === 'gradient'}
               <GradientSelector value={backgroundValue} onchange={(v) => backgroundValue = v} />
             {:else}
               <Input
-                label="URL de l'image"
+                label={m.appearance_background_image_url()}
                 bind:value={backgroundValue}
                 placeholder="https://example.com/bg.jpg"
               />
             {/if}
 
-            <ColorPicker label="Couleur de fond (desktop)" value={outerBackgroundColor} onchange={(v) => outerBackgroundColor = v} />
-            <p class="color-hint">Visible uniquement sur desktop, derrière la carte.</p>
+            <ColorPicker label={m.appearance_background_outer_color()} value={outerBackgroundColor} onchange={(v) => outerBackgroundColor = v} />
+            <p class="color-hint">{m.appearance_background_outer_hint()}</p>
 
             <Button variant="primary" onclick={saveAppearance} loading={savingAppearance}>
-              Enregistrer
+              {m.common_save()}
             </Button>
           </div>
         </Card>
@@ -130,17 +131,17 @@
         <!-- Colors & Buttons Section -->
         <Card class={isPremiumLayout ? 'disabled' : ''}>
           {#snippet header()}
-            <h2>Boutons</h2>
+            <h2>{m.appearance_buttons()}</h2>
           {/snippet}
           <div class="form-section">
-            <ColorPicker label="Couleur des boutons (par défaut)" value={primaryColor} onchange={(v) => primaryColor = v} />
+            <ColorPicker label={m.appearance_buttons_color()} value={primaryColor} onchange={(v) => primaryColor = v} />
 
-            <OpacitySlider label="Opacité des boutons" value={buttonOpacity} onchange={(v) => buttonOpacity = v} />
+            <OpacitySlider label={m.appearance_buttons_opacity()} value={buttonOpacity} onchange={(v) => buttonOpacity = v} />
 
             <ButtonStyleSelector value={buttonStyle} onchange={(v) => buttonStyle = v} />
 
             <Button variant="primary" onclick={saveAppearance} loading={savingAppearance}>
-              Enregistrer
+              {m.common_save()}
             </Button>
           </div>
         </Card>
@@ -148,7 +149,7 @@
         <!-- Typography Section -->
         <Card>
           {#snippet header()}
-            <h2>Typographie</h2>
+            <h2>{m.appearance_typography()}</h2>
           {/snippet}
           <div class="form-section">
             <FontPresetSelector
@@ -161,12 +162,12 @@
             />
             {#if fontPreset === null}
               <div class="custom-fonts">
-                <FontSelector label="Police des titres" value={fontTitle} onchange={(v) => fontTitle = v} />
-                <FontSelector label="Police du texte" value={fontText} onchange={(v) => fontText = v} />
+                <FontSelector label={m.appearance_typography_title_font()} value={fontTitle} onchange={(v) => fontTitle = v} />
+                <FontSelector label={m.appearance_typography_text_font()} value={fontText} onchange={(v) => fontText = v} />
               </div>
             {/if}
             <Button variant="primary" onclick={saveAppearance} loading={savingAppearance}>
-              Enregistrer
+              {m.common_save()}
             </Button>
           </div>
         </Card>
@@ -174,12 +175,12 @@
         <!-- Layout Section -->
         <Card>
           {#snippet header()}
-            <h2>Mise en page</h2>
+            <h2>{m.appearance_layout()}</h2>
           {/snippet}
           <div class="form-section">
             <LayoutSelector value={layoutType} onchange={(v) => layoutType = v} />
             <Button variant="primary" onclick={saveAppearance} loading={savingAppearance}>
-              Enregistrer
+              {m.common_save()}
             </Button>
           </div>
         </Card>
@@ -195,7 +196,7 @@
           class:active={previewMode === 'current'}
           onclick={() => { previewMode = 'current'; }}
         >
-          Publié
+          {m.appearance_preview_published()}
         </button>
         <button
           type="button"
@@ -203,11 +204,11 @@
           class:active={previewMode === 'preview'}
           onclick={() => { previewMode = 'preview'; }}
         >
-          Brouillon
+          {m.appearance_preview_draft()}
         </button>
       </div>
       {#if previewMode === 'preview'}
-        <p class="preview-hint">Modifie les champs ci-contre pour voir l'aperçu en temps réel</p>
+        <p class="preview-hint">{m.appearance_preview_hint()}</p>
       {/if}
       {#key previewMode}
         <Preview client={previewMode === 'current' ? authStore.client : previewClient} links={linksStore.links} />
@@ -359,7 +360,7 @@
   }
 
   :global(.card.disabled)::after {
-    content: 'Non disponible avec Premium';
+    content: var(--disabled-premium-text);
     position: absolute;
     top: 50%;
     left: 50%;

@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { ButtonStyle } from '@noko/shared/types';
   import { Link } from 'lucide-svelte';
+  import * as m from '$lib/paraglide/messages';
 
   interface Props {
     value: ButtonStyle;
@@ -9,33 +10,36 @@
 
   let { value, onchange }: Props = $props();
 
-  const styles: Array<{ type: ButtonStyle; label: string }> = [
-    { type: 'rounded', label: 'Arrondi' },
-    { type: 'pill', label: 'Pilule' },
-    { type: 'square', label: 'Carré' },
-    { type: 'soft', label: 'Doux' },
-    { type: 'outline', label: 'Contour' },
-    { type: 'outline-icon', label: 'Contour + Icône' },
-  ];
+  // Map style types to their translation functions
+  const styleLabels: Record<ButtonStyle, () => string> = {
+    'rounded': m.appearance_button_style_rounded,
+    'pill': m.appearance_button_style_pill,
+    'square': m.appearance_button_style_square,
+    'soft': m.appearance_button_style_soft,
+    'outline': m.appearance_button_style_outline,
+    'outline-icon': m.appearance_button_style_outline_icon,
+  };
+
+  const styles: ButtonStyle[] = ['rounded', 'pill', 'square', 'soft', 'outline', 'outline-icon'];
 </script>
 
 <div class="button-style-selector">
-  <label>Style des boutons</label>
+  <label>{m.appearance_buttons_style()}</label>
   <div class="style-options">
     {#each styles as style}
       <button
         type="button"
         class="style-option"
-        class:selected={value === style.type}
-        onclick={() => onchange(style.type)}
+        class:selected={value === style}
+        onclick={() => onchange(style)}
       >
-        <div class="style-preview style-{style.type}">
-          {#if style.type === 'outline-icon'}
+        <div class="style-preview style-{style}">
+          {#if style === 'outline-icon'}
             <Link size={12} />
           {/if}
-          <span>Lien</span>
+          <span>{m.common_link()}</span>
         </div>
-        <span class="style-label">{style.label}</span>
+        <span class="style-label">{styleLabels[style]()}</span>
       </button>
     {/each}
   </div>

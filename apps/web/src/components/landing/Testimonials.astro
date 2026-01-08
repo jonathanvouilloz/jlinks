@@ -1,12 +1,16 @@
 ---
-// Testimonials section
 import { Quote } from 'lucide-astro';
+import en from '@noko/shared/i18n/en.json';
+import fr from '@noko/shared/i18n/fr.json';
+
+const locale = Astro.currentLocale || 'en';
+const t = locale === 'fr' ? fr : en;
 ---
 
 <section class="section testimonials">
   <div class="container">
     <div class="text-center mb-16">
-      <h2 class="section-title">They made the switch.</h2>
+      <h2 class="section-title">{t.landing_testimonials_title}</h2>
     </div>
 
     <div class="testimonials-grid">
@@ -16,13 +20,13 @@ import { Quote } from 'lucide-astro';
           <Quote size={24} fill="currentColor" />
         </div>
         <p class="testimonial-text">
-          I had Linktree. Now I have the same features, plus the branded QR code, for free.
+          {t.landing_testimonial_1_text}
         </p>
         <div class="testimonial-author">
           <div class="author-avatar avatar-1">ML</div>
           <div class="author-info">
-            <cite class="author-name">Marie L.</cite>
-            <span class="author-role">Freelance</span>
+            <cite class="author-name">{t.landing_testimonial_1_name}</cite>
+            <span class="author-role">{t.landing_testimonial_1_role}</span>
           </div>
         </div>
       </blockquote>
@@ -33,13 +37,13 @@ import { Quote } from 'lucide-astro';
           <Quote size={24} fill="currentColor" />
         </div>
         <p class="testimonial-text">
-          The "Add to Contacts" button, my clients love it. It's simple but no one else does it.
+          {t.landing_testimonial_2_text}
         </p>
         <div class="testimonial-author">
           <div class="author-avatar avatar-2">TR</div>
           <div class="author-info">
-            <cite class="author-name">Thomas R.</cite>
-            <span class="author-role">Coach</span>
+            <cite class="author-name">{t.landing_testimonial_2_name}</cite>
+            <span class="author-role">{t.landing_testimonial_2_role}</span>
           </div>
         </div>
       </blockquote>
@@ -50,13 +54,13 @@ import { Quote } from 'lucide-astro';
           <Quote size={24} fill="currentColor" />
         </div>
         <p class="testimonial-text">
-          Simple, fast, beautiful. Exactly what I needed.
+          {t.landing_testimonial_3_text}
         </p>
         <div class="testimonial-author">
           <div class="author-avatar avatar-3">SM</div>
           <div class="author-info">
-            <cite class="author-name">Sophie M.</cite>
-            <span class="author-role">Photographer</span>
+            <cite class="author-name">{t.landing_testimonial_3_name}</cite>
+            <span class="author-role">{t.landing_testimonial_3_role}</span>
           </div>
         </div>
       </blockquote>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { FONT_PRESETS, type FontPreset } from '@noko/shared/font-presets';
+  import * as m from '$lib/paraglide/messages';
 
   interface Props {
     value: string | null;
@@ -60,8 +61,8 @@
         </svg>
       </div>
       <div class="preset-info">
-        <span class="preset-name">Custom</span>
-        <span class="preset-fonts">Choisir manuellement</span>
+        <span class="preset-name">{m.appearance_font_preset_custom()}</span>
+        <span class="preset-fonts">{m.appearance_font_preset_custom_hint()}</span>
       </div>
     </button>
   </div>

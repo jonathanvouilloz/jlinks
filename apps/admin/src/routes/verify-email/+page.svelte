@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
   import { CheckCircle, XCircle, Loader2 } from 'lucide-svelte';
+  import * as m from '$lib/paraglide/messages';
 
   let status = $state<'loading' | 'success' | 'error'>('loading');
   let errorMessage = $state('');
@@ -12,7 +13,7 @@
   onMount(async () => {
     if (!token) {
       status = 'error';
-      errorMessage = 'Lien invalide';
+      errorMessage = m.auth_verify_email_error_invalid();
       return;
     }
 
@@ -26,17 +27,17 @@
         setTimeout(() => goto('/'), 2000);
       } else {
         status = 'error';
-        errorMessage = data.error || 'Lien invalide ou expiré';
+        errorMessage = data.error || m.auth_verify_email_error_expired();
       }
     } catch (err) {
       status = 'error';
-      errorMessage = 'Une erreur est survenue';
+      errorMessage = m.auth_verify_email_error_generic();
     }
   });
 </script>
 
 <svelte:head>
-  <title>Vérification email - Noko</title>
+  <title>{m.auth_verify_email_page_title()}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -55,10 +56,10 @@
     </div>
 
     <div class="hero-content">
-      <p class="hero-eyebrow">Verification en cours</p>
+      <p class="hero-eyebrow">{m.auth_verify_email_hero_eyebrow()}</p>
       <h1 class="hero-tagline">
-        Activation de<br />
-        <span class="highlight">votre compte</span>
+        {m.auth_verify_email_hero_tagline_1()}<br />
+        <span class="highlight">{m.auth_verify_email_hero_tagline_2()}</span>
       </h1>
     </div>
   </div>
@@ -78,25 +79,24 @@
             <div class="status-icon loading">
               <Loader2 size={48} class="spin" />
             </div>
-            <h2 class="form-title">Verification en cours...</h2>
-            <p class="form-subtitle">Veuillez patienter quelques instants</p>
+            <h2 class="form-title">{m.auth_verify_email_loading_title()}</h2>
+            <p class="form-subtitle">{m.auth_verify_email_loading_subtitle()}</p>
           {:else if status === 'success'}
             <div class="status-icon success">
               <CheckCircle size={48} />
             </div>
-            <h2 class="form-title">Email verifie !</h2>
+            <h2 class="form-title">{m.auth_verify_email_success_title()}</h2>
             <p class="form-subtitle">
-              Votre compte est maintenant actif.<br />
-              Redirection vers votre dashboard...
+              {@html m.auth_verify_email_success_subtitle().replace('\n', '<br />')}
             </p>
           {:else}
             <div class="status-icon error">
               <XCircle size={48} />
             </div>
-            <h2 class="form-title">Erreur</h2>
+            <h2 class="form-title">{m.auth_verify_email_error_title()}</h2>
             <p class="form-subtitle">{errorMessage}</p>
             <a href="/register" class="retry-link">
-              Réessayer l'inscription
+              {m.auth_verify_email_retry()}
             </a>
           {/if}
         </div>
@@ -104,7 +104,7 @@
     </div>
 
     <footer class="form-footer">
-      <p>&copy; 2025 Noko. Tous droits reserves.</p>
+      <p>&copy; {m.common_footer_copyright()}</p>
     </footer>
   </div>
 </div>

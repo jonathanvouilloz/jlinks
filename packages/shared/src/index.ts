@@ -12,3 +12,6 @@ export * from './gradient-presets';
 
 // vCard
 export * from './vcard';
+
+// Error codes
+export * from './error-codes';

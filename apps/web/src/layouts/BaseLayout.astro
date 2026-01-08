@@ -13,6 +13,7 @@ interface Props {
   containerBackgroundDesktop?: string;
   textColor?: string;
   ogImage?: string;
+  locale?: string;
 }
 
 const {
@@ -26,7 +27,11 @@ const {
   containerBackgroundDesktop,
   textColor = '#0F172A',
   ogImage,
+  locale: propLocale,
 } = Astro.props;
+
+// Get locale from props or Astro's currentLocale (props for user pages that don't use i18n routing)
+const locale = propLocale || Astro.currentLocale || 'en';
 
 // Build Google Fonts URL - use preset URL if available for optimized loading
 let fontsUrl: string;
@@ -40,10 +45,15 @@ if (fontPreset && isValidFontPresetId(fontPreset)) {
 // SEO URLs
 const siteUrl = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'http://localhost:4321';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+
+// i18n - compute clean path for hreflang tags (only for locale-prefixed pages)
+const currentPath = Astro.url.pathname;
+const isLocalePrefixedPage = /^\/(en|fr)(\/|$)/.test(currentPath);
+const cleanPath = currentPath.replace(/^\/(en|fr)/, '') || '/';
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -52,6 +62,15 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalUrl} />
+
+    <!-- hreflang tags for locale-prefixed pages -->
+    {isLocalePrefixedPage && (
+      <>
+        <link rel="alternate" hreflang="en" href={`${siteUrl}/en${cleanPath}`} />
+        <link rel="alternate" hreflang="fr" href={`${siteUrl}/fr${cleanPath}`} />
+        <link rel="alternate" hreflang="x-default" href={`${siteUrl}/en${cleanPath}`} />
+      </>
+    )}
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />

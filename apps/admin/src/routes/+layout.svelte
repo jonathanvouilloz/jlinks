@@ -4,6 +4,7 @@
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import { browser } from '$app/environment';
+  import { setLocale, locales } from '$lib/paraglide/runtime';
   import { Sidebar, Header, ToastContainer } from '$lib/components/layout';
   import { authStore, clientStore, linksStore } from '$lib/stores';
 
@@ -14,24 +15,26 @@
   let { children }: Props = $props();
 
   // Pages that don't require authentication
-  const publicPaths = ['/login', '/styleguide'];
+  const publicPaths = ['/login', '/register', '/forgot-password', '/reset-password', '/verify-email', '/check-email', '/styleguide'];
 
-  // Check if current path is public
+  // Check if current path is public (removing locale prefix first)
   function isPublicPath(path: string): boolean {
-    return publicPaths.some((p) => path.startsWith(p));
+    const cleanPath = path.replace(/^\/(en|fr)/, '') || '/';
+    return publicPaths.some((p) => cleanPath.startsWith(p));
   }
 
   // Check if current path requires super admin
   function requiresSuperAdmin(path: string): boolean {
-    return path.startsWith('/admin');
+    return path.includes('/admin');
   }
 
   // Page titles based on route
   function getPageTitle(path: string): string {
-    if (path === '/') return 'Liens';
-    if (path === '/apparence') return 'Apparence';
-    if (path === '/contenu') return 'Contenu';
-    if (path === '/admin/clients') return 'Gestion des clients';
+    const cleanPath = path.replace(/^\/(en|fr)/, '') || '/';
+    if (cleanPath === '/' || cleanPath === '') return 'Liens';
+    if (cleanPath.startsWith('/apparence')) return 'Apparence';
+    if (cleanPath.startsWith('/contenu')) return 'Contenu';
+    if (cleanPath.startsWith('/admin/clients')) return 'Gestion des clients';
     return 'Noko';
   }
 
@@ -42,36 +45,46 @@
   // Track if we've initialized
   let hasInitialized = $state(false);
 
+  // Set language from URL on every navigation
+  $effect(() => {
+    if (!browser) return;
+
+    const pathname = $page.url.pathname;
+    const langMatch = pathname.match(/^\/(en|fr)/);
+    const lang = langMatch ? langMatch[1] : 'en';
+    if (locales.includes(lang as any)) {
+      setLocale(lang as 'en' | 'fr');
+    }
+  });
+
   // Initialize auth on mount (client-side only)
   $effect(() => {
     if (!browser || hasInitialized) return;
     hasInitialized = true;
 
-    console.log('[Layout] $effect running - initializing auth');
-
     (async () => {
       try {
         await authStore.init();
-        console.log('[Layout] authStore.init() completed, loading:', authStore.loading, 'isAuthenticated:', authStore.isAuthenticated);
       } catch (e) {
         console.error('[Layout] authStore.init() failed:', e);
       }
 
       const currentPath = $page.url.pathname;
+      const langPrefix = currentPath.match(/^\/(en|fr)/)?.[0] || '/en';
 
       // Redirect logic after auth init
       if (!authStore.isAuthenticated && !isPublicPath(currentPath)) {
-        goto('/login');
+        goto(`${langPrefix}/login`);
         return;
       }
 
-      if (authStore.isAuthenticated && currentPath === '/login') {
-        goto('/');
+      if (authStore.isAuthenticated && isPublicPath(currentPath) && currentPath.includes('/login')) {
+        goto(`${langPrefix}/`);
         return;
       }
 
       if (requiresSuperAdmin(currentPath) && !authStore.isSuperAdmin) {
-        goto('/');
+        goto(`${langPrefix}/`);
         return;
       }
 

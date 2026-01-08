@@ -1,4 +1,5 @@
 <script lang="ts">
+  import * as m from '$lib/paraglide/messages';
   import { PUBLIC_SITE_URL } from '$env/static/public';
   import type { Link, CreateLinkInput, UpdateLinkInput } from '@noko/shared/types';
   import { Button, Card, Modal } from '$lib/components/ui';
@@ -17,10 +18,10 @@
     try {
       await navigator.clipboard.writeText(liveUrl);
       copied = true;
-      toastStore.success('Lien copié !');
+      toastStore.success(m.dashboard_link_copied());
       setTimeout(() => copied = false, 2000);
     } catch {
-      toastStore.error('Impossible de copier le lien');
+      toastStore.error(m.dashboard_link_copy_error());
     }
   }
 
@@ -86,7 +87,7 @@
 </script>
 
 <svelte:head>
-  <title>Liens | Noko Admin</title>
+  <title>{m.dashboard_page_title()}</title>
 </svelte:head>
 
 <div class="dashboard">
@@ -95,22 +96,22 @@
       <!-- Left: Links Management -->
       <div class="links-panel">
         <div class="panel-header">
-          <h2>Mes liens</h2>
+          <h2>{m.dashboard_my_links()}</h2>
           <Button variant="primary" size="sm" onclick={handleAddLink}>
             <Plus size={16} />
-            Ajouter
+            {m.dashboard_add_link()}
           </Button>
         </div>
 
         {#if linksStore.loading}
-          <div class="loading">Chargement...</div>
+          <div class="loading">{m.common_loading()}</div>
         {:else if linksStore.links.length === 0}
           <Card>
             <div class="empty-state">
               <Plus size={32} />
-              <p>Aucun lien pour le moment</p>
+              <p>{m.dashboard_no_links()}</p>
               <Button variant="primary" onclick={handleAddLink}>
-                Créer mon premier lien
+                {m.dashboard_create_first_link()}
               </Button>
             </div>
           </Card>
@@ -129,13 +130,13 @@
       <div class="preview-panel">
         {#if liveUrl}
           <div class="live-url-section">
-            <span class="live-url-label">Lien de ta page</span>
+            <span class="live-url-label">{m.dashboard_page_link_label()}</span>
             <div class="live-url-row">
               <a href={liveUrl} target="_blank" rel="noopener noreferrer" class="live-url-link">
                 {liveUrl}
                 <ExternalLink size={14} />
               </a>
-              <button class="copy-btn" onclick={copyLink} title="Copier le lien">
+              <button class="copy-btn" onclick={copyLink} title={m.dashboard_copy_link()}>
                 {#if copied}
                   <Check size={16} />
                 {:else}
@@ -153,17 +154,17 @@
       <div class="admin-notice">
         <AlertCircle size={24} />
         <div>
-          <h3>Compte Super Admin</h3>
-          <p>Vous êtes connecté en tant que super-admin. Accédez à la gestion des clients pour gérer les pages des clients.</p>
+          <h3>{m.dashboard_super_admin_title()}</h3>
+          <p>{m.dashboard_super_admin_text()}</p>
           <Button variant="primary" onclick={() => window.location.href = '/admin/clients'}>
-            Gérer les clients
+            {m.dashboard_manage_clients()}
           </Button>
         </div>
       </div>
     </Card>
   {:else}
     <Card>
-      <div class="loading">Chargement...</div>
+      <div class="loading">{m.common_loading()}</div>
     </Card>
   {/if}
 </div>
@@ -177,14 +178,14 @@
 />
 
 <!-- Delete Confirmation Modal -->
-<Modal open={showDeleteConfirm} onclose={handleCancelDelete} title="Supprimer le lien" size="sm">
-  <p>Êtes-vous sûr de vouloir supprimer le lien "{deletingLink?.title}" ?</p>
-  <p class="text-muted">Cette action est irréversible.</p>
+<Modal open={showDeleteConfirm} onclose={handleCancelDelete} title={m.dashboard_delete_link_title()} size="sm">
+  <p>{m.dashboard_delete_link_confirm({ title: deletingLink?.title ?? '' })}</p>
+  <p class="text-muted">{m.dashboard_delete_link_irreversible()}</p>
 
   {#snippet footer()}
     <div class="modal-actions">
-      <Button variant="secondary" onclick={handleCancelDelete} disabled={deleting}>Annuler</Button>
-      <Button variant="danger" onclick={handleConfirmDelete} loading={deleting} disabled={deleting}>Supprimer</Button>
+      <Button variant="secondary" onclick={handleCancelDelete} disabled={deleting}>{m.common_cancel()}</Button>
+      <Button variant="danger" onclick={handleConfirmDelete} loading={deleting} disabled={deleting}>{m.common_delete()}</Button>
     </div>
   {/snippet}
 </Modal>

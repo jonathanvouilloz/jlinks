@@ -1,26 +1,30 @@
 ---
 import { Check, X } from 'lucide-astro';
+import en from '@noko/shared/i18n/en.json';
+import fr from '@noko/shared/i18n/fr.json';
 
 interface Props {
   adminUrl: string;
 }
 
 const { adminUrl } = Astro.props;
+const locale = Astro.currentLocale || 'en';
+const t = locale === 'fr' ? fr : en;
 ---
 
 <section id="pricing" class="section pricing">
   <div class="container">
     <div class="text-center mb-16">
-      <h2 class="section-title">Your digital identity, sorted.</h2>
-      <p class="section-subtitle">Start for free. Upgrade for the price of a coffee when you're ready to scale.</p>
-      
+      <h2 class="section-title">{t.landing_pricing_title}</h2>
+      <p class="section-subtitle">{t.landing_pricing_subtitle}</p>
+
       <!-- Pricing Toggle -->
       <div class="pricing-toggle-wrapper">
-        <span class="toggle-label">Monthly</span>
+        <span class="toggle-label">{t.landing_pricing_toggle_monthly}</span>
         <button id="billing-toggle" class="toggle-switch" aria-pressed="false">
           <span class="toggle-thumb"></span>
         </button>
-        <span class="toggle-label">Yearly <span class="discount-badge">-15%</span></span>
+        <span class="toggle-label">{t.landing_pricing_toggle_yearly} <span class="discount-badge">{t.landing_pricing_discount}</span></span>
       </div>
     </div>
 
@@ -28,33 +32,33 @@ const { adminUrl } = Astro.props;
       <!-- Free Plan -->
       <div class="pricing-card">
         <div class="card-header">
-          <h3 class="plan-name">Starter</h3>
+          <h3 class="plan-name">{t.landing_pricing_starter_name}</h3>
           <div class="plan-price">
             <span class="currency">$</span>
-            <span class="amount">0</span>
+            <span class="amount">{t.landing_pricing_starter_price}</span>
           </div>
-          <p class="plan-desc">Perfect for testing the waters.</p>
+          <p class="plan-desc">{t.landing_pricing_starter_desc}</p>
         </div>
-        
+
         <div class="card-body">
-          <a href={`${adminUrl}/register`} class="btn btn-outline btn-full">Start for free</a>
-          
+          <a href={`${adminUrl}/register`} class="btn btn-outline btn-full">{t.landing_pricing_starter_cta}</a>
+
           <ul class="features-list">
             <li>
               <Check size={20} class="check-icon" />
-              <span><strong>6 links</strong> to share your essentials</span>
+              <span set:html={t.landing_pricing_starter_feature_1}></span>
             </li>
             <li>
               <Check size={20} class="check-icon" />
-              <span><strong>Branded QR code</strong> for your flyers</span>
+              <span set:html={t.landing_pricing_starter_feature_2}></span>
             </li>
             <li>
               <Check size={20} class="check-icon" />
-              <span><strong>"Add to Contacts"</strong> button</span>
+              <span set:html={t.landing_pricing_starter_feature_3}></span>
             </li>
             <li>
               <Check size={20} class="check-icon" />
-              <span>Basic customization</span>
+              <span>{t.landing_pricing_starter_feature_4}</span>
             </li>
           </ul>
         </div>
@@ -62,48 +66,48 @@ const { adminUrl } = Astro.props;
 
       <!-- Pro Plan -->
       <div class="pricing-card featured">
-        <div class="featured-badge">Most Popular</div>
+        <div class="featured-badge">{t.landing_pricing_pro_badge}</div>
         <div class="card-header">
-          <h3 class="plan-name text-primary">Pro</h3>
+          <h3 class="plan-name text-primary">{t.landing_pricing_pro_name}</h3>
           <div class="plan-price">
             <span class="currency">$</span>
-            <span class="amount" data-monthly="5" data-yearly="4.20">5</span>
+            <span class="amount" data-monthly={t.landing_pricing_pro_price_monthly} data-yearly={t.landing_pricing_pro_price_yearly}>{t.landing_pricing_pro_price_monthly}</span>
             <span class="period">/mo</span>
           </div>
-          <p class="plan-desc">For creators who mean business.</p>
+          <p class="plan-desc">{t.landing_pricing_pro_desc}</p>
         </div>
-        
+
         <div class="card-body">
-          <a href={`${adminUrl}/register?plan=pro`} class="btn btn-primary btn-full">Go Pro</a>
-          
+          <a href={`${adminUrl}/register?plan=pro`} class="btn btn-primary btn-full">{t.landing_pricing_pro_cta}</a>
+
           <ul class="features-list">
             <li>
               <Check size={20} class="check-icon" />
-              <span><strong>Unlimited links</strong> & integrations</span>
+              <span set:html={t.landing_pricing_pro_feature_1}></span>
             </li>
             <li>
               <Check size={20} class="check-icon" />
-              <span><strong>Pro Themes</strong> & Custom Fonts</span>
+              <span set:html={t.landing_pricing_pro_feature_2}></span>
             </li>
             <li>
               <Check size={20} class="check-icon" />
-              <span><strong>Analytics</strong> to know your audience</span>
+              <span set:html={t.landing_pricing_pro_feature_3}></span>
             </li>
             <li>
               <Check size={20} class="check-icon" />
-              <span><strong>Remove Noko logo</strong> (White label)</span>
+              <span set:html={t.landing_pricing_pro_feature_4}></span>
             </li>
             <li>
               <Check size={20} class="check-icon" />
-              <span>Priority Support</span>
+              <span>{t.landing_pricing_pro_feature_5}</span>
             </li>
           </ul>
         </div>
       </div>
     </div>
-    
+
     <div class="text-center mt-20">
-      <p class="text-sm text-secondary">Prices in USD. Cancel anytime. No hidden fees.</p>
+      <p class="text-sm text-secondary">{t.landing_pricing_footer}</p>
     </div>
   </div>
 </section>

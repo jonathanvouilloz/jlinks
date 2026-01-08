@@ -1,8 +1,9 @@
 <script lang="ts">
   import { PUBLIC_SITE_URL } from '$env/static/public';
-  import { Button, Badge } from '$lib/components/ui';
+  import { Button, Badge, LanguageSwitcher } from '$lib/components/ui';
   import { Upload, ExternalLink } from 'lucide-svelte';
   import { authStore, clientStore } from '$lib/stores';
+  import * as m from '$lib/paraglide/messages';
 
   interface Props {
     title?: string;
@@ -19,11 +20,12 @@
   <div class="header-left">
     <h1 class="header-title">{title}</h1>
     {#if clientStore.publishStatus?.hasDraftChanges}
-      <Badge variant="warning">Modifications non publiées</Badge>
+      <Badge variant="warning">{m.dashboard_unpublished_changes()}</Badge>
     {/if}
   </div>
 
   <div class="header-right">
+    <LanguageSwitcher />
     {#if authStore.isClient && authStore.client?.slug}
       <a
         href="{PUBLIC_SITE_URL}/{authStore.client.slug}"
@@ -32,7 +34,7 @@
         class="live-link"
       >
         <ExternalLink size={16} />
-        Voir ma page
+        {m.nav_view_page()}
       </a>
       <Button
         variant="primary"
@@ -41,7 +43,7 @@
         loading={clientStore.publishing}
       >
         <Upload size={16} />
-        Publier
+        {m.common_publish()}
       </Button>
     {/if}
   </div>

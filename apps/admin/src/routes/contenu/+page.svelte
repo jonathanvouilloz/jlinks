@@ -1,4 +1,5 @@
 <script lang="ts">
+  import * as m from '$lib/paraglide/messages';
   import type { ProfileImageShape } from '@noko/shared/types';
   import { Card, Button, Input, Toggle } from '$lib/components/ui';
   import { Preview } from '$lib/components/dashboard';
@@ -115,7 +116,7 @@
 </script>
 
 <svelte:head>
-  <title>Contenu | Noko Admin</title>
+  <title>{m.content_page_title()}</title>
 </svelte:head>
 
 <div class="contenu-page">
@@ -125,27 +126,27 @@
         <!-- Profile Section -->
         <Card>
           {#snippet header()}
-            <h2>Profil</h2>
+            <h2>{m.content_profile()}</h2>
           {/snippet}
           <div class="form-section">
             <Input
-              label="Nom"
+              label={m.content_profile_name_label()}
               bind:value={name}
-              placeholder="Votre nom ou celui de votre entreprise"
+              placeholder={m.content_profile_name_placeholder()}
             />
             <div class="form-field">
-              <label for="bio">Bio</label>
+              <label for="bio">{m.content_profile_bio_label()}</label>
               <textarea
                 id="bio"
                 bind:value={bio}
-                placeholder="Une courte description..."
+                placeholder={m.content_profile_bio_placeholder()}
                 rows="3"
                 maxlength="500"
               ></textarea>
-              <span class="char-count">{bio.length}/500</span>
+              <span class="char-count">{m.content_profile_char_count({ count: bio.length })}</span>
             </div>
             <Button variant="primary" onclick={saveProfile} loading={savingProfile}>
-              Enregistrer
+              {m.common_save()}
             </Button>
           </div>
         </Card>
@@ -153,23 +154,23 @@
         <!-- SEO Section -->
         <Card>
           {#snippet header()}
-            <h2>SEO</h2>
+            <h2>{m.content_seo()}</h2>
           {/snippet}
           <div class="form-section">
             <Input
-              label="Meta Title"
+              label={m.content_seo_meta_title_label()}
               bind:value={metaTitle}
-              placeholder="Titre pour les moteurs de recherche"
-              hint="Max 60 caractères"
+              placeholder={m.content_seo_meta_title_placeholder()}
+              hint={m.content_seo_meta_title_hint()}
             />
             <Input
-              label="Meta Description"
+              label={m.content_seo_meta_description_label()}
               bind:value={metaDescription}
-              placeholder="Description pour les moteurs de recherche"
-              hint="Max 160 caractères"
+              placeholder={m.content_seo_meta_description_placeholder()}
+              hint={m.content_seo_meta_description_hint()}
             />
             <Button variant="primary" onclick={saveProfile} loading={savingProfile}>
-              Enregistrer
+              {m.common_save()}
             </Button>
           </div>
         </Card>
@@ -177,25 +178,25 @@
         <!-- Branding Section -->
         <Card>
           {#snippet header()}
-            <h2>Images</h2>
+            <h2>{m.content_images()}</h2>
           {/snippet}
           <div class="form-section">
             <Input
-              label="URL du logo"
+              label={m.content_logo_url_label()}
               bind:value={logoUrl}
-              placeholder="https://example.com/logo.png"
-              hint="URL d'une image pour votre logo"
+              placeholder={m.content_logo_url_placeholder()}
+              hint={m.content_logo_url_hint()}
             />
             <Input
-              label="URL de la photo de profil"
+              label={m.content_profile_image_url_label()}
               bind:value={profileImageUrl}
-              placeholder="https://example.com/profile.jpg"
-              hint="URL d'une image carrée pour votre profil"
+              placeholder={m.content_profile_image_url_placeholder()}
+              hint={m.content_profile_image_url_hint()}
             />
 
             <!-- Profile Image Size Slider -->
             <div class="form-field">
-              <label for="profile-size">Taille de la photo ({profileImageSize}px)</label>
+              <label for="profile-size">{m.content_profile_size_label({ size: profileImageSize })}</label>
               <input
                 type="range"
                 id="profile-size"
@@ -209,7 +210,7 @@
 
             <!-- Profile Image Shape Selector -->
             <div class="form-field">
-              <label>Forme de la photo</label>
+              <label>{m.content_profile_shape_label()}</label>
               <div class="shape-selector">
                 <button
                   type="button"
@@ -218,7 +219,7 @@
                   onclick={() => profileImageShape = 'round'}
                 >
                   <div class="shape-preview round"></div>
-                  <span>Rond</span>
+                  <span>{m.content_profile_shape_round()}</span>
                 </button>
                 <button
                   type="button"
@@ -227,7 +228,7 @@
                   onclick={() => profileImageShape = 'rounded'}
                 >
                   <div class="shape-preview rounded"></div>
-                  <span>Arrondi</span>
+                  <span>{m.content_profile_shape_rounded()}</span>
                 </button>
                 <button
                   type="button"
@@ -236,7 +237,7 @@
                   onclick={() => profileImageShape = 'square'}
                 >
                   <div class="shape-preview square"></div>
-                  <span>Carré</span>
+                  <span>{m.content_profile_shape_square()}</span>
                 </button>
               </div>
             </div>
@@ -245,20 +246,20 @@
               <div class="image-previews">
                 {#if logoUrl}
                   <div class="image-preview">
-                    <span>Logo</span>
+                    <span>{m.content_image_preview_logo()}</span>
                     <img src={logoUrl} alt="Logo preview" />
                   </div>
                 {/if}
                 {#if profileImageUrl}
                   <div class="image-preview">
-                    <span>Profil</span>
+                    <span>{m.content_image_preview_profile()}</span>
                     <img src={profileImageUrl} alt="Profile preview" class="profile" />
                   </div>
                 {/if}
               </div>
             {/if}
             <Button variant="primary" onclick={saveBranding} loading={savingBranding}>
-              Enregistrer
+              {m.common_save()}
             </Button>
           </div>
         </Card>
@@ -266,11 +267,11 @@
         <!-- QR Code Section -->
         <Card>
           {#snippet header()}
-            <h2><QrCode size={20} /> QR Code</h2>
+            <h2><QrCode size={20} /> {m.content_qrcode()}</h2>
           {/snippet}
           <div class="form-section">
             <p class="section-description">
-              Télécharge ton QR code pour tes cartes de visite, flyers, affiches...
+              {m.content_qrcode_description()}
             </p>
             <div class="qr-preview">
               <img src={api.qrcode.getPreviewUrl()} alt="QR Code" />
@@ -278,11 +279,11 @@
             <div class="download-buttons">
               <a href={api.qrcode.getDownloadUrl('png')} download class="download-btn">
                 <Download size={16} />
-                PNG (impression)
+                {m.content_qrcode_download_png()}
               </a>
               <a href={api.qrcode.getDownloadUrl('svg')} download class="download-btn">
                 <Download size={16} />
-                SVG (web)
+                {m.content_qrcode_download_svg()}
               </a>
             </div>
           </div>
@@ -291,13 +292,13 @@
         <!-- vCard Section -->
         <Card>
           {#snippet header()}
-            <h2><UserPlus size={20} /> Carte de contact</h2>
+            <h2><UserPlus size={20} /> {m.content_vcard()}</h2>
           {/snippet}
           <div class="form-section">
             <div class="toggle-row">
               <div>
-                <span class="toggle-label">Activer le bouton "Ajouter aux contacts"</span>
-                <p class="toggle-description">Les visiteurs pourront t'ajouter à leurs contacts en un tap.</p>
+                <span class="toggle-label">{m.content_vcard_enable()}</span>
+                <p class="toggle-description">{m.content_vcard_enable_description()}</p>
               </div>
               <Toggle bind:checked={vcardEnabled} />
             </div>
@@ -305,29 +306,29 @@
             {#if vcardEnabled}
               <div class="vcard-fields">
                 <Input
-                  label="Nom complet"
+                  label={m.content_vcard_fullname()}
                   bind:value={vcardName}
-                  placeholder={name || 'Votre nom'}
+                  placeholder={name || m.content_profile_name_placeholder()}
                 />
                 <Input
-                  label="Email"
+                  label={m.content_vcard_email()}
                   type="email"
                   bind:value={vcardEmail}
                   placeholder="contact@example.com"
                 />
                 <Input
-                  label="Téléphone"
+                  label={m.content_vcard_phone()}
                   type="tel"
                   bind:value={vcardPhone}
                   placeholder="+41 79 123 45 67"
                 />
                 <Input
-                  label="Entreprise"
+                  label={m.content_vcard_company()}
                   bind:value={vcardCompany}
-                  placeholder="Nom de l'entreprise"
+                  placeholder={m.content_profile_name_placeholder()}
                 />
                 <Input
-                  label="Site web"
+                  label={m.content_vcard_website()}
                   bind:value={vcardWebsite}
                   placeholder="https://..."
                 />
@@ -335,7 +336,7 @@
             {/if}
 
             <Button variant="primary" onclick={saveVCard} loading={savingVCard}>
-              Enregistrer
+              {m.common_save()}
             </Button>
           </div>
         </Card>
@@ -351,7 +352,7 @@
           class:active={previewMode === 'current'}
           onclick={() => { previewMode = 'current'; }}
         >
-          Publié
+          {m.content_preview_published()}
         </button>
         <button
           type="button"
@@ -359,11 +360,11 @@
           class:active={previewMode === 'preview'}
           onclick={() => { previewMode = 'preview'; }}
         >
-          Brouillon
+          {m.content_preview_draft()}
         </button>
       </div>
       {#if previewMode === 'preview'}
-        <p class="preview-hint">Modifie les champs ci-contre pour voir l'aperçu en temps réel</p>
+        <p class="preview-hint">{m.content_preview_hint()}</p>
       {/if}
       {#key previewMode}
         <Preview client={previewMode === 'current' ? authStore.client : previewClient} links={linksStore.links} />

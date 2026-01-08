@@ -1,0 +1,38 @@
+---
+const pathname = Astro.url.pathname;
+const currentLocale = pathname.startsWith('/fr') ? 'fr' : 'en';
+const otherLocale = currentLocale === 'en' ? 'fr' : 'en';
+
+// With prefixDefaultLocale: false
+// EN: / (no prefix)
+// FR: /fr/
+const cleanPath = pathname.replace(/^\/(fr)/, '') || '/';
+const switchUrl = otherLocale === 'fr'
+  ? `/fr${cleanPath === '/' ? '' : cleanPath}`
+  : cleanPath;
+---
+
+<a href={switchUrl} class="language-switcher" title={otherLocale === 'en' ? 'Switch to English' : 'Passer en francais'}>
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+  <span>{otherLocale.toUpperCase()}</span>
+</a>
+
+<style>
+  .language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    color: var(--text-secondary, #666);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .language-switcher:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-primary, #000);
+  }
+</style>

@@ -1,9 +1,14 @@
 ---
+import en from '@noko/shared/i18n/en.json';
+import fr from '@noko/shared/i18n/fr.json';
+
 interface Props {
   adminUrl: string;
 }
 
 const { adminUrl } = Astro.props;
+const locale = Astro.currentLocale || 'en';
+const t = locale === 'fr' ? fr : en;
 ---
 
 <section class="section final-cta">
@@ -13,15 +18,15 @@ const { adminUrl } = Astro.props;
   
   <div class="container text-center">
     <div class="cta-card">
-      <h2 class="section-title text-dark">Your link page, hassle-free.</h2>
-      
+      <h2 class="section-title text-dark">{t.landing_final_cta_title}</h2>
+
       <div class="cta-actions">
         <a href={`${adminUrl}/register`} class="btn btn-primary btn-lg bg-white text-primary">
-          Create my page for free
+          {t.landing_final_cta_button}
         </a>
       </div>
 
-      <p class="cta-note">Free • 2 minutes • No credit card</p>
+      <p class="cta-note">{t.landing_final_cta_note}</p>
     </div>
   </div>
 </section>

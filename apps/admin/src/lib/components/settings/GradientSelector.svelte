@@ -1,6 +1,7 @@
 <script lang="ts">
   import { GRADIENT_PRESETS, findGradientPreset } from '@noko/shared';
   import { Pencil } from 'lucide-svelte';
+  import * as m from '$lib/paraglide/messages';
 
   interface Props {
     value: string;
@@ -41,7 +42,7 @@
 </script>
 
 <div class="gradient-selector">
-  <label>Dégradé de fond</label>
+  <label>{m.appearance_gradient_background()}</label>
   <div class="gradient-options">
     {#each GRADIENT_PRESETS as preset}
       <button
@@ -63,7 +64,7 @@
       <div class="gradient-preview custom-preview">
         <Pencil size={20} />
       </div>
-      <span class="gradient-label">Personnalisé</span>
+      <span class="gradient-label">{m.appearance_gradient_custom()}</span>
     </button>
   </div>
 

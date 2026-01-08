@@ -4,6 +4,7 @@
   import { AuthButton, AuthInput } from '$lib/components/ui';
   import { Lock, CheckCircle, XCircle, ArrowLeft } from 'lucide-svelte';
   import { api } from '$lib/api';
+  import * as m from '$lib/paraglide/messages';
 
   // Get token from URL
   const token = $derived($page.url.searchParams.get('token') || '');
@@ -34,7 +35,7 @@
       // Redirect to login after 3 seconds
       setTimeout(() => goto('/login'), 3000);
     } catch (err: any) {
-      error = err.message || 'Lien invalide ou expiré';
+      error = err.message || m.auth_reset_password_error_generic();
     } finally {
       loading = false;
     }
@@ -42,7 +43,7 @@
 </script>
 
 <svelte:head>
-  <title>Reinitialiser le mot de passe | Noko</title>
+  <title>{m.auth_reset_password_page_title()}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -63,10 +64,10 @@
       <div class="circle-ring circle-ring-4"></div>
     </div>
     <div class="hero-content">
-      <p class="hero-eyebrow">Nouveau mot de passe</p>
+      <p class="hero-eyebrow">{m.auth_reset_password_hero_eyebrow()}</p>
       <h1 class="hero-tagline">
-        Un nouveau<br />
-        <span class="highlight">depart securise</span>
+        {m.auth_reset_password_hero_tagline_1()}<br />
+        <span class="highlight">{m.auth_reset_password_hero_tagline_2()}</span>
       </h1>
     </div>
   </div>
@@ -79,34 +80,34 @@
           <img src="/black-logo.webp" alt="Noko" class="logo-img" />
         </a>
         <a href="/forgot-password" class="login-link">
-          <span>Redemander un lien</span>
+          <span>{m.auth_reset_password_request_new_link()}</span>
         </a>
       </header>
 
       <div class="form-content">
         <div class="form-content-inner">
-          
+
           {#if !token}
             <div class="error-state">
               <XCircle />
-              <h2>Lien invalide</h2>
-              <p>Ce lien de reinitialisation est invalide ou a expire.</p>
-              <a href="/forgot-password" class="action-link">Demander un nouveau lien</a>
+              <h2>{m.auth_reset_password_error_invalid_link()}</h2>
+              <p>{m.auth_reset_password_error_invalid_text()}</p>
+              <a href="/forgot-password" class="action-link">{m.auth_reset_password_error_request_new()}</a>
             </div>
           {:else if success}
             <div class="success-state">
               <CheckCircle />
-              <h2>Mot de passe reinitialise</h2>
-              <p>Votre mot de passe a ete modifie avec succes.</p>
-              <p class="redirect-hint">Redirection vers la connexion...</p>
+              <h2>{m.auth_reset_password_success_title()}</h2>
+              <p>{m.auth_reset_password_success_text()}</p>
+              <p class="redirect-hint">{m.auth_reset_password_success_redirect()}</p>
               <div class="form-options" style="justify-content: center; margin-top: 1.5rem;">
-                 <a href="/login" class="action-link">Se connecter maintenant</a>
+                 <a href="/login" class="action-link">{m.auth_reset_password_success_login()}</a>
               </div>
             </div>
           {:else}
-            <h2 class="form-title">Nouveau mot de passe</h2>
-            <p class="form-subtitle">Choisissez un nouveau mot de passe securise</p>
-            
+            <h2 class="form-title">{m.auth_reset_password_title()}</h2>
+            <p class="form-subtitle">{m.auth_reset_password_subtitle()}</p>
+
             <form onsubmit={handleSubmit} class="login-form">
               {#if error}
                 <div class="error-message">
@@ -119,7 +120,7 @@
                 <AuthInput
                   type="password"
                   bind:value={newPassword}
-                  placeholder="Nouveau mot de passe"
+                  placeholder={m.auth_reset_password_new_placeholder()}
                   showPasswordToggle
                   disabled={loading}
                 />
@@ -129,7 +130,7 @@
                 <AuthInput
                   type="password"
                   bind:value={confirmPassword}
-                  placeholder="Confirmer le mot de passe"
+                  placeholder={m.auth_reset_password_confirm_placeholder()}
                   showPasswordToggle
                   disabled={loading}
                 />
@@ -137,16 +138,16 @@
 
               <!-- Validation hints -->
               {#if newPassword.length > 0 && newPassword.length < 8}
-                <p class="hint-message">Minimum 8 caracteres requis</p>
+                <p class="hint-message">{m.auth_reset_password_hint_min_chars()}</p>
               {/if}
 
               {#if confirmPassword.length > 0 && !passwordsMatch}
-                <p class="hint-message error">Les mots de passe ne correspondent pas</p>
+                <p class="hint-message error">{m.auth_reset_password_hint_mismatch()}</p>
               {/if}
 
               <AuthButton type="submit" {loading} disabled={!canSubmit || loading}>
                 <Lock size={18} />
-                <span>Reinitialiser le mot de passe</span>
+                <span>{m.auth_reset_password_submit()}</span>
               </AuthButton>
             </form>
           {/if}
@@ -154,7 +155,7 @@
       </div>
     </div>
     <footer class="form-footer">
-      <p>&copy; 2025 Noko. Tous droits reserves.</p>
+      <p>&copy; {m.common_footer_copyright()}</p>
     </footer>
   </div>
 </div>

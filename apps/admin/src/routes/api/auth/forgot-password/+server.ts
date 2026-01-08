@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 import { db, users, verifications } from '$lib/server/db';
 import { eq } from 'drizzle-orm';
 import { forgotPasswordSchema } from '$lib/schemas';
-import { sendPasswordResetEmail } from '$lib/server/email';
+import { queueEmail } from '$lib/server/qstash';
 
 // Rate limiting
 const attempts = new Map<string, { count: number; resetAt: number }>();
@@ -42,8 +42,12 @@ export const POST: RequestHandler = async (event) => {
       expires_at: expiresAt.toISOString(),
     });
 
-    // Don't await email to avoid blocking
-    sendPasswordResetEmail(email.toLowerCase(), token).catch(console.error);
+    // Queue password reset email (via QStash in prod, direct in dev)
+    queueEmail({
+      type: 'password-reset',
+      email: email.toLowerCase(),
+      token
+    }).catch(console.error);
   }
   
   // Update rate limit

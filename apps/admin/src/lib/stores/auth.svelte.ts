@@ -3,6 +3,7 @@
 import type { User, Client } from '@noko/shared/types';
 import { api, ApiError } from '$lib/api';
 import { toastStore } from './toast.svelte';
+import * as m from '$lib/paraglide/messages';
 
 // Store state
 let user = $state<User | null>(null);
@@ -45,13 +46,13 @@ async function login(email: string, password: string): Promise<boolean> {
     const result = await api.auth.signIn(email, password);
     user = result.user;
     client = result.client;
-    toastStore.success('Connexion réussie');
+    toastStore.success(m.toast_success_login());
     return true;
   } catch (e) {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur de connexion');
+      toastStore.error(m.toast_error_login());
     }
     return false;
   } finally {
@@ -65,12 +66,12 @@ async function logout(): Promise<void> {
     await api.auth.signOut();
     user = null;
     client = null;
-    toastStore.success('Déconnexion réussie');
+    toastStore.success(m.toast_success_logout());
   } catch (e) {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur de déconnexion');
+      toastStore.error(m.toast_error_logout());
     }
   } finally {
     loading = false;
@@ -80,13 +81,13 @@ async function logout(): Promise<void> {
 async function changePassword(currentPassword: string, newPassword: string): Promise<boolean> {
   try {
     await api.auth.changePassword(currentPassword, newPassword);
-    toastStore.success('Mot de passe modifié');
+    toastStore.success(m.toast_success_password_changed());
     return true;
   } catch (e) {
     if (e instanceof ApiError) {
       toastStore.error(e.message);
     } else {
-      toastStore.error('Erreur lors du changement de mot de passe');
+      toastStore.error(m.toast_error_password_change());
     }
     return false;
   }

@@ -10,7 +10,10 @@
     "./plans": "./src/plans.ts",
     "./social-presets": "./src/social-presets.ts",
     "./font-presets": "./src/font-presets.ts",
-    "./vcard": "./src/vcard.ts"
+    "./vcard": "./src/vcard.ts",
+    "./error-codes": "./src/error-codes.ts",
+    "./i18n/en.json": "./i18n/en.json",
+    "./i18n/fr.json": "./i18n/fr.json"
   },
   "devDependencies": {
     "typescript": "^5.3.3"

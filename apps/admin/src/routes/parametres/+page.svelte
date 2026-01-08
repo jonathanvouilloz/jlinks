@@ -1,4 +1,5 @@
 <script lang="ts">
+  import * as m from '$lib/paraglide/messages';
   import { Card, Button, Input, Modal } from '$lib/components/ui';
   import { Settings, Lock, Trash2, AlertTriangle } from 'lucide-svelte';
   import { authStore } from '$lib/stores';
@@ -42,10 +43,10 @@
         currentPassword = '';
         newPassword = '';
         confirmPassword = '';
-        toastStore.success('Mot de passe modifié avec succès');
+        toastStore.success(m.toast_success_password_changed());
       }
     } catch (err: any) {
-      passwordError = err.message || 'Erreur lors du changement de mot de passe';
+      passwordError = err.message || m.settings_password_error_generic();
     } finally {
       savingPassword = false;
     }
@@ -59,11 +60,11 @@
 
     try {
       await api.auth.deleteAccount(deletePassword);
-      toastStore.success('Compte supprimé');
+      toastStore.success(m.toast_success_account_deleted());
       await authStore.logout();
       goto('/login');
     } catch (err: any) {
-      deleteError = err.message || 'Mot de passe incorrect';
+      deleteError = err.message || m.toast_error_password_incorrect();
       deleting = false;
     }
   }
@@ -76,29 +77,29 @@
 </script>
 
 <svelte:head>
-  <title>Paramètres | Noko Admin</title>
+  <title>{m.settings_page_title()}</title>
 </svelte:head>
 
 <div class="page">
   <header class="page-header">
-    <h1><Settings size={24} /> Paramètres</h1>
+    <h1><Settings size={24} /> {m.settings_title()}</h1>
   </header>
 
   <div class="content">
     <!-- Account Info -->
     <Card>
       {#snippet header()}
-        <h2>Informations du compte</h2>
+        <h2>{m.settings_account_info()}</h2>
       {/snippet}
 
       <div class="info-grid">
         <div class="info-item">
-          <span class="label">Email</span>
+          <span class="label">{m.settings_account_email()}</span>
           <span class="value">{user?.email || '-'}</span>
         </div>
         <div class="info-item">
-          <span class="label">Rôle</span>
-          <span class="value">{user?.role === 'super_admin' ? 'Super Admin' : 'Client'}</span>
+          <span class="label">{m.settings_account_role()}</span>
+          <span class="value">{user?.role === 'super_admin' ? m.settings_account_role_super_admin() : m.settings_account_role_client()}</span>
         </div>
       </div>
     </Card>
@@ -106,30 +107,30 @@
     <!-- Change Password -->
     <Card>
       {#snippet header()}
-        <h2><Lock size={18} /> Modifier le mot de passe</h2>
+        <h2><Lock size={18} /> {m.settings_change_password()}</h2>
       {/snippet}
 
       <form class="password-form" onsubmit={(e) => { e.preventDefault(); handleChangePassword(); }}>
         <Input
           type="password"
-          label="Mot de passe actuel"
-          placeholder="Entrez votre mot de passe actuel"
+          label={m.settings_current_password()}
+          placeholder={m.settings_current_password_placeholder()}
           bind:value={currentPassword}
         />
 
         <Input
           type="password"
-          label="Nouveau mot de passe"
-          placeholder="Minimum 8 caractères"
-          hint={newPassword.length > 0 && newPassword.length < 8 ? 'Minimum 8 caractères requis' : ''}
+          label={m.settings_new_password()}
+          placeholder={m.settings_new_password_placeholder()}
+          hint={newPassword.length > 0 && newPassword.length < 8 ? m.settings_password_hint_min() : ''}
           bind:value={newPassword}
         />
 
         <Input
           type="password"
-          label="Confirmer le nouveau mot de passe"
-          placeholder="Répétez le nouveau mot de passe"
-          hint={confirmPassword.length > 0 && !passwordsMatch ? 'Les mots de passe ne correspondent pas' : ''}
+          label={m.settings_confirm_password()}
+          placeholder={m.settings_confirm_password_placeholder()}
+          hint={confirmPassword.length > 0 && !passwordsMatch ? m.settings_password_hint_mismatch() : ''}
           bind:value={confirmPassword}
         />
 
@@ -143,7 +144,7 @@
             disabled={!canChangePassword || savingPassword}
             loading={savingPassword}
           >
-            Enregistrer
+            {m.common_save()}
           </Button>
         </div>
       </form>
@@ -152,20 +153,19 @@
     <!-- Danger Zone -->
     <Card class="danger-card">
       {#snippet header()}
-        <h2><AlertTriangle size={18} /> Zone dangereuse</h2>
+        <h2><AlertTriangle size={18} /> {m.settings_danger_zone()}</h2>
       {/snippet}
 
       <div class="danger-zone">
         <div class="danger-info">
-          <h3>Supprimer le compte</h3>
+          <h3>{m.settings_delete_account()}</h3>
           <p>
-            Cette action est irréversible. Toutes vos données seront définitivement supprimées,
-            y compris votre page de liens et tous les liens associés.
+            {m.settings_delete_account_text()}
           </p>
         </div>
         <Button variant="danger" onclick={() => showDeleteModal = true}>
           <Trash2 size={16} />
-          Supprimer mon compte
+          {m.settings_delete_account_button()}
         </Button>
       </div>
     </Card>
@@ -175,20 +175,20 @@
 <!-- Delete Confirmation Modal -->
 <Modal
   open={showDeleteModal}
-  title="Supprimer votre compte"
+  title={m.settings_delete_modal_title()}
   onclose={closeDeleteModal}
 >
   <div class="delete-modal-content">
     <p class="warning-text">
       <AlertTriangle size={20} />
-      Cette action est définitive et ne peut pas être annulée.
+      {m.settings_delete_modal_warning()}
     </p>
 
-    <p>Pour confirmer la suppression, entrez votre mot de passe :</p>
+    <p>{m.settings_delete_modal_confirm()}</p>
 
     <Input
       type="password"
-      placeholder="Votre mot de passe"
+      placeholder={m.settings_delete_modal_password_placeholder()}
       bind:value={deletePassword}
     />
 
@@ -200,7 +200,7 @@
   {#snippet footer()}
     <div class="modal-actions">
       <Button variant="secondary" onclick={closeDeleteModal}>
-        Annuler
+        {m.common_cancel()}
       </Button>
       <Button
         variant="danger"
@@ -208,7 +208,7 @@
         disabled={!deletePassword || deleting}
         loading={deleting}
       >
-        Supprimer définitivement
+        {m.settings_delete_modal_button()}
       </Button>
     </div>
   {/snippet}

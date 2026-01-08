@@ -1,34 +1,40 @@
 ---
+import en from '@noko/shared/i18n/en.json';
+import fr from '@noko/shared/i18n/fr.json';
+
+const locale = Astro.currentLocale || 'en';
+const t = locale === 'fr' ? fr : en;
+
 // Comparison table data
 const features = [
-  { key: 'links', linktreeFree: true, linktreePro: true, jlinks: true, label: 'Links' },
-  { key: 'customColors', linktreeFree: 'partial', linktreePro: true, jlinks: true, label: 'Custom Colors' },
-  { key: 'proThemes', linktreeFree: false, linktreePro: true, jlinks: '10', label: 'Pro Themes' },
-  { key: 'brandedQr', linktreeFree: false, linktreePro: true, jlinks: true, label: 'Branded QR Code' },
-  { key: 'addContact', linktreeFree: false, linktreePro: false, jlinks: true, label: '"Add to Contact" Button' },
-  { key: 'customDomain', linktreeFree: false, linktreePro: true, jlinks: 'pro', label: 'Custom Domain' },
-  { key: 'analytics', linktreeFree: 'basic', linktreePro: true, jlinks: 'pro', label: 'Analytics' },
-  { key: 'noBranding', linktreeFree: false, linktreePro: true, jlinks: 'pro', label: 'No Branding' },
+  { key: 'links', linktreeFree: true, linktreePro: true, jlinks: true, label: t.landing_comparison_links },
+  { key: 'customColors', linktreeFree: 'partial', linktreePro: true, jlinks: true, label: t.landing_comparison_custom_colors },
+  { key: 'proThemes', linktreeFree: false, linktreePro: true, jlinks: '10', label: t.landing_comparison_pro_themes },
+  { key: 'brandedQr', linktreeFree: false, linktreePro: true, jlinks: true, label: t.landing_comparison_branded_qr },
+  { key: 'addContact', linktreeFree: false, linktreePro: false, jlinks: true, label: t.landing_comparison_add_contact },
+  { key: 'customDomain', linktreeFree: false, linktreePro: true, jlinks: 'pro', label: t.landing_comparison_custom_domain },
+  { key: 'analytics', linktreeFree: 'basic', linktreePro: true, jlinks: 'pro', label: t.landing_comparison_analytics },
+  { key: 'noBranding', linktreeFree: false, linktreePro: true, jlinks: 'pro', label: t.landing_comparison_no_branding },
 ];
 ---
 
 <section class="section comparison">
   <div class="container">
     <div class="text-center mb-16">
-      <h2 class="section-title">What you pay for elsewhere is free here.</h2>
+      <h2 class="section-title">{t.landing_comparison_title}</h2>
     </div>
 
     <div class="comparison-table-wrapper">
       <div class="comparison-table">
         <!-- Header row -->
         <div class="cell header"></div>
-        <div class="cell header">Others Free</div>
+        <div class="cell header">{t.landing_comparison_others_free}</div>
         <div class="cell header header-row">
-          Others Pro
+          {t.landing_comparison_others_pro}
           <span class="price-tag">$9+</span>
         </div>
         <div class="cell header noko-header">
-          Noko
+          {t.landing_comparison_noko}
         </div>
 
         <!-- Feature rows -->
@@ -41,7 +47,7 @@ const features = [
               {feature.linktreeFree === true && <span class="check">✓</span>}
               {feature.linktreeFree === false && <span class="cross">✕</span>}
               {feature.linktreeFree === 'partial' && <span class="partial">~</span>}
-              {feature.linktreeFree === 'basic' && <span class="text-sm text-secondary">Basic</span>}
+              {feature.linktreeFree === 'basic' && <span class="text-sm text-secondary">{t.landing_comparison_basic}</span>}
             </div>
             <div class="cell">
               {feature.linktreePro === true && <span class="check">✓</span>}
@@ -51,14 +57,14 @@ const features = [
               {feature.jlinks === true && <span class="check-white">✓</span>}
               {feature.jlinks === false && <span class="cross-white">✕</span>}
               {feature.jlinks === '10' && <span class="check-white">✓ (10)</span>}
-              {feature.jlinks === 'pro' && <span class="text-sm font-bold text-white">Pro</span>}
+              {feature.jlinks === 'pro' && <span class="text-sm font-bold text-white">{t.landing_comparison_pro}</span>}
             </div>
           </>
         ))}
 
         <!-- Price row -->
         <div class="cell feature-label price-label">
-          Price
+          {t.landing_comparison_price}
         </div>
         <div class="cell">
           <span class="price">$0</span>
@@ -73,9 +79,7 @@ const features = [
     </div>
 
     <div class="text-center mt-8">
-      <p class="section-subtitle">
-        Branded QR code and pro themes? Competitors charge $9+/month. With us, it's <strong>free</strong>.
-      </p>
+      <p class="section-subtitle" set:html={t.landing_comparison_subtitle}></p>
     </div>
   </div>
 </section>

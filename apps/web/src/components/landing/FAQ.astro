@@ -1,56 +1,60 @@
 ---
-// FAQ section with accordion
+import en from '@noko/shared/i18n/en.json';
+import fr from '@noko/shared/i18n/fr.json';
+
+const locale = Astro.currentLocale || 'en';
+const t = locale === 'fr' ? fr : en;
 ---
 
 <section id="faq" class="section faq">
   <div class="container" style="max-width: 800px;">
     <div class="text-center mb-16">
-      <h2 class="section-title">Common Questions</h2>
+      <h2 class="section-title">{t.landing_faq_title}</h2>
     </div>
 
     <div class="faq-list">
       <details class="faq-item">
         <summary>
-          Is it really free?
+          {t.landing_faq_q1}
         </summary>
         <p>
-          Yes. No trial period, no catch. The Free plan is free forever. The Pro plan exists for those who want analytics and to remove the Noko badge.
+          {t.landing_faq_a1}
         </p>
       </details>
 
       <details class="faq-item">
         <summary>
-          Why is it free?
+          {t.landing_faq_q2}
         </summary>
         <p>
-          Noko is a project by Jon Labs, a web studio based in Geneva. We built it for our clients, then realized it could be useful for everyone.
+          {t.landing_faq_a2}
         </p>
       </details>
 
       <details class="faq-item">
         <summary>
-          What's the difference with Linktree?
+          {t.landing_faq_q3}
         </summary>
         <p>
-          We keep the essentials. Links, customization, it's the same. What we add: Free branded QR code, "Add to Contacts" button, and a Pro price that is 2x cheaper.
+          {t.landing_faq_a3}
         </p>
       </details>
 
       <details class="faq-item">
         <summary>
-          Can I migrate from Linktree?
+          {t.landing_faq_q4}
         </summary>
         <p>
-          In 2 minutes. You create your page, copy your links, change the URL in your bio. That's it.
+          {t.landing_faq_a4}
         </p>
       </details>
 
       <details class="faq-item">
         <summary>
-          Where is my data stored?
+          {t.landing_faq_q5}
         </summary>
         <p>
-          On servers in Switzerland.
+          {t.landing_faq_a5}
         </p>
       </details>
     </div>

@@ -1,16 +1,22 @@
 ---
+import en from '@noko/shared/i18n/en.json';
+import fr from '@noko/shared/i18n/fr.json';
+
 interface Props {
   showBranding?: boolean;
+  locale?: string;
 }
 
-const { showBranding = true } = Astro.props;
+const { showBranding = true, locale: propLocale } = Astro.props;
+const locale = propLocale || Astro.currentLocale || 'en';
+const t = locale === 'fr' ? fr : en;
 ---
 
 {
   showBranding && (
     <footer class="page-footer">
       <a href="https://nokolink.com" target="_blank" rel="noopener noreferrer">
-        Created with Noko
+        {t.common_created_with_noko}
       </a>
     </footer>
   )

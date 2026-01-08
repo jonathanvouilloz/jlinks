@@ -10,24 +10,38 @@ import Testimonials from '../components/landing/Testimonials.astro';
 import FAQ from '../components/landing/FAQ.astro';
 import FinalCTA from '../components/landing/FinalCTA.astro';
 import LandingFooter from '../components/landing/LandingFooter.astro';
+import en from '@noko/shared/i18n/en.json';
+import fr from '@noko/shared/i18n/fr.json';
 
 import '../styles/landing.css';
 
 const adminUrl = import.meta.env.DEV ? 'http://localhost:5173' : 'https://admin.nokolink.com';
 const siteUrl = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'http://localhost:4321';
+
+// Get locale from Astro.currentLocale or fallback to URL detection
+function getLocaleFromUrl(): 'en' | 'fr' {
+  const pathname = Astro.url.pathname;
+  if (pathname.startsWith('/fr')) return 'fr';
+  return 'en';
+}
+
+const locale = Astro.currentLocale || getLocaleFromUrl();
+const t = locale === 'fr' ? fr : en;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Noko - Create your custom link page. Free. No clutter. Alternative to Linktree with branded QR code and contact button included." />
+    <meta name="description" content={t.landing_meta_description} />
 
-    <title>Noko - All your links. One place.</title>
+    <title>{t.landing_meta_title}</title>
 
     <!-- Canonical URL -->
     <link rel="canonical" href={siteUrl} />
+    <link rel="alternate" hreflang="en" href={siteUrl} />
+    <link rel="alternate" hreflang="fr" href={`${siteUrl}/fr/`} />
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -48,11 +62,11 @@ const siteUrl = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'ht
     />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Noko - All your links. One place." />
-    <meta property="og:description" content="Create your custom link page. Free. No clutter." />
+    <meta property="og:title" content={t.landing_meta_title} />
+    <meta property="og:description" content={t.landing_meta_og_description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={siteUrl} />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content={locale === 'fr' ? 'fr_FR' : 'en_US'} />
     <meta property="og:site_name" content="Noko" />
 
     <!-- Open Graph Image -->
@@ -62,8 +76,8 @@ const siteUrl = import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'ht
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Noko - All your links. One place." />
-    <meta name="twitter:description" content="Create your custom link page. Free. No clutter." />
+    <meta name="twitter:title" content={t.landing_meta_title} />
+    <meta name="twitter:description" content={t.landing_meta_og_description} />
     <meta name="twitter:image" content={`${siteUrl}/images/brand/noko-mascot.png`} />
   </head>
 
