@@ -40,7 +40,7 @@ export const SOCIAL_PRESETS: Record<SocialPresetKey, SocialPreset> = {
   },
   linkedin: {
     icon: 'linkedin',
-    iconSource: 'lucide',
+    iconSource: 'simple-icons',
     label: 'LinkedIn',
     bgColor: '#0A66C2',
     textColor: '#ffffff',

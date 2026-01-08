@@ -1,6 +1,5 @@
 ---
 import {
-  Linkedin,
   Mail,
   Globe,
   Palette,
@@ -17,12 +16,11 @@ interface Props {
 
 const { name, size = 20, source = 'lucide' } = Astro.props;
 
-// Simple Icons brand names
-const simpleIconNames = ['instagram', 'youtube', 'x', 'facebook', 'github', 'tiktok', 'whatsapp'];
+// Simple Icons brand names (official brand logos)
+const simpleIconNames = ['instagram', 'youtube', 'x', 'facebook', 'github', 'tiktok', 'whatsapp', 'linkedin'];
 
 // Lucide icons for non-brand icons
 const lucideIcons: Record<string, any> = {
-  linkedin: Linkedin,
   mail: Mail,
   globe: Globe,
   palette: Palette,
@@ -32,7 +30,7 @@ const lucideIcons: Record<string, any> = {
 const isSimpleIcon = source === 'simple-icons' && simpleIconNames.includes(name?.toLowerCase());
 const LucideIcon = lucideIcons[name?.toLowerCase()] || LinkIcon;
 
-type SimpleIconName = 'instagram' | 'youtube' | 'x' | 'facebook' | 'github' | 'tiktok' | 'whatsapp';
+type SimpleIconName = 'instagram' | 'youtube' | 'x' | 'facebook' | 'github' | 'tiktok' | 'whatsapp' | 'linkedin';
 ---
 
 {isSimpleIcon ? (

@@ -10,7 +10,9 @@ export const clients = sqliteTable('clients', {
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   slug: text('slug').unique().notNull(),
-  name: text('name').notNull(),
+  name: text('name').notNull(), // Deprecated - kept for backward compatibility
+  first_name: text('first_name'),
+  last_name: text('last_name'),
 
   // Branding
   logo_url: text('logo_url'),

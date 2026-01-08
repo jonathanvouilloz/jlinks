@@ -25,7 +25,8 @@ async function loadPublishStatus(): Promise<void> {
 }
 
 async function updateProfile(data: {
-  name?: string;
+  first_name?: string;
+  last_name?: string;
   bio?: string;
   meta_title?: string;
   meta_description?: string;

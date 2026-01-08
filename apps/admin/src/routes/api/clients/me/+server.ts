@@ -28,10 +28,17 @@ export const PUT: RequestHandler = async (event) => {
   const data = result.data;
   const client = sessionData.client!;
 
+  // Compute display name from first_name and last_name
+  const firstName = data.first_name ?? client.first_name ?? '';
+  const lastName = data.last_name ?? client.last_name ?? '';
+  const computedName = [firstName, lastName].filter(Boolean).join(' ') || client.name;
+
   const [updated] = await db
     .update(clients)
     .set({
-      name: data.name,
+      name: computedName,
+      first_name: data.first_name,
+      last_name: data.last_name,
       bio: data.bio,
       meta_title: data.meta_title,
       meta_description: data.meta_description,

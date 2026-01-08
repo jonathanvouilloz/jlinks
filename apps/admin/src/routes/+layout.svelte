@@ -57,6 +57,9 @@
     }
   });
 
+  // Track if links have been loaded for current user
+  let linksLoadedForUser = $state<string | null>(null);
+
   // Initialize auth on mount (client-side only)
   $effect(() => {
     if (!browser || hasInitialized) return;
@@ -87,15 +90,29 @@
         goto(`${langPrefix}/`);
         return;
       }
-
-      // Load initial data for authenticated users
-      if (authStore.isAuthenticated && authStore.isClient) {
-        await Promise.all([
-          clientStore.loadPublishStatus(),
-          linksStore.loadLinks()
-        ]);
-      }
     })();
+  });
+
+  // Load links when user changes (login/logout) or on initial auth
+  $effect(() => {
+    if (!browser) return;
+
+    const userId = authStore.user?.id;
+
+    // If user logged out, reset tracking
+    if (!userId) {
+      linksLoadedForUser = null;
+      return;
+    }
+
+    // If user is authenticated and client, and we haven't loaded for this user yet
+    if (authStore.isAuthenticated && authStore.isClient && linksLoadedForUser !== userId) {
+      linksLoadedForUser = userId;
+      Promise.all([
+        clientStore.loadPublishStatus(),
+        linksStore.loadLinks()
+      ]);
+    }
   });
 </script>
 

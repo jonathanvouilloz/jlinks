@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as m from '$lib/paraglide/messages';
   import type { ProfileImageShape } from '@noko/shared/types';
-  import { Card, Button, Input, Toggle } from '$lib/components/ui';
+  import { Card, Button, Input, Toggle, ImageUpload } from '$lib/components/ui';
   import { Preview } from '$lib/components/dashboard';
   import { Download, QrCode, UserPlus } from 'lucide-svelte';
   import { authStore, clientStore, linksStore } from '$lib/stores';
@@ -11,8 +11,12 @@
   const client = $derived(authStore.client);
 
   // Profile fields
-  let name = $state('');
+  let firstName = $state('');
+  let lastName = $state('');
   let bio = $state('');
+
+  // Computed display name for preview
+  const displayName = $derived([firstName, lastName].filter(Boolean).join(' ') || '');
   let metaTitle = $state('');
   let metaDescription = $state('');
 
@@ -35,13 +39,22 @@
   let savingBranding = $state(false);
   let savingVCard = $state(false);
 
-  // Preview mode toggle
-  let previewMode = $state<'current' | 'preview'>('preview');
+  // Image upload handlers
+  function handleImageUpload(url: string) {
+    profileImageUrl = url;
+  }
+
+  function handleImageRemove() {
+    profileImageUrl = '';
+  }
+
 
   // Preview client combining form values for real-time preview
   const previewClient = $derived(client ? {
     ...client,
-    name,
+    name: displayName,
+    first_name: firstName || null,
+    last_name: lastName || null,
     bio,
     logo_url: logoUrl || null,
     profile_image_url: profileImageUrl || null,
@@ -52,7 +65,8 @@
   // Initialize form values from client
   $effect(() => {
     if (client) {
-      name = client.name || '';
+      firstName = client.first_name || '';
+      lastName = client.last_name || '';
       bio = client.bio || '';
       metaTitle = client.meta_title || '';
       metaDescription = client.meta_description || '';
@@ -74,7 +88,8 @@
     savingProfile = true;
     try {
       await clientStore.updateProfile({
-        name,
+        first_name: firstName || undefined,
+        last_name: lastName || undefined,
         bio: bio || undefined,
         meta_title: metaTitle || undefined,
         meta_description: metaDescription || undefined,
@@ -129,11 +144,18 @@
             <h2>{m.content_profile()}</h2>
           {/snippet}
           <div class="form-section">
-            <Input
-              label={m.content_profile_name_label()}
-              bind:value={name}
-              placeholder={m.content_profile_name_placeholder()}
-            />
+            <div class="name-row">
+              <Input
+                label={m.content_profile_first_name_label()}
+                bind:value={firstName}
+                placeholder={m.content_profile_first_name_placeholder()}
+              />
+              <Input
+                label={m.content_profile_last_name_label()}
+                bind:value={lastName}
+                placeholder={m.content_profile_last_name_placeholder()}
+              />
+            </div>
             <div class="form-field">
               <label for="bio">{m.content_profile_bio_label()}</label>
               <textarea
@@ -181,17 +203,26 @@
             <h2>{m.content_images()}</h2>
           {/snippet}
           <div class="form-section">
+            <!-- Profile Photo Upload -->
+            <div class="form-field">
+              <label>{m.content_profile_photo_label()}</label>
+              <div class="photo-upload-row">
+                <ImageUpload
+                  imageUrl={profileImageUrl}
+                  onUpload={handleImageUpload}
+                  onRemove={handleImageRemove}
+                  size={96}
+                  shape={profileImageShape === 'round' ? 'round' : 'square'}
+                />
+                <p class="photo-hint">{m.content_profile_photo_hint()}</p>
+              </div>
+            </div>
+
             <Input
               label={m.content_logo_url_label()}
               bind:value={logoUrl}
               placeholder={m.content_logo_url_placeholder()}
               hint={m.content_logo_url_hint()}
-            />
-            <Input
-              label={m.content_profile_image_url_label()}
-              bind:value={profileImageUrl}
-              placeholder={m.content_profile_image_url_placeholder()}
-              hint={m.content_profile_image_url_hint()}
             />
 
             <!-- Profile Image Size Slider -->
@@ -242,20 +273,12 @@
               </div>
             </div>
 
-            {#if logoUrl || profileImageUrl}
+            {#if logoUrl}
               <div class="image-previews">
-                {#if logoUrl}
-                  <div class="image-preview">
-                    <span>{m.content_image_preview_logo()}</span>
-                    <img src={logoUrl} alt="Logo preview" />
-                  </div>
-                {/if}
-                {#if profileImageUrl}
-                  <div class="image-preview">
-                    <span>{m.content_image_preview_profile()}</span>
-                    <img src={profileImageUrl} alt="Profile preview" class="profile" />
-                  </div>
-                {/if}
+                <div class="image-preview">
+                  <span>{m.content_image_preview_logo()}</span>
+                  <img src={logoUrl} alt="Logo preview" />
+                </div>
               </div>
             {/if}
             <Button variant="primary" onclick={saveBranding} loading={savingBranding}>
@@ -308,7 +331,7 @@
                 <Input
                   label={m.content_vcard_fullname()}
                   bind:value={vcardName}
-                  placeholder={name || m.content_profile_name_placeholder()}
+                  placeholder={displayName || m.content_profile_first_name_placeholder()}
                 />
                 <Input
                   label={m.content_vcard_email()}
@@ -325,7 +348,7 @@
                 <Input
                   label={m.content_vcard_company()}
                   bind:value={vcardCompany}
-                  placeholder={m.content_profile_name_placeholder()}
+                  placeholder={m.content_vcard_company_placeholder()}
                 />
                 <Input
                   label={m.content_vcard_website()}
@@ -345,30 +368,8 @@
 
     <!-- Preview Panel -->
     <div class="contenu-preview">
-      <div class="preview-mode-toggle">
-        <button
-          type="button"
-          class="toggle-btn"
-          class:active={previewMode === 'current'}
-          onclick={() => { previewMode = 'current'; }}
-        >
-          {m.content_preview_published()}
-        </button>
-        <button
-          type="button"
-          class="toggle-btn"
-          class:active={previewMode === 'preview'}
-          onclick={() => { previewMode = 'preview'; }}
-        >
-          {m.content_preview_draft()}
-        </button>
-      </div>
-      {#if previewMode === 'preview'}
-        <p class="preview-hint">{m.content_preview_hint()}</p>
-      {/if}
-      {#key previewMode}
-        <Preview client={previewMode === 'current' ? authStore.client : previewClient} links={linksStore.links} />
-      {/key}
+      <p class="preview-hint">{m.content_preview_hint()}</p>
+      <Preview client={previewClient} links={linksStore.links} />
     </div>
   </div>
 </div>
@@ -397,36 +398,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
-  }
-
-  .preview-mode-toggle {
-    display: flex;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-1);
-  }
-
-  .toggle-btn {
-    flex: 1;
-    padding: var(--space-2) var(--space-3);
-    border: none;
-    background: transparent;
-    border-radius: var(--radius-md);
-    font-size: var(--text-sm);
-    font-weight: var(--font-medium);
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-  }
-
-  .toggle-btn:hover {
-    color: var(--color-text);
-  }
-
-  .toggle-btn.active {
-    background: var(--color-primary);
-    color: white;
   }
 
   .preview-hint {
@@ -467,6 +438,18 @@
     gap: var(--space-4);
   }
 
+  .name-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (max-width: 500px) {
+    .name-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .form-field {
     display: flex;
     flex-direction: column;
@@ -499,6 +482,18 @@
     font-size: var(--text-xs);
     color: var(--color-text-muted);
     text-align: right;
+  }
+
+  .photo-upload-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .photo-hint {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    margin: 0;
   }
 
   .section-description {

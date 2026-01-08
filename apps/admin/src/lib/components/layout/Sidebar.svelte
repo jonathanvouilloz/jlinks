@@ -26,6 +26,12 @@
   <nav class="sidebar-nav">
     <ul class="nav-list">
       <li>
+        <a href="/contenu" class="nav-link" class:active={isActive('/contenu')} aria-current={isActive('/contenu') ? 'page' : undefined}>
+          <FileText size={20} aria-hidden="true" />
+          <span>{m.nav_content()}</span>
+        </a>
+      </li>
+      <li>
         <a href="/" class="nav-link" class:active={isActive('/')} aria-current={isActive('/') ? 'page' : undefined}>
           <Link size={20} aria-hidden="true" />
           <span>{m.nav_links()}</span>
@@ -35,12 +41,6 @@
         <a href="/apparence" class="nav-link" class:active={isActive('/apparence')} aria-current={isActive('/apparence') ? 'page' : undefined}>
           <Palette size={20} aria-hidden="true" />
           <span>{m.nav_appearance()}</span>
-        </a>
-      </li>
-      <li>
-        <a href="/contenu" class="nav-link" class:active={isActive('/contenu')} aria-current={isActive('/contenu') ? 'page' : undefined}>
-          <FileText size={20} aria-hidden="true" />
-          <span>{m.nav_content()}</span>
         </a>
       </li>
       <li>
@@ -68,7 +68,7 @@
 
   <div class="sidebar-footer">
     <div class="user-info">
-      <span class="user-email">{authStore.user?.email ?? ''}</span>
+      <span class="user-email" title={authStore.user?.email ?? ''}>{authStore.user?.email ?? ''}</span>
       {#if authStore.isSuperAdmin}
         <span class="user-role">{m.nav_super_admin()}</span>
       {/if}
@@ -180,7 +180,9 @@
     font-size: var(--text-sm);
     font-weight: var(--font-medium);
     color: var(--color-sidebar-text);
-    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .user-role {

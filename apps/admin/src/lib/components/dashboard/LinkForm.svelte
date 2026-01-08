@@ -4,6 +4,7 @@
   import { Modal, Input, Button, Toggle } from '$lib/components/ui';
   import { authStore } from '$lib/stores';
   import * as Icons from 'lucide-svelte';
+  import { Smile } from 'lucide-svelte';
   import * as m from '$lib/paraglide/messages';
 
   interface Props {
@@ -24,6 +25,19 @@
   let customBgColor = $state('#6366F1');
   let customTextColor = $state('#ffffff');
   let saving = $state(false);
+  let showEmojiPicker = $state(false);
+
+  // Common emojis for quick selection
+  const quickEmojis = [
+    '🔗', '📱', '💼', '🎯', '🚀', '⭐', '💡', '🎨',
+    '📧', '📞', '🎵', '🎬', '📸', '✨', '🔥', '💪',
+    '❤️', '👋', '🎉', '🌟', '📍', '🏠', '💬', '📝',
+  ];
+
+  function insertEmoji(emoji: string) {
+    title = title + emoji;
+    showEmojiPicker = false;
+  }
 
   // Get theme color from client
   const themeColor = $derived(authStore.client?.primary_color || '#FF6B5B');
@@ -113,12 +127,37 @@
 
 <Modal {open} onclose={onClose} title={link ? m.link_form_title_edit() : m.link_form_title_new()} size="md">
   <form onsubmit={handleSubmit} class="link-form">
-    <Input
-      label={m.link_form_title_label()}
-      bind:value={title}
-      placeholder={m.link_form_title_placeholder()}
-      required
-    />
+    <div class="title-field">
+      <Input
+        label={m.link_form_title_label()}
+        bind:value={title}
+        placeholder={m.link_form_title_placeholder()}
+        required
+      />
+      <div class="emoji-picker-wrapper">
+        <button
+          type="button"
+          class="emoji-toggle"
+          onclick={() => showEmojiPicker = !showEmojiPicker}
+          title={m.link_form_add_emoji?.() ?? 'Add emoji'}
+        >
+          <Smile size={18} />
+        </button>
+        {#if showEmojiPicker}
+          <div class="emoji-picker">
+            {#each quickEmojis as emoji}
+              <button
+                type="button"
+                class="emoji-btn"
+                onclick={() => insertEmoji(emoji)}
+              >
+                {emoji}
+              </button>
+            {/each}
+          </div>
+        {/if}
+      </div>
+    </div>
 
     <Input
       label={m.link_form_url_label()}
@@ -205,6 +244,70 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
+  }
+
+  .title-field {
+    position: relative;
+  }
+
+  .emoji-picker-wrapper {
+    position: absolute;
+    right: 8px;
+    top: 28px;
+  }
+
+  .emoji-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .emoji-toggle:hover {
+    background: var(--color-bg);
+    color: var(--color-primary);
+  }
+
+  .emoji-picker {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: var(--space-2);
+    padding: var(--space-2);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: var(--space-1);
+    z-index: 100;
+    width: max-content;
+  }
+
+  .emoji-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+  }
+
+  .emoji-btn:hover {
+    background: var(--color-bg);
   }
 
   .style-section {

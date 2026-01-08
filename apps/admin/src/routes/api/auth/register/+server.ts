@@ -56,14 +56,20 @@ export const POST: RequestHandler = async (event) => {
 
     // Transaction
     const { user, client } = await db.transaction(async (tx) => {
-      // Create Client
+      // Create Client with attractive defaults
       const [newClient] = await tx.insert(clients).values({
         slug: slug.toLowerCase(),
         name: slug, // Default name is slug
         plan: 'pro', // Default plan
         is_published: false,
+        // Appealing default appearance
         layout_type: 'list',
-        button_style: 'rounded',
+        button_style: 'soft',
+        primary_color: '#FF6B5B', // Noko coral
+        background_type: 'gradient',
+        background_value: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        outer_background_color: '#f8fafc',
+        button_opacity: 100,
       }).returning();
 
       // Create User

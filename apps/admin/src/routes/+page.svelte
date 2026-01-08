@@ -5,18 +5,28 @@
   import { Button, Card, Modal } from '$lib/components/ui';
   import { LinksList, LinkForm, Preview } from '$lib/components/dashboard';
   import { Plus, AlertCircle, ExternalLink, Copy, Check } from 'lucide-svelte';
-  import { authStore, linksStore, toastStore } from '$lib/stores';
+  import { authStore, linksStore, toastStore, clientStore } from '$lib/stores';
 
-  // Derived live URL
-  const liveUrl = $derived(authStore.client?.slug ? `${PUBLIC_SITE_URL}/${authStore.client.slug}` : null);
+  // Base URL for sharing (without cache-buster)
+  const baseUrl = $derived(authStore.client?.slug ? `${PUBLIC_SITE_URL}/${authStore.client.slug}` : null);
+
+  // Live URL with cache-buster for viewing (forces browser to reload)
+  const liveUrl = $derived.by(() => {
+    if (!baseUrl) return null;
+    const cacheBuster = clientStore.publishStatus?.lastPublishedAt
+      ? `?v=${new Date(clientStore.publishStatus.lastPublishedAt).getTime()}`
+      : '';
+    return baseUrl + cacheBuster;
+  });
 
   // Copy state
   let copied = $state(false);
 
   async function copyLink() {
-    if (!liveUrl) return;
+    if (!baseUrl) return;
     try {
-      await navigator.clipboard.writeText(liveUrl);
+      // Copy clean URL without cache-buster for sharing
+      await navigator.clipboard.writeText(baseUrl);
       copied = true;
       toastStore.success(m.dashboard_link_copied());
       setTimeout(() => copied = false, 2000);
@@ -128,12 +138,12 @@
 
       <!-- Right: Preview -->
       <div class="preview-panel">
-        {#if liveUrl}
+        {#if baseUrl}
           <div class="live-url-section">
             <span class="live-url-label">{m.dashboard_page_link_label()}</span>
             <div class="live-url-row">
               <a href={liveUrl} target="_blank" rel="noopener noreferrer" class="live-url-link">
-                {liveUrl}
+                {baseUrl}
                 <ExternalLink size={14} />
               </a>
               <button class="copy-btn" onclick={copyLink} title={m.dashboard_copy_link()}>

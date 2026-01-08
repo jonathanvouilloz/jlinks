@@ -10,3 +10,4 @@ export { default as Toggle } from './Toggle.svelte';
 export { default as Modal } from './Modal.svelte';
 export { default as Toast } from './Toast.svelte';
 export { default as LanguageSwitcher } from './LanguageSwitcher.svelte';
+export { default as ImageUpload } from './ImageUpload.svelte';

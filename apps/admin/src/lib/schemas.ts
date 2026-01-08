@@ -141,7 +141,9 @@ export const updateClientSchema = z.object({
 });
 
 export const updateClientMeSchema = z.object({
-  name: z.string().min(1).max(100).optional(),
+  name: z.string().min(1).max(100).optional(), // Deprecated
+  first_name: z.string().max(50).optional(),
+  last_name: z.string().max(50).optional(),
   bio: z.string().max(500).optional(),
   meta_title: z.string().max(60).optional(),
   meta_description: z.string().max(160).optional(),

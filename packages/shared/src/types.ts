@@ -2,7 +2,9 @@
 export interface Client {
   id: string;
   slug: string;
-  name: string;
+  name: string; // Deprecated - kept for backward compatibility
+  first_name: string | null;
+  last_name: string | null;
 
   // Branding
   logo_url: string | null;

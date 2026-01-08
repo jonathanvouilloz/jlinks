@@ -27,8 +27,9 @@
   <div class="header-right">
     <LanguageSwitcher />
     {#if authStore.isClient && authStore.client?.slug}
+      {@const cacheBuster = clientStore.publishStatus?.lastPublishedAt ? `?v=${new Date(clientStore.publishStatus.lastPublishedAt).getTime()}` : ''}
       <a
-        href="{PUBLIC_SITE_URL}/{authStore.client.slug}"
+        href="{PUBLIC_SITE_URL}/{authStore.client.slug}{cacheBuster}"
         target="_blank"
         rel="noopener noreferrer"
         class="live-link"

@@ -31,9 +31,6 @@
   // Saving state
   let savingAppearance = $state(false);
 
-  // Preview mode toggle
-  let previewMode = $state<'current' | 'preview'>('preview');
-
   // Preview client combining form values for real-time preview
   const previewClient = $derived(client ? {
     ...client,
@@ -189,30 +186,8 @@
 
     <!-- Preview Panel -->
     <div class="apparence-preview">
-      <div class="preview-mode-toggle">
-        <button
-          type="button"
-          class="toggle-btn"
-          class:active={previewMode === 'current'}
-          onclick={() => { previewMode = 'current'; }}
-        >
-          {m.appearance_preview_published()}
-        </button>
-        <button
-          type="button"
-          class="toggle-btn"
-          class:active={previewMode === 'preview'}
-          onclick={() => { previewMode = 'preview'; }}
-        >
-          {m.appearance_preview_draft()}
-        </button>
-      </div>
-      {#if previewMode === 'preview'}
-        <p class="preview-hint">{m.appearance_preview_hint()}</p>
-      {/if}
-      {#key previewMode}
-        <Preview client={previewMode === 'current' ? authStore.client : previewClient} links={linksStore.links} />
-      {/key}
+      <p class="preview-hint">{m.appearance_preview_hint()}</p>
+      <Preview client={previewClient} links={linksStore.links} />
     </div>
   </div>
 </div>
@@ -241,36 +216,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
-  }
-
-  .preview-mode-toggle {
-    display: flex;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-1);
-  }
-
-  .toggle-btn {
-    flex: 1;
-    padding: var(--space-2) var(--space-3);
-    border: none;
-    background: transparent;
-    border-radius: var(--radius-md);
-    font-size: var(--text-sm);
-    font-weight: var(--font-medium);
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-  }
-
-  .toggle-btn:hover {
-    color: var(--color-text);
-  }
-
-  .toggle-btn.active {
-    background: var(--color-primary);
-    color: white;
   }
 
   .preview-hint {
