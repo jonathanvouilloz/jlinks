@@ -962,7 +962,9 @@
   @media (max-width: 768px) {
     .hero-background { display: none; }
     .form-panel { position: relative; width: 100%; min-width: unset; border-radius: 0; box-shadow: none; }
-    .form-panel-inner { padding: 2rem 1.5rem; max-width: 400px; }
+    .form-panel-inner { padding: 2rem 1.5rem; max-width: 400px; margin: 0 auto; }
     .presets-grid { grid-template-columns: repeat(3, 1fr); }
+    .login-link { display: none; }
+    .form-footer { text-align: center; padding: 2rem 1.5rem; }
   }
 </style>

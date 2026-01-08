@@ -510,10 +510,20 @@
     .form-panel-inner {
       padding: 2rem 1.5rem;
       max-width: 400px;
+      margin: 0 auto;
     }
 
     .form-title {
       font-size: 1.75rem;
+    }
+
+    .login-link {
+      display: none;
+    }
+
+    .form-footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
     }
   }
 </style>
