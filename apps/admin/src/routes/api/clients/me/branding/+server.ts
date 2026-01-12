@@ -25,6 +25,8 @@ export const PUT: RequestHandler = async (event) => {
     .set({
       logo_url: data.logo_url,
       profile_image_url: data.profile_image_url,
+      profile_image_size: data.profile_image_size,
+      profile_image_shape: data.profile_image_shape,
       has_draft_changes: true,
       updated_at: new Date().toISOString(),
     } as any)

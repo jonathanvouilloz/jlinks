@@ -22,6 +22,52 @@
   let error = $state<string | null>(null);
   let fileInput: HTMLInputElement;
 
+  const MAX_SIZE = 400; // Max dimension for profile photo
+  const QUALITY = 0.8;  // WebP quality (0-1)
+
+  /**
+   * Compress and convert image to WebP
+   * Resizes to max 400x400px and compresses to ~30-50KB
+   */
+  async function compressImage(file: File): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d')!;
+
+        let { width, height } = img;
+
+        // Scale down if needed
+        if (width > height && width > MAX_SIZE) {
+          height = (height * MAX_SIZE) / width;
+          width = MAX_SIZE;
+        } else if (height > MAX_SIZE) {
+          width = (width * MAX_SIZE) / height;
+          height = MAX_SIZE;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(blob);
+            } else {
+              reject(new Error('Failed to compress image'));
+            }
+          },
+          'image/webp',
+          QUALITY
+        );
+      };
+      img.onerror = () => reject(new Error('Failed to load image'));
+      img.src = URL.createObjectURL(file);
+    });
+  }
+
   async function handleFileSelect(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
@@ -31,8 +77,11 @@
     uploading = true;
 
     try {
+      // Compress image before upload
+      const compressedBlob = await compressImage(file);
+
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', compressedBlob, 'profile.webp');
 
       const response = await fetch('/api/upload', {
         method: 'POST',

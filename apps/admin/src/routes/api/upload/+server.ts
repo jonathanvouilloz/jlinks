@@ -44,14 +44,13 @@ export const POST: RequestHandler = async (event) => {
       }
     }
 
-    // Generate unique filename
-    const extension = file.name.split('.').pop() || 'jpg';
-    const filename = `profiles/${client.id}/${Date.now()}.${extension}`;
+    // Generate unique filename (always .webp since client compresses to WebP)
+    const filename = `profiles/${client.id}/${Date.now()}.webp`;
 
-    // Upload to Vercel Blob
+    // Upload to Vercel Blob (always WebP from client compression)
     const blob = await put(filename, file, {
       access: 'public',
-      contentType: file.type,
+      contentType: 'image/webp',
       token: env.BLOB_READ_WRITE_TOKEN,
     });
 
@@ -73,7 +72,8 @@ export const POST: RequestHandler = async (event) => {
     });
   } catch (error) {
     console.error('Upload error:', error);
-    return json({ error: 'Upload failed' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Upload failed';
+    return json({ error: message }, { status: 500 });
   }
 };
 
